@@ -31,6 +31,7 @@ class _AddEditSubscriptionScreenState extends State<AddEditSubscriptionScreen> {
   int _periodInterval = 1;
   DateTime _nextPaymentDate = DateTime.now().add(const Duration(days: 30));
   String _selectedIcon = 'subscription_icons/default.png';
+  bool _isDataLoaded = false; // Flaga do kontrolowania załadowania danych
   
   bool get isEditing => widget.subscriptionId != null;
   
@@ -66,6 +67,56 @@ class _AddEditSubscriptionScreenState extends State<AddEditSubscriptionScreen> {
     'subscription_icons/adobe.png': 'Adobe',
     'subscription_icons/default.png': 'Domyślna',
   };
+
+  @override
+  void initState() {
+    super.initState();
+    if (isEditing) {
+      _loadSubscriptionData();
+      // Jeśli dane nie są jeszcze załadowane, załaduj je
+      final state = context.read<SubscriptionsBloc>().state;
+      if (state is! SubscriptionsLoaded) {
+        context.read<SubscriptionsBloc>().add(SubscriptionsLoadRequested());
+      }
+    }
+  }
+
+  void _loadSubscriptionData() {
+    if (_isDataLoaded) return; // Nie ładuj ponownie jeśli dane już są załadowane
+    
+    final state = context.read<SubscriptionsBloc>().state;
+    if (state is SubscriptionsLoaded) {
+      try {
+        final subscription = state.subscriptions.firstWhere(
+          (sub) => sub.id == widget.subscriptionId,
+        );
+        
+        // Wypełnij pola formularza danymi subskrypcji
+        _titleController.text = subscription.title;
+        _costController.text = subscription.cost.toStringAsFixed(2).replaceAll('.', ',');
+        _notesController.text = subscription.notes ?? '';
+        
+        setState(() {
+          _selectedCategory = subscription.category ?? 'Rozrywka';
+          _selectedPeriodType = subscription.period.type;
+          _periodInterval = subscription.period.interval;
+          _nextPaymentDate = subscription.nextPaymentAt;
+          _selectedIcon = subscription.iconPath;
+          _isDataLoaded = true; // Oznacz jako załadowane
+        });
+        
+        LoggerService.info('Załadowano dane subskrypcji: ${subscription.title}');
+      } catch (e) {
+        LoggerService.error('Nie znaleziono subskrypcji do edycji: ${widget.subscriptionId}', e);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Nie znaleziono subskrypcji do edycji'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
 
   @override
   void dispose() {
@@ -111,6 +162,12 @@ class _AddEditSubscriptionScreenState extends State<AddEditSubscriptionScreen> {
               ),
             );
           } else if (state is SubscriptionsLoaded) {
+            // Jeśli w trybie edycji i dane nie są jeszcze załadowane, załaduj je
+            if (isEditing && !_isDataLoaded) {
+              _loadSubscriptionData();
+              return;
+            }
+            
             // Przejdź do ekranu głównego po zapisaniu
             context.go('/');
             ScaffoldMessenger.of(context).showSnackBar(
