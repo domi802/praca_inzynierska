@@ -111,14 +111,18 @@ class _AddEditSubscriptionScreenState extends State<AddEditSubscriptionScreen> {
               ),
             );
           } else if (state is SubscriptionsLoaded) {
-            // Powrót do listy po zapisaniu
-            context.pop();
+            // Przejdź do ekranu głównego po zapisaniu
+            context.go('/');
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(isEditing 
-                  ? 'Subskrypcja została zaktualizowana' 
-                  : 'Subskrypcja została dodana'),
+                content: Text(
+                  isEditing 
+                    ? 'Subskrypcja została zaktualizowana' 
+                    : 'Subskrypcja została dodana',
+                  style: const TextStyle(color: Colors.white),
+                ),
                 backgroundColor: Colors.green,
+                duration: const Duration(seconds: 3),
               ),
             );
           }
