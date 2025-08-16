@@ -224,22 +224,31 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   String _getErrorMessage(dynamic error) {
     if (error is firebase_auth.FirebaseAuthException) {
       switch (error.code) {
+        // Błędy logowania - jeden uniwersalny komunikat dla bezpieczeństwa
         case 'user-not-found':
-          return 'Nie znaleziono użytkownika o podanym adresie email';
         case 'wrong-password':
-          return 'Nieprawidłowe hasło';
+        case 'invalid-email':
+        case 'invalid-credential':
+          return 'Błędny login lub hasło';
+        
+        // Błędy rejestracji - bardziej szczegółowe komunikaty
         case 'email-already-in-use':
           return 'Konto z tym adresem email już istnieje';
         case 'weak-password':
           return 'Hasło jest zbyt słabe';
-        case 'invalid-email':
-          return 'Nieprawidłowy format adresu email';
+        
+        // Inne błędy
         case 'user-disabled':
           return 'Konto użytkownika zostało zablokowane';
         case 'too-many-requests':
           return 'Zbyt wiele prób logowania. Spróbuj ponownie później';
+        case 'operation-not-allowed':
+          return 'Operacja nie jest dozwolona';
+        case 'network-request-failed':
+          return 'Brak połączenia z internetem';
+        
         default:
-          return 'Wystąpił błąd uwierzytelnienia: ${error.message}';
+          return 'Wystąpił błąd. Spróbuj ponownie później';
       }
     }
     return 'Wystąpił nieoczekiwany błąd';
