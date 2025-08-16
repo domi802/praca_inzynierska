@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import '../data/subscription_model.dart';
 import '../logic/subscriptions_bloc.dart';
 import '../../auth/logic/auth_bloc.dart';
-import '../../../core/widgets/custom_text_field.dart';
 import '../../../core/services/logger_service.dart';
 
 /// Ekran dodawania/edycji subskrypcji
@@ -28,7 +27,6 @@ class _AddEditSubscriptionScreenState extends State<AddEditSubscriptionScreen> {
   final _notesController = TextEditingController();
   
   String _selectedCategory = 'Rozrywka';
-  String _selectedCurrency = 'PLN';
   String _selectedPeriodType = 'monthly';
   int _periodInterval = 1;
   DateTime _nextPaymentDate = DateTime.now().add(const Duration(days: 30));
@@ -48,8 +46,6 @@ class _AddEditSubscriptionScreenState extends State<AddEditSubscriptionScreen> {
     'Finanse',
     'Inne',
   ];
-  
-  final List<String> _currencies = ['PLN', 'EUR', 'USD', 'GBP'];
   
   final Map<String, String> _periodTypes = {
     'daily': 'Dziennie',
@@ -137,17 +133,34 @@ class _AddEditSubscriptionScreenState extends State<AddEditSubscriptionScreen> {
               const SizedBox(height: 24),
               
               // Nazwa subskrypcji
-              CustomTextField(
-                controller: _titleController,
-                labelText: 'Nazwa subskrypcji',
-                hintText: 'np. Netflix, Spotify...',
-                prefixIcon: Icons.subscriptions,
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return 'Podaj nazwę subskrypcji';
-                  }
-                  return null;
-                },
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Nazwa subskrypcji',
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      const SizedBox(height: 8),
+                      TextFormField(
+                        controller: _titleController,
+                        decoration: const InputDecoration(
+                          hintText: 'np. Netflix, Spotify...',
+                          prefixIcon: Icon(Icons.subscriptions),
+                          border: OutlineInputBorder(),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.trim().isEmpty) {
+                            return 'Podaj nazwę subskrypcji';
+                          }
+                          return null;
+                        },
+                      ),
+                    ],
+                  ),
+                ),
               ),
               const SizedBox(height: 16),
               
@@ -155,35 +168,40 @@ class _AddEditSubscriptionScreenState extends State<AddEditSubscriptionScreen> {
               _buildCategorySelector(),
               const SizedBox(height: 16),
               
-              // Koszt i waluta
-              Row(
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: CustomTextField(
-                      controller: _costController,
-                      labelText: 'Koszt',
-                      hintText: '0.00',
-                      prefixIcon: Icons.attach_money,
-                      keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return 'Podaj koszt';
-                        }
-                        final cost = double.tryParse(value.replaceAll(',', '.'));
-                        if (cost == null || cost <= 0) {
-                          return 'Podaj prawidłowy koszt';
-                        }
-                        return null;
-                      },
-                    ),
+              // Koszt
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Koszt (PLN)',
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      const SizedBox(height: 8),
+                      TextFormField(
+                        controller: _costController,
+                        decoration: const InputDecoration(
+                          hintText: '0.00',
+                          prefixIcon: Icon(Icons.attach_money),
+                          border: OutlineInputBorder(),
+                        ),
+                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                        validator: (value) {
+                          if (value == null || value.trim().isEmpty) {
+                            return 'Podaj koszt';
+                          }
+                          final cost = double.tryParse(value.replaceAll(',', '.'));
+                          if (cost == null || cost <= 0) {
+                            return 'Podaj prawidłowy koszt';
+                          }
+                          return null;
+                        },
+                      ),
+                    ],
                   ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    flex: 1,
-                    child: _buildCurrencySelector(),
-                  ),
-                ],
+                ),
               ),
               const SizedBox(height: 16),
               
@@ -196,12 +214,29 @@ class _AddEditSubscriptionScreenState extends State<AddEditSubscriptionScreen> {
               const SizedBox(height: 16),
               
               // Notatki
-              CustomTextField(
-                controller: _notesController,
-                labelText: 'Notatki (opcjonalnie)',
-                hintText: 'Dodatkowe informacje...',
-                prefixIcon: Icons.note,
-                maxLines: 3,
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Notatki (opcjonalnie)',
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      const SizedBox(height: 8),
+                      TextFormField(
+                        controller: _notesController,
+                        decoration: const InputDecoration(
+                          hintText: 'Dodatkowe informacje...',
+                          prefixIcon: Icon(Icons.note),
+                          border: OutlineInputBorder(),
+                        ),
+                        maxLines: 3,
+                      ),
+                    ],
+                  ),
+                ),
               ),
               const SizedBox(height: 32),
               
@@ -336,43 +371,6 @@ class _AddEditSubscriptionScreenState extends State<AddEditSubscriptionScreen> {
                 if (value != null) {
                   setState(() {
                     _selectedCategory = value;
-                  });
-                }
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildCurrencySelector() {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Waluta',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            const SizedBox(height: 8),
-            DropdownButtonFormField<String>(
-              value: _selectedCurrency,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-              ),
-              items: _currencies.map((currency) {
-                return DropdownMenuItem(
-                  value: currency,
-                  child: Text(currency),
-                );
-              }).toList(),
-              onChanged: (value) {
-                if (value != null) {
-                  setState(() {
-                    _selectedCurrency = value;
                   });
                 }
               },
@@ -551,7 +549,7 @@ class _AddEditSubscriptionScreenState extends State<AddEditSubscriptionScreen> {
       title: _titleController.text.trim(),
       category: _selectedCategory,
       cost: cost,
-      currency: _selectedCurrency,
+      currency: 'PLN',
       lastPaidAt: now.subtract(Duration(days: 30)), // Przykładowa data ostatniej płatności
       nextPaymentAt: _nextPaymentDate,
       period: SubscriptionPeriod(

@@ -270,9 +270,9 @@ class _SubscriptionsListScreenState extends State<SubscriptionsListScreen> {
                           : '$daysUntilPayment dni do płatności',
                   style: TextStyle(
                     color: isOverdue 
-                        ? Colors.red 
+                        ? Color(0xFFE53935)
                         : needsReminder 
-                            ? Colors.orange 
+                            ? Color(0xFFFFB300)
                             : Colors.grey[600],
                     fontSize: 12,
                   ),

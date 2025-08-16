@@ -414,16 +414,16 @@ class _SubscriptionDetailScreenState extends State<SubscriptionDetailScreen> {
     
     if (difference < 0) {
       text = 'Płatność przeterminowana (${(-difference)} dni)';
-      color = Colors.red;
+      color = Color(0xFFE53935);
     } else if (difference == 0) {
       text = 'Płatność dzisiaj';
-      color = Colors.orange;
+      color = Color(0xFFFFB300);
     } else if (difference <= 3) {
       text = 'Płatność za $difference dni';
-      color = Colors.orange;
+      color = Color(0xFFFFB300);
     } else {
       text = 'Płatność za $difference dni';
-      color = Colors.green;
+      color = Color(0xFF66BB6A);
     }
     
     return Container(
@@ -465,9 +465,9 @@ class _SubscriptionDetailScreenState extends State<SubscriptionDetailScreen> {
 
   Color _getNextPaymentColor(DateTime nextPayment) {
     final difference = nextPayment.difference(DateTime.now()).inDays;
-    if (difference < 0) return Colors.red;
-    if (difference <= 3) return Colors.orange;
-    return Colors.green;
+    if (difference < 0) return Color(0xFFE53935);
+    if (difference <= 3) return Color(0xFFFFB300);
+    return Color(0xFF66BB6A);
   }
 
   String _formatDate(DateTime date) {
