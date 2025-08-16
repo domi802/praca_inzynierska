@@ -30,6 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthError) {
@@ -47,15 +48,26 @@ class _LoginScreenState extends State<LoginScreen> {
           builder: (context, state) {
             return LoadingOverlay(
               isLoading: state is AuthLoading,
-              child: SafeArea(
-                child: Padding(
-                  padding: const EdgeInsets.all(24.0),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
+              child: GestureDetector(
+                onTap: () {
+                  // Zamknij klawiaturę po kliknięciu w wolne pole
+                  FocusScope.of(context).unfocus();
+                },
+                child: SafeArea(
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.all(24.0),
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minHeight: MediaQuery.of(context).size.height - 
+                                   MediaQuery.of(context).padding.top - 
+                                   MediaQuery.of(context).padding.bottom - 48,
+                      ),
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
                         // Logo lub nazwa aplikacji
                         Icon(
                           Icons.subscriptions,
@@ -169,6 +181,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       ],
                     ),
                   ),
+                ),
+                ),
                 ),
               ),
             );
