@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "50575926322",
+    "project_id": "praca-inzynierska-subs",
+    "storage_bucket": "praca-inzynierska-subs.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:50575926322:android:bc87a43262e8857b97882b",
+        "android_client_info": {
+          "package_name": "com.dominik.pracainzynierska"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6jR6_kA5RZ9qkITt-7I0YWsUgD_S2FtM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

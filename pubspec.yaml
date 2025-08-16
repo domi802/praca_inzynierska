@@ -1,0 +1,77 @@
+name: praca_inzynierska
+description: "Aplikacja do zarządzania subskrypcjami z Firebase"
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.8.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  
+  # UI i Material Design
+  cupertino_icons: ^1.0.8
+  
+  # Firebase
+  firebase_core: ^3.6.0
+  firebase_auth: ^5.3.1
+  cloud_firestore: ^5.4.3
+  firebase_storage: ^12.3.2
+  
+  # Zarządzanie stanem
+  flutter_bloc: ^8.1.6
+  bloc: ^8.1.4
+  equatable: ^2.0.5
+  
+  # Routing
+  go_router: ^14.6.2
+  
+  # Powiadomienia
+  flutter_local_notifications: ^18.0.1
+  timezone: ^0.9.4
+  
+  # Kalendarz systemowy
+  device_calendar: ^4.3.2
+  permission_handler: ^11.3.1
+  
+  # Data i czas
+  intl: ^0.20.2
+  table_calendar: ^3.1.2
+  
+  # Inne pomocne
+  shared_preferences: ^2.3.2
+  image_picker: ^1.1.2
+  uuid: ^4.5.1
+  logger: ^2.4.0
+  
+  # Grafika i ikony
+  flutter_svg: ^2.0.12
+  cached_network_image: ^3.4.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  bloc_test: ^9.1.7
+  mocktail: ^1.0.4
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+flutter:
+  uses-material-design: true
+  
+  # Dodanie ikon i obrazów
+  assets:
+    - assets/images/
+    - assets/icons/
+    
+  # Czcionki (opcjonalnie)
+  # fonts:
+  #   - family: CustomFont
+  #     fonts:
+  #       - asset: fonts/CustomFont-Regular.ttf
