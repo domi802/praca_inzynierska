@@ -33,7 +33,7 @@ class StatsScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.error, size: 64, color: Colors.red),
+                  const Icon(Icons.error, size: 64, color: Color(0xFFE53935)),
                   const SizedBox(height: 16),
                   Text('Błąd: ${state.message}'),
                   const SizedBox(height: 16),
@@ -125,7 +125,7 @@ class StatsScreen extends StatelessWidget {
               children: [
                 Icon(
                   Icons.account_balance_wallet,
-                  color: Colors.green,
+                  color: Color(0xFF66BB6A),
                   size: 28,
                 ),
                 const SizedBox(width: 12),
@@ -146,7 +146,7 @@ class StatsScreen extends StatelessWidget {
                     'Miesięcznie',
                     '${state.totalMonthlyCost.toStringAsFixed(2)} PLN',
                     Icons.calendar_month,
-                    Colors.blue,
+                    Color(0xFF29B6F6),
                   ),
                 ),
                 const SizedBox(width: 16),
@@ -155,7 +155,7 @@ class StatsScreen extends StatelessWidget {
                     'Rocznie',
                     '${state.totalYearlyCost.toStringAsFixed(2)} PLN',
                     Icons.calendar_today,
-                    Colors.green,
+                    Color(0xFF66BB6A),
                   ),
                 ),
               ],
@@ -165,19 +165,19 @@ class StatsScreen extends StatelessWidget {
               width: double.infinity,
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.orange.withOpacity(0.1),
+                color: Color(0xFFFFB300).withOpacity(0.1),
                 borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: Colors.orange.withOpacity(0.3)),
+                border: Border.all(color: Color(0xFFFFB300).withOpacity(0.3)),
               ),
               child: Column(
                 children: [
-                  const Icon(Icons.savings, color: Colors.orange, size: 24),
+                  const Icon(Icons.savings, color: Color(0xFFFFB300), size: 24),
                   const SizedBox(height: 8),
                   const Text(
                     'Średnia koszt na subskrypcję',
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
-                      color: Colors.orange,
+                      color: Color(0xFFFFB300),
                     ),
                   ),
                   Text(
@@ -185,7 +185,7 @@ class StatsScreen extends StatelessWidget {
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
-                      color: Colors.orange,
+                      color: Color(0xFFFFB300),
                     ),
                   ),
                 ],
@@ -252,7 +252,7 @@ class StatsScreen extends StatelessWidget {
               children: [
                 Icon(
                   Icons.category,
-                  color: Colors.purple,
+                  color: Color(0xFFAB47BC),
                   size: 28,
                 ),
                 const SizedBox(width: 12),
@@ -366,7 +366,7 @@ class StatsScreen extends StatelessWidget {
               children: [
                 Icon(
                   Icons.schedule,
-                  color: Colors.orange,
+                  color: Color(0xFFFFB300),
                   size: 28,
                 ),
                 const SizedBox(width: 12),
@@ -405,16 +405,16 @@ class StatsScreen extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
-        color: Colors.blue.withOpacity(0.1),
+        color: Color(0xFF29B6F6).withOpacity(0.1),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.blue.withOpacity(0.3)),
+        border: Border.all(color: Color(0xFF29B6F6).withOpacity(0.3)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(
             _getPeriodIcon(period),
-            color: Colors.blue,
+            color: Color(0xFF29B6F6),
             size: 20,
           ),
           const SizedBox(width: 8),
@@ -422,7 +422,7 @@ class StatsScreen extends StatelessWidget {
             '${periodNames[period]} ($count)',
             style: const TextStyle(
               fontWeight: FontWeight.w500,
-              color: Colors.blue,
+              color: Color(0xFF29B6F6),
             ),
           ),
         ],
@@ -446,7 +446,7 @@ class StatsScreen extends StatelessWidget {
               children: [
                 Icon(
                   Icons.trending_up,
-                  color: Colors.red,
+                  color: Color(0xFFE53935),
                   size: 28,
                 ),
                 const SizedBox(width: 12),
@@ -485,10 +485,10 @@ class StatsScreen extends StatelessWidget {
     String iconPath,
   ) {
     Color rankColor;
-    if (rank == 1) rankColor = Colors.amber;
-    else if (rank == 2) rankColor = Colors.grey;
-    else if (rank == 3) rankColor = Colors.brown;
-    else rankColor = Colors.grey.shade400;
+    if (rank == 1) rankColor = Color(0xFFFFB300);
+    else if (rank == 2) rankColor = Color(0xFF9E9E9E);
+    else if (rank == 3) rankColor = Color(0xFFAB47BC);
+    else rankColor = Color(0xFF757575);
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
@@ -516,12 +516,12 @@ class StatsScreen extends StatelessWidget {
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              color: Colors.blue.withOpacity(0.1),
+              color: Color(0xFF29B6F6).withOpacity(0.1),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Icon(
               _getIconForPath(iconPath),
-              color: Colors.blue,
+              color: Color(0xFF29B6F6),
             ),
           ),
           const SizedBox(width: 12),
@@ -575,7 +575,7 @@ class StatsScreen extends StatelessWidget {
               children: [
                 Icon(
                   Icons.upcoming,
-                  color: Colors.green,
+                  color: Color(0xFF66BB6A),
                   size: 28,
                 ),
                 const SizedBox(width: 12),
@@ -618,13 +618,13 @@ class StatsScreen extends StatelessWidget {
     
     if (daysUntil == 0) {
       timeText = 'Dzisiaj';
-      timeColor = Colors.red;
+      timeColor = Color(0xFFE53935);
     } else if (daysUntil == 1) {
       timeText = 'Jutro';
-      timeColor = Colors.orange;
+      timeColor = Color(0xFFFFB300);
     } else {
       timeText = 'Za $daysUntil dni';
-      timeColor = Colors.green;
+      timeColor = Color(0xFF66BB6A);
     }
 
     return Padding(
@@ -635,12 +635,12 @@ class StatsScreen extends StatelessWidget {
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              color: Colors.blue.withOpacity(0.1),
+              color: Color(0xFF29B6F6).withOpacity(0.1),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Icon(
               _getIconForPath(subscription.iconPath),
-              color: Colors.blue,
+              color: Color(0xFF29B6F6),
             ),
           ),
           const SizedBox(width: 12),
@@ -714,16 +714,16 @@ class StatsScreen extends StatelessWidget {
 
   Color _getCategoryColor(String category) {
     switch (category.toLowerCase()) {
-      case 'rozrywka': return Colors.red;
-      case 'muzyka': return Colors.purple;
-      case 'video': return Colors.blue;
-      case 'gry': return Colors.green;
-      case 'produktywność': return Colors.orange;
-      case 'edukacja': return Colors.indigo;
-      case 'sport': return Colors.teal;
-      case 'zdrowie': return Colors.pink;
-      case 'finanse': return Colors.amber;
-      default: return Colors.grey;
+      case 'rozrywka': return Color(0xFFE53935);  // Error (red)
+      case 'muzyka': return Color(0xFFAB47BC);    // Purple
+      case 'video': return Color(0xFF29B6F6);     // Secondary (blue)
+      case 'gry': return Color(0xFF66BB6A);       // Success (green)
+      case 'produktywność': return Color(0xFFFFB300); // Warning (yellow)
+      case 'edukacja': return Color(0xFF0288D1);  // Secondary variant
+      case 'sport': return Color(0xFFFFA726);     // Primary
+      case 'zdrowie': return Color(0xFFFB8C00);   // Primary variant
+      case 'finanse': return Color(0xFFFFB300);   // Warning
+      default: return Color(0xFF9E9E9E);          // Grey from chart colors
     }
   }
 

@@ -291,23 +291,23 @@ class _CalendarScreenState extends State<CalendarScreen> with TickerProviderStat
     String statusText;
     
     if (difference < 0) {
-      cardColor = Colors.red.withOpacity(0.1);
-      textColor = Colors.red;
+      cardColor = Color(0xFFE53935).withOpacity(0.1);
+      textColor = Color(0xFFE53935);
       statusIcon = Icons.warning;
       statusText = 'Przeterminowana (${-difference} dni)';
     } else if (difference == 0) {
-      cardColor = Colors.orange.withOpacity(0.1);
-      textColor = Colors.orange;
+      cardColor = Color(0xFFFFB300).withOpacity(0.1);
+      textColor = Color(0xFFFFB300);
       statusIcon = Icons.today;
       statusText = 'Dzisiaj';
     } else if (difference <= 3) {
-      cardColor = Colors.amber.withOpacity(0.1);
-      textColor = Colors.amber.shade700;
+      cardColor = Color(0xFFFFA726).withOpacity(0.1);
+      textColor = Color(0xFFFFA726);
       statusIcon = Icons.schedule;
       statusText = 'Za $difference dni';
     } else {
-      cardColor = Colors.green.withOpacity(0.1);
-      textColor = Colors.green;
+      cardColor = Color(0xFF66BB6A).withOpacity(0.1);
+      textColor = Color(0xFF66BB6A);
       statusIcon = Icons.check_circle_outline;
       statusText = 'Za $difference dni';
     }
@@ -404,7 +404,7 @@ class _CalendarScreenState extends State<CalendarScreen> with TickerProviderStat
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text('Subskrypcja została oznaczona jako opłacona'),
-                          backgroundColor: Colors.green,
+                          backgroundColor: Color(0xFF66BB6A),
                         ),
                       );
                       break;
