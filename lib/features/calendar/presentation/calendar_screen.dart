@@ -108,12 +108,6 @@ class _CalendarScreenState extends State<CalendarScreen> with TickerProviderStat
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          context.push('/subscription/add');
-        },
-        child: const Icon(Icons.add),
-      ),
     );
   }
 
