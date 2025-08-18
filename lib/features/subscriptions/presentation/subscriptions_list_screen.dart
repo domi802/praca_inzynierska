@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../logic/subscriptions_bloc.dart';
+import '../data/subscription_model.dart';
 import '../../../core/widgets/loading_overlay.dart';
 
 /// Ekran listy subskrypcji - główny ekran aplikacji
@@ -17,8 +18,11 @@ class _SubscriptionsListScreenState extends State<SubscriptionsListScreen> {
   @override
   void initState() {
     super.initState();
-    // Załaduj subskrypcje przy pierwszym uruchomieniu
-    context.read<SubscriptionsBloc>().add(SubscriptionsLoadRequested());
+    // Załaduj subskrypcje tylko jeśli nie są już załadowane
+    final currentState = context.read<SubscriptionsBloc>().state;
+    if (currentState is! SubscriptionsLoaded) {
+      context.read<SubscriptionsBloc>().add(SubscriptionsLoadRequested());
+    }
   }
 
   @override
@@ -26,14 +30,6 @@ class _SubscriptionsListScreenState extends State<SubscriptionsListScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Moje Subskrypcje'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: () {
-              context.read<SubscriptionsBloc>().add(SubscriptionsRefreshRequested());
-            },
-          ),
-        ],
       ),
       body: BlocListener<SubscriptionsBloc, SubscriptionsState>(
         listener: (context, state) {
@@ -61,36 +57,35 @@ class _SubscriptionsListScreenState extends State<SubscriptionsListScreen> {
             }
 
             if (state is SubscriptionsLoaded) {
-              return RefreshIndicator(
-                onRefresh: () async {
-                  context.read<SubscriptionsBloc>().add(SubscriptionsRefreshRequested());
-                },
-                child: _buildSubscriptionsList(state),
-              );
+              return _buildSubscriptionsList(state);
             }
 
             if (state is SubscriptionsRefreshing) {
+              // Zachowaj poprzednie wartości kosztów podczas odświeżania
+              final costs = _calculateCosts(state.subscriptions);
               return LoadingOverlay(
                 isLoading: true,
                 child: _buildSubscriptionsList(
                   SubscriptionsLoaded(
                     subscriptions: state.subscriptions,
-                    totalMonthlyCost: 0,
-                    totalYearlyCost: 0,
+                    totalMonthlyCost: costs['monthly']!,
+                    totalYearlyCost: costs['yearly']!,
                   ),
                 ),
               );
             }
 
             if (state is SubscriptionsActionInProgress) {
+              // Zachowaj poprzednie wartości kosztów podczas operacji
+              final costs = _calculateCosts(state.subscriptions);
               return LoadingOverlay(
                 isLoading: true,
                 loadingText: _getActionText(state.actionType),
                 child: _buildSubscriptionsList(
                   SubscriptionsLoaded(
                     subscriptions: state.subscriptions,
-                    totalMonthlyCost: 0,
-                    totalYearlyCost: 0,
+                    totalMonthlyCost: costs['monthly']!,
+                    totalYearlyCost: costs['yearly']!,
                   ),
                 ),
               );
@@ -430,5 +425,38 @@ class _SubscriptionsListScreenState extends State<SubscriptionsListScreen> {
       default:
         return 'Przetwarzanie...';
     }
+  }
+
+  /// Oblicza całkowite koszty miesięczne i roczne
+  Map<String, double> _calculateCosts(List<Subscription> subscriptions) {
+    double monthlyTotal = 0.0;
+    double yearlyTotal = 0.0;
+    
+    for (final subscription in subscriptions) {
+      double monthlyCost = 0.0;
+      
+      switch (subscription.period.type) {
+        case 'daily':
+          monthlyCost = subscription.cost * 30 / subscription.period.interval;
+          break;
+        case 'weekly':
+          monthlyCost = subscription.cost * 4.33 / subscription.period.interval;
+          break;
+        case 'monthly':
+          monthlyCost = subscription.cost / subscription.period.interval;
+          break;
+        case 'yearly':
+          monthlyCost = subscription.cost / (12 * subscription.period.interval);
+          break;
+      }
+      
+      monthlyTotal += monthlyCost;
+      yearlyTotal += monthlyCost * 12;
+    }
+    
+    return {
+      'monthly': monthlyTotal,
+      'yearly': yearlyTotal,
+    };
   }
 }

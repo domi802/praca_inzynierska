@@ -52,14 +52,6 @@ class _CalendarScreenState extends State<CalendarScreen> with TickerProviderStat
             Tab(text: 'Ten miesiąc', icon: Icon(Icons.calendar_month)),
           ],
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: () {
-              context.read<SubscriptionsBloc>().add(SubscriptionsRefreshRequested());
-            },
-          ),
-        ],
       ),
       body: BlocBuilder<SubscriptionsBloc, SubscriptionsState>(
         builder: (context, state) {
@@ -84,6 +76,19 @@ class _CalendarScreenState extends State<CalendarScreen> with TickerProviderStat
                   ),
                 ],
               ),
+            );
+          }
+          
+          // Podczas odświeżania zachowaj poprzednie dane
+          if (state is SubscriptionsRefreshing) {
+            // Używaj poprzednich danych z subskrypcji
+            return TabBarView(
+              controller: _tabController,
+              children: [
+                _buildTodayView(state.subscriptions),
+                _buildWeekView(state.subscriptions),
+                _buildMonthView(state.subscriptions),
+              ],
             );
           }
           

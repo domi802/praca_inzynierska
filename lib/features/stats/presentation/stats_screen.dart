@@ -13,14 +13,6 @@ class StatsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Statystyki'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: () {
-              context.read<SubscriptionsBloc>().add(SubscriptionsRefreshRequested());
-            },
-          ),
-        ],
       ),
       body: BlocBuilder<SubscriptionsBloc, SubscriptionsState>(
         builder: (context, state) {
@@ -45,6 +37,16 @@ class StatsScreen extends StatelessWidget {
                   ),
                 ],
               ),
+            );
+          }
+          
+          // Obsługa stanu odświeżania - traktuj jak załadowane dane
+          if (state is SubscriptionsRefreshing && state.subscriptions.isNotEmpty) {
+            // Konwertuj na SubscriptionsLoaded żeby użyć istniejącego kodu
+            state = SubscriptionsLoaded(
+              subscriptions: state.subscriptions,
+              totalMonthlyCost: _calculateMonthlyCost(state.subscriptions),
+              totalYearlyCost: _calculateYearlyCost(state.subscriptions),
             );
           }
           
@@ -752,5 +754,38 @@ class StatsScreen extends StatelessWidget {
 
   String _formatDate(DateTime date) {
     return '${date.day.toString().padLeft(2, '0')}.${date.month.toString().padLeft(2, '0')}.${date.year}';
+  }
+
+  /// Oblicza miesięczny koszt wszystkich subskrypcji
+  double _calculateMonthlyCost(List<Subscription> subscriptions) {
+    double monthlyTotal = 0.0;
+    
+    for (final subscription in subscriptions) {
+      double monthlyCost = 0.0;
+      
+      switch (subscription.period.type) {
+        case 'daily':
+          monthlyCost = subscription.cost * 30 / subscription.period.interval;
+          break;
+        case 'weekly':
+          monthlyCost = subscription.cost * 4.33 / subscription.period.interval;
+          break;
+        case 'monthly':
+          monthlyCost = subscription.cost / subscription.period.interval;
+          break;
+        case 'yearly':
+          monthlyCost = subscription.cost / (12 * subscription.period.interval);
+          break;
+      }
+      
+      monthlyTotal += monthlyCost;
+    }
+    
+    return monthlyTotal;
+  }
+
+  /// Oblicza roczny koszt wszystkich subskrypcji
+  double _calculateYearlyCost(List<Subscription> subscriptions) {
+    return _calculateMonthlyCost(subscriptions) * 12;
   }
 }
