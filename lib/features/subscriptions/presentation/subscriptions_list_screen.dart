@@ -277,15 +277,10 @@ class _SubscriptionsListScreenState extends State<SubscriptionsListScreen> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Center(
-                    child: Text(
-                      subscription.title.isNotEmpty 
-                          ? subscription.title[0].toUpperCase() 
-                          : 'S',
-                      style: TextStyle(
-                        color: iconColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
+                    child: Icon(
+                      _getIconForPath(subscription.iconPath),
+                      color: iconColor,
+                      size: 24,
                     ),
                   ),
                 ),
@@ -345,14 +340,10 @@ class _SubscriptionsListScreenState extends State<SubscriptionsListScreen> {
                   children: [
                     CircleAvatar(
                       backgroundColor: Theme.of(context).primaryColor.withOpacity(0.1),
-                      child: Text(
-                        subscription.title.isNotEmpty 
-                            ? subscription.title[0].toUpperCase() 
-                            : 'S',
-                        style: TextStyle(
-                          color: Theme.of(context).primaryColor,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      child: Icon(
+                        _getIconForPath(subscription.iconPath),
+                        color: Theme.of(context).primaryColor,
+                        size: 24,
                       ),
                     ),
                     const SizedBox(width: 16),
@@ -477,14 +468,10 @@ class _SubscriptionsListScreenState extends State<SubscriptionsListScreen> {
               : needsReminder 
                   ? Colors.orange 
                   : Theme.of(context).primaryColor,
-          child: Text(
-            subscription.title.isNotEmpty 
-                ? subscription.title[0].toUpperCase() 
-                : 'S',
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
+          child: Icon(
+            _getIconForPath(subscription.iconPath),
+            color: Colors.white,
+            size: 20,
           ),
         ),
         title: Text(
@@ -683,5 +670,18 @@ class _SubscriptionsListScreenState extends State<SubscriptionsListScreen> {
       default:
         return 'Przetwarzanie...';
     }
+  }
+
+  IconData _getIconForPath(String path) {
+    if (path.contains('netflix')) return Icons.movie;
+    if (path.contains('spotify')) return Icons.music_note;
+    if (path.contains('youtube')) return Icons.play_circle;
+    if (path.contains('disney')) return Icons.mouse;
+    if (path.contains('amazon')) return Icons.shopping_cart;
+    if (path.contains('apple')) return Icons.phone_iphone;
+    if (path.contains('google')) return Icons.search;
+    if (path.contains('microsoft')) return Icons.computer;
+    if (path.contains('adobe')) return Icons.design_services;
+    return Icons.subscriptions;
   }
 }

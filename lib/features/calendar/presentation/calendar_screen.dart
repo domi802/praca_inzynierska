@@ -114,22 +114,104 @@ class _CalendarScreenState extends State<CalendarScreen> with TickerProviderStat
   Widget _buildTodayView(List<Subscription> allSubscriptions) {
     final todaySubscriptions = _getSubscriptionsForPeriod(allSubscriptions, 0);
     
-    return _buildSubscriptionsList(
-      'Płatności dzisiaj',
-      todaySubscriptions,
-      Icons.today,
-      emptyMessage: 'Brak płatności na dzisiaj',
+    return Column(
+      children: [
+        // Podsumowanie dzisiejsze
+        Card(
+          margin: const EdgeInsets.all(16),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              children: [
+                Text(
+                  'Podsumowanie dzisiejsze',
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    _buildSummaryItem(
+                      'Liczba płatności',
+                      todaySubscriptions.length.toString(),
+                      Icons.payment,
+                    ),
+                    _buildSummaryItem(
+                      'Łączny koszt',
+                      '${_calculateTotalCost(todaySubscriptions).toStringAsFixed(2)} PLN',
+                      Icons.attach_money,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+        // Lista płatności
+        Expanded(
+          child: _buildSubscriptionsList(
+            'Płatności dzisiaj',
+            todaySubscriptions,
+            Icons.today,
+            emptyMessage: 'Brak płatności na dzisiaj',
+            showTotal: false,
+          ),
+        ),
+      ],
     );
   }
 
   Widget _buildWeekView(List<Subscription> allSubscriptions) {
     final weekSubscriptions = _getSubscriptionsForPeriod(allSubscriptions, 7);
     
-    return _buildSubscriptionsList(
-      'Płatności w tym tygodniu',
-      weekSubscriptions,
-      Icons.date_range,
-      emptyMessage: 'Brak płatności w tym tygodniu',
+    return Column(
+      children: [
+        // Podsumowanie tygodniowe
+        Card(
+          margin: const EdgeInsets.all(16),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              children: [
+                Text(
+                  'Podsumowanie tygodniowe',
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    _buildSummaryItem(
+                      'Liczba płatności',
+                      weekSubscriptions.length.toString(),
+                      Icons.payment,
+                    ),
+                    _buildSummaryItem(
+                      'Łączny koszt',
+                      '${_calculateTotalCost(weekSubscriptions).toStringAsFixed(2)} PLN',
+                      Icons.attach_money,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+        // Lista płatności
+        Expanded(
+          child: _buildSubscriptionsList(
+            'Płatności w tym tygodniu',
+            weekSubscriptions,
+            Icons.date_range,
+            emptyMessage: 'Brak płatności w tym tygodniu',
+            showTotal: false,
+          ),
+        ),
+      ],
     );
   }
 
@@ -188,20 +270,26 @@ class _CalendarScreenState extends State<CalendarScreen> with TickerProviderStat
   Widget _buildSummaryItem(String label, String value, IconData icon) {
     return Column(
       children: [
-        Icon(icon, color: Theme.of(context).primaryColor, size: 28),
-        const SizedBox(height: 8),
-        Text(
-          value,
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: Theme.of(context).primaryColor,
-          ),
-        ),
         Text(
           label,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             color: Colors.grey[600],
           ),
+        ),
+        const SizedBox(height: 8),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, color: Theme.of(context).primaryColor, size: 20),
+            const SizedBox(width: 4),
+            Text(
+              value,
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).primaryColor,
+              ),
+            ),
+          ],
         ),
       ],
     );
@@ -224,21 +312,23 @@ class _CalendarScreenState extends State<CalendarScreen> with TickerProviderStat
             margin: const EdgeInsets.all(16),
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor.withOpacity(0.1),
+              color: Color(0xFFE3F2FD),
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                color: Theme.of(context).primaryColor.withOpacity(0.3),
+                color: Color(0xFF2196F3),
+                width: 1,
               ),
             ),
             child: Row(
               children: [
-                Icon(Icons.calculate, color: Theme.of(context).primaryColor),
+                Icon(Icons.calculate, color: Color(0xFF1976D2)),
                 const SizedBox(width: 12),
                 Text(
                   'Łączny koszt: ${totalCost.toStringAsFixed(2)} PLN',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
-                    color: Theme.of(context).primaryColor,
+                    color: Color(0xFF1976D2),
+                    fontSize: 16,
                   ),
                 ),
               ],
@@ -290,23 +380,23 @@ class _CalendarScreenState extends State<CalendarScreen> with TickerProviderStat
     String statusText;
     
     if (difference < 0) {
-      cardColor = Color(0xFFE53935).withOpacity(0.1);
-      textColor = Color(0xFFE53935);
+      cardColor = Color(0xFFFFEBEE);
+      textColor = Color(0xFFD32F2F);
       statusIcon = Icons.warning;
       statusText = 'Przeterminowana (${-difference} dni)';
     } else if (difference == 0) {
-      cardColor = Color(0xFFFFB300).withOpacity(0.1);
-      textColor = Color(0xFFFFB300);
+      cardColor = Color(0xFFFFF8E1);
+      textColor = Color(0xFFF57C00);
       statusIcon = Icons.today;
       statusText = 'Dzisiaj';
     } else if (difference <= 3) {
-      cardColor = Color(0xFFFFA726).withOpacity(0.1);
-      textColor = Color(0xFFFFA726);
+      cardColor = Color(0xFFFFF3E0);
+      textColor = Color(0xFFEF6C00);
       statusIcon = Icons.schedule;
       statusText = 'Za $difference dni';
     } else {
-      cardColor = Color(0xFF66BB6A).withOpacity(0.1);
-      textColor = Color(0xFF66BB6A);
+      cardColor = Color(0xFFE8F5E8);
+      textColor = Color(0xFF4CAF50);
       statusIcon = Icons.check_circle_outline;
       statusText = 'Za $difference dni';
     }
@@ -345,6 +435,7 @@ class _CalendarScreenState extends State<CalendarScreen> with TickerProviderStat
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
+                      overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 4),
                     Row(
@@ -375,22 +466,26 @@ class _CalendarScreenState extends State<CalendarScreen> with TickerProviderStat
                   ],
                 ),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    '${subscription.cost.toStringAsFixed(2)} ${subscription.currency}',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
+              Flexible(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      '${subscription.cost.toStringAsFixed(2)} ${subscription.currency}',
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
-                  ),
-                  Text(
-                    subscription.period.description,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Colors.grey[600],
+                    Text(
+                      subscription.period.description,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Colors.grey[600],
+                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               const SizedBox(width: 8),
               PopupMenuButton<String>(

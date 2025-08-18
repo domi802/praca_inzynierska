@@ -128,14 +128,17 @@ class StatsScreen extends StatelessWidget {
                 Icon(
                   Icons.account_balance_wallet,
                   color: Color(0xFF66BB6A),
-                  size: 28,
+                  size: 24,
                 ),
-                const SizedBox(width: 12),
-                const Text(
-                  'Podsumowanie kosztów',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                const SizedBox(width: 8),
+                Flexible(
+                  child: Text(
+                    'Podsumowanie kosztów',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ],
@@ -163,34 +166,13 @@ class StatsScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 16),
-            Container(
+            SizedBox(
               width: double.infinity,
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Color(0xFFFFB300).withOpacity(0.1),
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: Color(0xFFFFB300).withOpacity(0.3)),
-              ),
-              child: Column(
-                children: [
-                  const Icon(Icons.savings, color: Color(0xFFFFB300), size: 24),
-                  const SizedBox(height: 8),
-                  const Text(
-                    'Średnia koszt na subskrypcję',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xFFFFB300),
-                    ),
-                  ),
-                  Text(
-                    '${(state.totalMonthlyCost / state.subscriptions.length).toStringAsFixed(2)} PLN/miesiąc',
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFFFFB300),
-                    ),
-                  ),
-                ],
+              child: _buildCostCard(
+                'Średnia koszt na subskrypcję',
+                '${(state.totalMonthlyCost / state.subscriptions.length).toStringAsFixed(2)} PLN/miesiąc',
+                Icons.savings,
+                Color(0xFFFFB300),
               ),
             ),
           ],
@@ -209,22 +191,25 @@ class StatsScreen extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Icon(icon, color: color, size: 24),
+          Icon(icon, color: color, size: 22),
           const SizedBox(height: 8),
           Text(
             title,
             style: TextStyle(
               fontWeight: FontWeight.w500,
               color: color,
+              fontSize: 13,
             ),
+            textAlign: TextAlign.center,
           ),
           Text(
             amount,
             style: TextStyle(
-              fontSize: 18,
+              fontSize: 15,
               fontWeight: FontWeight.bold,
               color: color,
             ),
+            textAlign: TextAlign.center,
           ),
         ],
       ),
@@ -255,14 +240,17 @@ class StatsScreen extends StatelessWidget {
                 Icon(
                   Icons.category,
                   color: Color(0xFFAB47BC),
-                  size: 28,
+                  size: 24,
                 ),
-                const SizedBox(width: 12),
-                const Text(
-                  'Wydatki według kategorii',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                const SizedBox(width: 8),
+                Flexible(
+                  child: Text(
+                    'Wydatki według kategorii',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ],
@@ -283,49 +271,66 @@ class StatsScreen extends StatelessWidget {
   Widget _buildCategoryItem(String category, double amount, int count, double total) {
     final percentage = (amount / total * 100);
     
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 4),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.grey.withOpacity(0.05),
+        borderRadius: BorderRadius.circular(8),
+      ),
       child: Column(
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              // Ikona kategorii
+              Icon(
+                _getCategoryIcon(category),
+                size: 20,
+                color: _getCategoryColor(category),
+              ),
+              const SizedBox(width: 10),
+              // Nazwa kategorii
               Expanded(
-                child: Row(
-                  children: [
-                    Icon(
-                      _getCategoryIcon(category),
-                      size: 20,
-                      color: _getCategoryColor(category),
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      category,
-                      style: const TextStyle(fontWeight: FontWeight.w500),
-                    ),
-                    const SizedBox(width: 8),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                      decoration: BoxDecoration(
-                        color: Colors.grey.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Text(
-                        count.toString(),
-                        style: const TextStyle(fontSize: 12),
-                      ),
-                    ),
-                  ],
+                child: Text(
+                  category,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
                 ),
               ),
+              // Licznik
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                decoration: BoxDecoration(
+                  color: Colors.grey.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  count.toString(),
+                  style: const TextStyle(fontSize: 11),
+                ),
+              ),
+              const SizedBox(width: 12),
+              // Kwota i procenty w kolumnie
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    '${amount.toStringAsFixed(2)} PLN',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
+                  SizedBox(
+                    width: 100,
+                    child: Text(
+                      '${amount.toStringAsFixed(2)} PLN',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.end,
+                      maxLines: 1,
                     ),
                   ),
                   Text(
@@ -369,14 +374,17 @@ class StatsScreen extends StatelessWidget {
                 Icon(
                   Icons.schedule,
                   color: Color(0xFFFFB300),
-                  size: 28,
+                  size: 24,
                 ),
-                const SizedBox(width: 12),
-                const Text(
-                  'Rozkład okresów płatności',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                const SizedBox(width: 8),
+                Flexible(
+                  child: Text(
+                    'Okresy płatności',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ],
@@ -449,14 +457,17 @@ class StatsScreen extends StatelessWidget {
                 Icon(
                   Icons.trending_up,
                   color: Color(0xFFE53935),
-                  size: 28,
+                  size: 24,
                 ),
-                const SizedBox(width: 12),
-                const Text(
-                  'Najkosztowniejsze subskrypcje',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                const SizedBox(width: 8),
+                Flexible(
+                  child: Text(
+                    'Najdroższe subskrypcje',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ],
@@ -492,13 +503,20 @@ class StatsScreen extends StatelessWidget {
     else if (rank == 3) rankColor = Color(0xFFAB47BC);
     else rankColor = Color(0xFF757575);
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 4),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.grey.withOpacity(0.05),
+        borderRadius: BorderRadius.circular(8),
+      ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          // Numer
           Container(
-            width: 30,
-            height: 30,
+            width: 28,
+            height: 28,
             decoration: BoxDecoration(
               color: rankColor,
               shape: BoxShape.circle,
@@ -509,34 +527,41 @@ class StatsScreen extends StatelessWidget {
                 style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
+                  fontSize: 13,
                 ),
               ),
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: 10),
+          // Ikona
           Container(
-            width: 40,
-            height: 40,
+            width: 36,
+            height: 36,
             decoration: BoxDecoration(
               color: Color(0xFF29B6F6).withOpacity(0.1),
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(6),
             ),
             child: Icon(
               _getIconForPath(iconPath),
               color: Color(0xFF29B6F6),
+              size: 20,
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: 10),
+          // Tytuł i okres - zabierają większość miejsca
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
                   title,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 16,
+                    fontSize: 14,
                   ),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
                 ),
                 Text(
                   period,
@@ -544,15 +569,24 @@ class StatsScreen extends StatelessWidget {
                     color: Colors.grey[600],
                     fontSize: 12,
                   ),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
                 ),
               ],
             ),
           ),
-          Text(
-            cost,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
+          // Koszt - zawsze w tej samej szerokości
+          SizedBox(
+            width: 90,
+            child: Text(
+              cost,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 14,
+              ),
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.end,
+              maxLines: 1,
             ),
           ),
         ],
@@ -578,14 +612,17 @@ class StatsScreen extends StatelessWidget {
                 Icon(
                   Icons.upcoming,
                   color: Color(0xFF66BB6A),
-                  size: 28,
+                  size: 24,
                 ),
-                const SizedBox(width: 12),
-                const Text(
-                  'Nadchodzące płatności (7 dni)',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                const SizedBox(width: 8),
+                Flexible(
+                  child: Text(
+                    'Nadchodzące płatności',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ],
@@ -629,33 +666,45 @@ class StatsScreen extends StatelessWidget {
       timeColor = Color(0xFF66BB6A);
     }
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 4),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.grey.withOpacity(0.05),
+        borderRadius: BorderRadius.circular(8),
+      ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          // Ikona
           Container(
-            width: 40,
-            height: 40,
+            width: 36,
+            height: 36,
             decoration: BoxDecoration(
               color: Color(0xFF29B6F6).withOpacity(0.1),
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(6),
             ),
             child: Icon(
               _getIconForPath(subscription.iconPath),
               color: Color(0xFF29B6F6),
+              size: 20,
             ),
           ),
           const SizedBox(width: 12),
+          // Tytuł i data
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
                   subscription.title,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 16,
+                    fontSize: 14,
                   ),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
                 ),
                 Text(
                   _formatDate(subscription.nextPaymentAt),
@@ -663,32 +712,44 @@ class StatsScreen extends StatelessWidget {
                     color: Colors.grey[600],
                     fontSize: 12,
                   ),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
                 ),
               ],
             ),
           ),
+          const SizedBox(width: 8),
+          // Koszt i status
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
-                '${subscription.cost.toStringAsFixed(2)} ${subscription.currency}',
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
+              SizedBox(
+                width: 100,
+                child: Text(
+                  '${subscription.cost.toStringAsFixed(2)} ${subscription.currency}',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.end,
+                  maxLines: 1,
                 ),
               ),
+              const SizedBox(height: 4),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                 decoration: BoxDecoration(
                   color: timeColor.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(10),
                 ),
                 child: Text(
                   timeText,
                   style: TextStyle(
                     color: timeColor,
                     fontWeight: FontWeight.bold,
-                    fontSize: 12,
+                    fontSize: 11,
                   ),
                 ),
               ),
