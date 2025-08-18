@@ -35,6 +35,10 @@ class MainScaffold extends StatelessWidget {
           label: 'Kalendarz',
         ),
         BottomNavigationBarItem(
+          icon: Icon(Icons.add_circle, size: 32),
+          label: 'Dodaj',
+        ),
+        BottomNavigationBarItem(
           icon: Icon(Icons.analytics),
           label: 'Statystyki',
         ),
@@ -52,9 +56,9 @@ class MainScaffold extends StatelessWidget {
     } else if (currentPath.startsWith('/calendar')) {
       return 1; // Kalendarz
     } else if (currentPath.startsWith('/stats')) {
-      return 2; // Statystyki
+      return 3; // Statystyki (przesunięte o jeden)
     } else if (currentPath.startsWith('/settings')) {
-      return 3; // Ustawienia
+      return 4; // Ustawienia (przesunięte o jeden)
     }
     return 0; // Domyślnie subskrypcje
   }
@@ -68,9 +72,12 @@ class MainScaffold extends StatelessWidget {
         context.go('/calendar');
         break;
       case 2:
-        context.go('/stats');
+        context.go('/subscription/add');
         break;
       case 3:
+        context.go('/stats');
+        break;
+      case 4:
         context.go('/settings');
         break;
     }

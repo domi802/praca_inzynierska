@@ -103,11 +103,6 @@ class _SubscriptionsListScreenState extends State<SubscriptionsListScreen> {
           },
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => context.go('/subscription/add'),
-        child: const Icon(Icons.add),
-        tooltip: 'Dodaj subskrypcję',
-      ),
     );
   }
 
