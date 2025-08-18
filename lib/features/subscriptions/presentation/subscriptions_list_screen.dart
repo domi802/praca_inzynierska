@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../logic/subscriptions_bloc.dart';
 import '../data/subscription_model.dart';
 import '../../../core/widgets/loading_overlay.dart';
+import '../../auth/logic/auth_bloc.dart';
 
 /// Ekran listy subskrypcji - główny ekran aplikacji
 class SubscriptionsListScreen extends StatefulWidget {
@@ -29,7 +30,17 @@ class _SubscriptionsListScreenState extends State<SubscriptionsListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Moje Subskrypcje'),
+        title: BlocBuilder<AuthBloc, AuthState>(
+          builder: (context, authState) {
+            if (authState is AuthAuthenticated) {
+              return Align(
+                alignment: Alignment.centerLeft,
+                child: Text('Witaj ${authState.user.firstName}!'),
+              );
+            }
+            return const Text('Moje Subskrypcje');
+          },
+        ),
       ),
       body: BlocListener<SubscriptionsBloc, SubscriptionsState>(
         listener: (context, state) {
@@ -61,31 +72,27 @@ class _SubscriptionsListScreenState extends State<SubscriptionsListScreen> {
             }
 
             if (state is SubscriptionsRefreshing) {
-              // Zachowaj poprzednie wartości kosztów podczas odświeżania
-              final costs = _calculateCosts(state.subscriptions);
               return LoadingOverlay(
                 isLoading: true,
                 child: _buildSubscriptionsList(
                   SubscriptionsLoaded(
                     subscriptions: state.subscriptions,
-                    totalMonthlyCost: costs['monthly']!,
-                    totalYearlyCost: costs['yearly']!,
+                    totalMonthlyCost: 0.0, // Tymczasowe wartości, nie są używane
+                    totalYearlyCost: 0.0,
                   ),
                 ),
               );
             }
 
             if (state is SubscriptionsActionInProgress) {
-              // Zachowaj poprzednie wartości kosztów podczas operacji
-              final costs = _calculateCosts(state.subscriptions);
               return LoadingOverlay(
                 isLoading: true,
                 loadingText: _getActionText(state.actionType),
                 child: _buildSubscriptionsList(
                   SubscriptionsLoaded(
                     subscriptions: state.subscriptions,
-                    totalMonthlyCost: costs['monthly']!,
-                    totalYearlyCost: costs['yearly']!,
+                    totalMonthlyCost: 0.0, // Tymczasowe wartości, nie są używane
+                    totalYearlyCost: 0.0,
                   ),
                 ),
               );
@@ -109,11 +116,30 @@ class _SubscriptionsListScreenState extends State<SubscriptionsListScreen> {
       return _buildEmptyState();
     }
 
+    // Filtruj nadchodzące płatności (w ciągu 3 dni) lub przeterminowane
+    final upcomingPayments = state.subscriptions.where((subscription) {
+      final daysUntilPayment = subscription.daysUntilNextPayment;
+      return daysUntilPayment <= 3 || subscription.isOverdue;
+    }).toList();
+
     return CustomScrollView(
       slivers: [
-        // Podsumowanie kosztów
+        // Nadchodzące płatności
         SliverToBoxAdapter(
-          child: _buildCostsSummary(state),
+          child: _buildUpcomingPayments(upcomingPayments),
+        ),
+        
+        // Wszystkie subskrypcje
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 24, 16, 8),
+            child: Text(
+              'Wszystkie subskrypcje',
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
         ),
         
         // Lista subskrypcji
@@ -130,77 +156,314 @@ class _SubscriptionsListScreenState extends State<SubscriptionsListScreen> {
     );
   }
 
-  Widget _buildCostsSummary(SubscriptionsLoaded state) {
+  Widget _buildUpcomingPayments(List<Subscription> upcomingPayments) {
     return Container(
-      margin: const EdgeInsets.all(16),
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Theme.of(context).primaryColor,
-            Theme.of(context).primaryColor.withOpacity(0.8),
-          ],
-        ),
-        borderRadius: BorderRadius.circular(16),
-      ),
+      margin: const EdgeInsets.symmetric(vertical: 16),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Miesięczny koszt',
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              color: Colors.white70,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Text(
+              'Nadchodzące płatności',
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
-          const SizedBox(height: 8),
-          Text(
-            '${state.totalMonthlyCost.toStringAsFixed(2)} PLN',
-            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
+          const SizedBox(height: 12),
+          if (upcomingPayments.isEmpty)
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.green.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: Colors.green.withOpacity(0.3),
+                  width: 1,
+                ),
+              ),
+              child: Row(
                 children: [
-                  Text(
-                    'Roczny koszt',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Colors.white70,
-                    ),
+                  Icon(
+                    Icons.check_circle_outline,
+                    color: Colors.green,
+                    size: 24,
                   ),
-                  Text(
-                    '${state.totalYearlyCost.toStringAsFixed(2)} PLN',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      'Wszystkie bieżące subskrypcje są opłacone',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Colors.green[700],
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                 ],
               ),
-              Column(
-                children: [
-                  Text(
-                    'Liczba subskrypcji',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Colors.white70,
-                    ),
-                  ),
-                  Text(
-                    '${state.subscriptions.length}',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
+            )
+          else
+            SizedBox(
+              height: 130,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                itemCount: upcomingPayments.length,
+                itemBuilder: (context, index) {
+                  final subscription = upcomingPayments[index];
+                  return _buildPaymentPill(subscription);
+                },
               ),
-            ],
-          ),
+            ),
         ],
       ),
+    );
+  }
+
+  Widget _buildPaymentPill(Subscription subscription) {
+    final isOverdue = subscription.isOverdue;
+    final needsReminder = subscription.needsReminder;
+    
+    Color cardColor;
+    Color textColor;
+    Color iconColor;
+    String timeText;
+    
+    if (isOverdue) {
+      cardColor = Colors.red[50]!;
+      textColor = Colors.red[700]!;
+      iconColor = Colors.red;
+      timeText = 'Przeterminowane';
+    } else if (needsReminder) {
+      cardColor = Colors.orange[50]!;
+      textColor = Colors.orange[700]!;
+      iconColor = Colors.orange;
+      timeText = subscription.daysUntilNextPayment == 0 ? 'Dziś' : 'Jutro';
+    } else {
+      cardColor = Colors.blue[50]!;
+      textColor = Colors.blue[700]!;
+      iconColor = Colors.blue;
+      timeText = '${subscription.daysUntilNextPayment} dni';
+    }
+    
+    return GestureDetector(
+      onTap: () => _showPaymentDetails(subscription),
+      child: Container(
+        width: 170,
+        margin: const EdgeInsets.only(right: 12),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: cardColor,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: iconColor.withOpacity(0.3),
+            width: 1,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: iconColor.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Center(
+                    child: Text(
+                      subscription.title.isNotEmpty 
+                          ? subscription.title[0].toUpperCase() 
+                          : 'S',
+                      style: TextStyle(
+                        color: iconColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                ),
+                const Spacer(),
+                Text(
+                  subscription.formattedCost,
+                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                    color: textColor,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Text(
+              subscription.title,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: textColor,
+                fontWeight: FontWeight.w500,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            const SizedBox(height: 4),
+            Text(
+              timeText,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: textColor.withOpacity(0.7),
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showPaymentDetails(Subscription subscription) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) => SafeArea(
+        child: Container(
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.of(context).size.height * 0.7,
+          ),
+          padding: const EdgeInsets.all(24),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    CircleAvatar(
+                      backgroundColor: Theme.of(context).primaryColor.withOpacity(0.1),
+                      child: Text(
+                        subscription.title.isNotEmpty 
+                            ? subscription.title[0].toUpperCase() 
+                            : 'S',
+                        style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            subscription.title,
+                            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            subscription.formattedCost,
+                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                              color: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 24),
+                _buildDetailRow(
+                  Icons.schedule,
+                  'Następna płatność',
+                  subscription.isOverdue 
+                      ? 'Przeterminowane' 
+                      : subscription.daysUntilNextPayment == 0 
+                          ? 'Dziś' 
+                          : '${subscription.daysUntilNextPayment} dni',
+                ),
+                const SizedBox(height: 16),
+                _buildDetailRow(
+                  Icons.calendar_today,
+                  'Data płatności',
+                  '${subscription.nextPaymentAt.day}.${subscription.nextPaymentAt.month.toString().padLeft(2, '0')}.${subscription.nextPaymentAt.year}',
+                ),
+                const SizedBox(height: 16),
+                _buildDetailRow(
+                  Icons.repeat,
+                  'Okres płatności',
+                  subscription.period.description,
+                ),
+                const SizedBox(height: 24),
+                Row(
+                  children: [
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          context.go('/subscription/${subscription.id}');
+                        },
+                        child: const Text('Szczegóły'),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          context.read<SubscriptionsBloc>().add(
+                            SubscriptionMarkAsPaidRequested(subscription.id),
+                          );
+                        },
+                        child: const Text('Oznacz jako opłacone'),
+                      ),
+                    ),
+                  ],
+                ),
+                // Dodanie dodatkowego miejsca na dole dla bezpieczeństwa
+                SizedBox(height: MediaQuery.of(context).viewInsets.bottom > 0 ? 20 : 0),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDetailRow(IconData icon, String label, String value) {
+    return Row(
+      children: [
+        Icon(
+          icon,
+          size: 20,
+          color: Colors.grey[600],
+        ),
+        const SizedBox(width: 12),
+        Text(
+          label,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            color: Colors.grey[600],
+          ),
+        ),
+        const Spacer(),
+        Text(
+          value,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ],
     );
   }
 
@@ -425,38 +688,5 @@ class _SubscriptionsListScreenState extends State<SubscriptionsListScreen> {
       default:
         return 'Przetwarzanie...';
     }
-  }
-
-  /// Oblicza całkowite koszty miesięczne i roczne
-  Map<String, double> _calculateCosts(List<Subscription> subscriptions) {
-    double monthlyTotal = 0.0;
-    double yearlyTotal = 0.0;
-    
-    for (final subscription in subscriptions) {
-      double monthlyCost = 0.0;
-      
-      switch (subscription.period.type) {
-        case 'daily':
-          monthlyCost = subscription.cost * 30 / subscription.period.interval;
-          break;
-        case 'weekly':
-          monthlyCost = subscription.cost * 4.33 / subscription.period.interval;
-          break;
-        case 'monthly':
-          monthlyCost = subscription.cost / subscription.period.interval;
-          break;
-        case 'yearly':
-          monthlyCost = subscription.cost / (12 * subscription.period.interval);
-          break;
-      }
-      
-      monthlyTotal += monthlyCost;
-      yearlyTotal += monthlyCost * 12;
-    }
-    
-    return {
-      'monthly': monthlyTotal,
-      'yearly': yearlyTotal,
-    };
   }
 }

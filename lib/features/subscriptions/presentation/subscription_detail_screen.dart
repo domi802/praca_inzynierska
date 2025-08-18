@@ -45,6 +45,10 @@ class _SubscriptionDetailScreenState extends State<SubscriptionDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => context.go('/'),
+        ),
         title: Text(_subscription?.title ?? 'Szczegóły subskrypcji'),
         actions: [
           if (_subscription != null) ...[
