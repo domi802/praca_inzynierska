@@ -27,8 +27,8 @@ class MainScaffold extends StatelessWidget {
       onTap: (index) => _onItemTapped(context, index),
       items: const [
         BottomNavigationBarItem(
-          icon: Icon(Icons.subscriptions),
-          label: 'Subskrypcje',
+          icon: Icon(Icons.home),
+          label: 'Główna',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.calendar_month),
@@ -43,8 +43,8 @@ class MainScaffold extends StatelessWidget {
           label: 'Statystyki',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.settings),
-          label: 'Ustawienia',
+          icon: Icon(Icons.person),
+          label: 'Profil',
         ),
       ],
     );
@@ -52,15 +52,15 @@ class MainScaffold extends StatelessWidget {
 
   int _getSelectedIndex(String currentPath) {
     if (currentPath == '/' || currentPath.startsWith('/subscription')) {
-      return 0; // Subskrypcje
+      return 0; // Główna
     } else if (currentPath.startsWith('/calendar')) {
       return 1; // Kalendarz
     } else if (currentPath.startsWith('/stats')) {
       return 3; // Statystyki (przesunięte o jeden)
     } else if (currentPath.startsWith('/settings')) {
-      return 4; // Ustawienia (przesunięte o jeden)
+      return 4; // Profil (przesunięte o jeden)
     }
-    return 0; // Domyślnie subskrypcje
+    return 0; // Domyślnie główna
   }
 
   void _onItemTapped(BuildContext context, int index) {
