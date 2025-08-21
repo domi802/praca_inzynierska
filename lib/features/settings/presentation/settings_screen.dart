@@ -1,190 +1,344 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
+import '../logic/settings_cubit.dart';
 import '../../auth/logic/auth_bloc.dart';
+import '../../../l10n/app_localizations.dart';
 
-/// Ekran ustawień konta
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Ustawienia'),
+        title: Text(localizations.profile),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        elevation: 0,
       ),
       body: BlocBuilder<AuthBloc, AuthState>(
-        builder: (context, state) {
-          if (state is AuthAuthenticated) {
-            return ListView(
-              padding: const EdgeInsets.all(16),
-              children: [
-                // Sekcja profilu
-                Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Profil użytkownika',
-                          style: Theme.of(context).textTheme.titleLarge,
-                        ),
-                        const SizedBox(height: 16),
-                        ListTile(
-                          leading: CircleAvatar(
-                            child: Text(state.user.initials),
-                          ),
-                          title: Text(state.user.fullName),
-                          subtitle: Text(state.user.email),
-                          trailing: const Icon(Icons.edit),
-                          onTap: () {
-                            // TODO: Edycja profilu
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                
-                const SizedBox(height: 16),
-                
-                // Sekcja ustawień
-                Card(
-                  child: Column(
-                    children: [
-                      ListTile(
-                        leading: const Icon(Icons.notifications),
-                        title: const Text('Powiadomienia'),
-                        subtitle: const Text('Zarządzaj przypomnieniami'),
-                        trailing: const Icon(Icons.arrow_forward_ios),
-                        onTap: () {
-                          // TODO: Ustawienia powiadomień
-                        },
-                      ),
-                      const Divider(),
-                      ListTile(
-                        leading: const Icon(Icons.palette),
-                        title: const Text('Motyw'),
-                        subtitle: const Text('Jasny, ciemny lub systemowy'),
-                        trailing: const Icon(Icons.arrow_forward_ios),
-                        onTap: () {
-                          // TODO: Wybór motywu
-                        },
-                      ),
-                      const Divider(),
-                      ListTile(
-                        leading: const Icon(Icons.language),
-                        title: const Text('Język'),
-                        subtitle: const Text('Polski'),
-                        trailing: const Icon(Icons.arrow_forward_ios),
-                        onTap: () {
-                          // TODO: Wybór języka
-                        },
-                      ),
-                      const Divider(),
-                      ListTile(
-                        leading: const Icon(Icons.security),
-                        title: const Text('Bezpieczeństwo'),
-                        subtitle: const Text('Zmień hasło'),
-                        trailing: const Icon(Icons.arrow_forward_ios),
-                        onTap: () {
-                          // TODO: Zmiana hasła
-                        },
-                      ),
+        builder: (context, authState) {
+          return BlocBuilder<SettingsCubit, SettingsState>(
+            builder: (context, settingsState) {
+              return SingleChildScrollView(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Sekcja profilu użytkownika
+                    if (authState is AuthAuthenticated) ...[
+                      _buildUserProfileSection(context, authState, localizations),
+                      const SizedBox(height: 24),
                     ],
-                  ),
-                ),
-                
-                const SizedBox(height: 16),
-                
-                // Sekcja o aplikacji
-                Card(
-                  child: Column(
-                    children: [
-                      ListTile(
-                        leading: const Icon(Icons.info),
-                        title: const Text('O aplikacji'),
-                        subtitle: const Text('Wersja 1.0.0'),
-                        trailing: const Icon(Icons.arrow_forward_ios),
-                        onTap: () {
-                          // TODO: Informacje o aplikacji
-                        },
-                      ),
-                      const Divider(),
-                      ListTile(
-                        leading: const Icon(Icons.help),
-                        title: const Text('Pomoc'),
-                        subtitle: const Text('Często zadawane pytania'),
-                        trailing: const Icon(Icons.arrow_forward_ios),
-                        onTap: () {
-                          // TODO: Ekran pomocy
-                        },
-                      ),
-                      const Divider(),
-                      ListTile(
-                        leading: const Icon(Icons.feedback),
-                        title: const Text('Opinia'),
-                        subtitle: const Text('Podziel się opinią'),
-                        trailing: const Icon(Icons.arrow_forward_ios),
-                        onTap: () {
-                          // TODO: Formularz opinii
-                        },
-                      ),
+                    
+                    // Sekcja ustawień aplikacji
+                    _buildAppSettingsSection(context, settingsState, localizations),
+                    
+                    const SizedBox(height: 24),
+                    
+                    // Sekcja konta
+                    if (authState is AuthAuthenticated) ...[
+                      _buildAccountSection(context, localizations),
                     ],
-                  ),
+                  ],
                 ),
-                
-                const SizedBox(height: 24),
-                
-                // Przycisk wylogowania
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton.icon(
-                    onPressed: () => _showLogoutConfirmation(context),
-                    icon: const Icon(Icons.logout),
-                    label: const Text('Wyloguj się'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                    ),
-                  ),
-                ),
-                
-                const SizedBox(height: 16),
-              ],
-            );
-          }
-          
-          return const Center(
-            child: CircularProgressIndicator(),
+              );
+            },
           );
         },
       ),
     );
   }
 
-  void _showLogoutConfirmation(BuildContext context) {
+  Widget _buildUserProfileSection(BuildContext context, AuthAuthenticated authState, AppLocalizations localizations) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              localizations.userProfile,
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 16),
+            
+            // Avatar i podstawowe dane
+            Row(
+              children: [
+                CircleAvatar(
+                  radius: 30,
+                  backgroundColor: Theme.of(context).primaryColor,
+                  child: Text(
+                    authState.user.initials,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${authState.user.firstName} ${authState.user.lastName}',
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        authState.user.email,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {
+                    context.go('/profile/edit');
+                  },
+                  icon: const Icon(Icons.edit),
+                  tooltip: localizations.editProfile,
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAppSettingsSection(BuildContext context, SettingsState settingsState, AppLocalizations localizations) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              localizations.appSettings,
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 16),
+            
+            // Wybór języka
+            ListTile(
+              leading: const Icon(Icons.language),
+              title: Text(localizations.language),
+              subtitle: Text(
+                settingsState.locale.languageCode == 'pl' ? 'Polski' : 'English',
+              ),
+              trailing: const Icon(Icons.arrow_forward_ios),
+              onTap: () {
+                _showLanguageDialog(context, settingsState, localizations);
+              },
+            ),
+            
+            const Divider(),
+            
+            // Wybór motywu
+            ListTile(
+              leading: const Icon(Icons.brightness_6),
+              title: Text(localizations.theme),
+              subtitle: Text(
+                _getThemeDisplayName(settingsState.themeMode, localizations),
+              ),
+              trailing: const Icon(Icons.arrow_forward_ios),
+              onTap: () {
+                _showThemeDialog(context, settingsState, localizations);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAccountSection(BuildContext context, AppLocalizations localizations) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              localizations.account,
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 16),
+            
+            // Zmiana hasła
+            ListTile(
+              leading: const Icon(Icons.lock),
+              title: Text(localizations.changePassword),
+              trailing: const Icon(Icons.arrow_forward_ios),
+              onTap: () {
+                context.go('/profile/change-password');
+              },
+            ),
+            
+            const Divider(),
+            
+            // Wylogowanie
+            ListTile(
+              leading: const Icon(Icons.logout, color: Colors.red),
+              title: Text(
+                localizations.logout,
+                style: const TextStyle(color: Colors.red),
+              ),
+              onTap: () {
+                _showLogoutDialog(context, localizations);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  String _getThemeDisplayName(ThemeMode themeMode, AppLocalizations localizations) {
+    switch (themeMode) {
+      case ThemeMode.light:
+        return localizations.lightTheme;
+      case ThemeMode.dark:
+        return localizations.darkTheme;
+      case ThemeMode.system:
+        return localizations.systemTheme;
+    }
+  }
+
+  void _showLanguageDialog(BuildContext context, SettingsState settingsState, AppLocalizations localizations) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Wylogowanie'),
-        content: const Text('Czy na pewno chcesz się wylogować?'),
+      builder: (dialogContext) => AlertDialog(
+        title: Text(localizations.selectLanguage),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            RadioListTile<String>(
+              title: const Text('Polski'),
+              value: 'pl',
+              groupValue: settingsState.locale.languageCode,
+              onChanged: (value) {
+                if (value != null) {
+                  context.read<SettingsCubit>().changeLocale(Locale(value));
+                  Navigator.of(dialogContext).pop();
+                }
+              },
+            ),
+            RadioListTile<String>(
+              title: const Text('English'),
+              value: 'en',
+              groupValue: settingsState.locale.languageCode,
+              onChanged: (value) {
+                if (value != null) {
+                  context.read<SettingsCubit>().changeLocale(Locale(value));
+                  Navigator.of(dialogContext).pop();
+                }
+              },
+            ),
+          ],
+        ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Anuluj'),
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: Text(localizations.cancel),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showThemeDialog(BuildContext context, SettingsState settingsState, AppLocalizations localizations) {
+    showDialog(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(localizations.selectTheme),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            RadioListTile<ThemeMode>(
+              title: Text(localizations.lightTheme),
+              value: ThemeMode.light,
+              groupValue: settingsState.themeMode,
+              onChanged: (value) {
+                if (value != null) {
+                  context.read<SettingsCubit>().changeThemeMode(value);
+                  Navigator.of(dialogContext).pop();
+                }
+              },
+            ),
+            RadioListTile<ThemeMode>(
+              title: Text(localizations.darkTheme),
+              value: ThemeMode.dark,
+              groupValue: settingsState.themeMode,
+              onChanged: (value) {
+                if (value != null) {
+                  context.read<SettingsCubit>().changeThemeMode(value);
+                  Navigator.of(dialogContext).pop();
+                }
+              },
+            ),
+            RadioListTile<ThemeMode>(
+              title: Text(localizations.systemTheme),
+              value: ThemeMode.system,
+              groupValue: settingsState.themeMode,
+              onChanged: (value) {
+                if (value != null) {
+                  context.read<SettingsCubit>().changeThemeMode(value);
+                  Navigator.of(dialogContext).pop();
+                }
+              },
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: Text(localizations.cancel),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showLogoutDialog(BuildContext context, AppLocalizations localizations) {
+    showDialog(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(localizations.logout),
+        content: Text(localizations.confirmLogout),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: Text(localizations.cancel),
           ),
           ElevatedButton(
             onPressed: () {
-              Navigator.of(context).pop();
               context.read<AuthBloc>().add(AuthLogoutRequested());
+              Navigator.of(dialogContext).pop();
+              context.go('/login');
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.red,
+              foregroundColor: Colors.white,
             ),
-            child: const Text('Wyloguj'),
+            child: Text(localizations.logout),
           ),
         ],
       ),

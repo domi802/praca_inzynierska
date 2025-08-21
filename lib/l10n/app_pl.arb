@@ -1,0 +1,415 @@
+{
+  "@@locale": "pl",
+  "appTitle": "Menedżer Subskrypcji",
+  
+  "login": "Zaloguj się",
+  "register": "Zarejestruj się",
+  "logout": "Wyloguj się",
+  "loginToAccount": "Zaloguj się do swojego konta",
+  "registerNewAccount": "Utwórz nowe konto",
+  "emailAddress": "Adres email",
+  "enterEmail": "Wprowadź swój email",
+  "enterPassword": "Wprowadź swoje hasło",
+  "pleaseEnterEmail": "Podaj adres email",
+  "pleaseEnterPassword": "Podaj hasło",
+  "pleaseEnterValidEmail": "Podaj prawidłowy adres email",
+  "passwordTooShort": "Hasło musi mieć co najmniej 6 znaków",
+  
+  "resetPassword": "Reset hasła",
+  "resetPasswordInstruction": "Podaj adres email, na który wyślemy link do resetowania hasła.",
+  "passwordResetSent": "Link do resetowania hasła został wysłany",
+  "sendResetLink": "Wyślij link",
+  
+  "userProfile": "Profil użytkownika",
+  "appSettings": "Ustawienia aplikacji", 
+  "account": "Konto",
+  "selectLanguage": "Wybierz język",
+  "selectTheme": "Wybierz motyw",
+  
+  "error": "Błąd",
+  "tryAgain": "Spróbuj ponownie",
+  "noDataToDisplay": "Brak danych do wyświetlenia",
+  
+  "paymentCalendar": "Kalendarz płatności",
+  "thisWeek": "Ten tydzień", 
+  "thisMonth": "Ten miesiąc",
+  "details": "Szczegóły",
+  "subscriptionMarkedPaid": "Subskrypcja została oznaczona jako opłacona",
+  
+  "todaySummary": "Podsumowanie dzisiejsze",
+  "weeklySummary": "Podsumowanie tygodniowe", 
+  "monthlySummary": "Podsumowanie miesięczne",
+  "paymentCount": "Liczba płatności",
+  "totalCost": "Łączny koszt",
+  "paymentsToday": "Płatności dzisiaj",
+  "paymentsThisWeek": "Płatności w tym tygodniu",
+  "paymentsThisMonth": "Płatności w tym miesiącu",
+  "noPaymentsToday": "Brak płatności na dzisiaj",
+  "noPaymentsThisWeek": "Brak płatności w tym tygodniu",
+  "noPaymentsThisMonth": "Brak płatności w tym miesiącu",
+  
+  "welcomeUser": "Welcome {userName}!",
+  "@welcomeUser": {
+    "placeholders": {
+      "userName": {
+        "type": "String"
+      }
+    }
+  },
+  "mySubscriptions": "Moje Subskrypcje",
+  
+  "allSubscriptions": "Wszystkie subskrypcje",
+  "dueTomorrow": "Płatność jutro",
+  "dueToday": "Płatność dzisiaj",
+  "period": "Okres",
+  "paymentDates": "Daty płatności",
+  "lastPayment": "Ostatnia płatność",
+  "payToday": "Płatność dzisiaj",
+  "additionalInfo": "Dodatkowe informacje",
+  "reminder": "Przypomnienie",
+  "createdDate": "Data utworzenia",
+  "enabled": "Włączone",
+  "daysBefore": "dni przed",
+  "daysBeforeParam": "{days} dni przed",
+  "@daysBeforeParam": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "subscriptionIcon": "Ikona subskrypcji",
+  "costPLN": "Koszt (PLN)",
+  "type": "Typ",
+  "howOften": "Co ile",
+  
+  "costSummary": "Podsumowanie kosztów",
+  "averageCostPerSubscription": "Średnia koszt na subskrypcję",
+  "perMonth": "/miesiąc",
+    "expensesByCategory": "Wydatki wg kategorii",
+  "totalCostWithCurrency": "Łączny koszt: {cost} PLN",
+  "@totalCostWithCurrency": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "email": "Email",
+  "password": "Hasło",
+  "firstName": "Imię",
+  "lastName": "Nazwisko",
+  "confirmPassword": "Potwierdź hasło",
+  "forgotPassword": "Zapomniałeś hasła?",
+  "dontHaveAccount": "Nie masz konta?",
+  "alreadyHaveAccount": "Masz już konto?",
+  "createAccount": "Utwórz konto",
+  "signInWithGoogle": "Zaloguj się przez Google",
+  "or": "lub",
+  
+  "main": "Główna",
+  "calendar": "Kalendarz",
+  "add": "Dodaj",
+  "stats": "Statystyki",
+  "profile": "Profil",
+  
+  "subscriptions": "Subskrypcje",
+  "addSubscription": "Dodaj subskrypcję",
+  "editSubscription": "Edytuj subskrypcję",
+  "subscriptionDetails": "Szczegóły subskrypcji",
+  "subscriptionName": "Nazwa subskrypcji",
+  "category": "Kategoria",
+  "cost": "Koszt",
+  "currency": "Waluta",
+  "nextPayment": "Następna płatność",
+  "paymentPeriod": "Okres płatności",
+  "notes": "Notatki",
+  "icon": "Ikona",
+  "save": "Zapisz",
+  "cancel": "Anuluj",
+  "delete": "Usuń",
+  "edit": "Edytuj",
+  
+  "daily": "codziennie",
+  "weekly": "tygodniowo",
+  "monthly": "miesięcznie",
+  "yearly": "rocznie",
+  
+  "entertainment": "Rozrywka",
+  "music": "Muzyka",
+  "video": "Video",
+  "gaming": "Gry",
+  "productivity": "Produktywność",
+  "education": "Edukacja",
+  "fitness": "Fitness",
+  "health": "Zdrowie",
+  "shopping": "Zakupy",
+  "transport": "Transport",
+  "other": "Inne",
+  
+  "markAsPaid": "Oznacz jako opłacone",
+  "deleteSubscription": "Usuń subskrypcję",
+  "upcomingPayments": "Nadchodzące płatności",
+  "overduePayments": "Zaległe płatności",
+  "noSubscriptions": "Brak subskrypcji",
+  "noSubscriptionsDescription": "Dodaj swoją pierwszą subskrypcję, aby zacząć zarządzać wydatkami",
+  
+  "today": "Dziś",
+  "tomorrow": "Jutro",
+  "daysLeft": "Zostało {days} dni",
+  "overdue": "Przeterminowane",
+  
+  "totalMonthly": "Łącznie miesięcznie",
+  "totalYearly": "Łącznie rocznie",
+  "averagePerSubscription": "Średnia na subskrypcję",
+  "mostExpensive": "Najdroższe",
+  "cheapest": "Najtańsze",
+  
+  "settings": "Ustawienia",
+  "editProfile": "Edytuj profil",
+  "notifications": "Powiadomienia",
+  "theme": "Motyw",
+  "language": "Język",
+  "security": "Bezpieczeństwo",
+  "changePassword": "Zmień hasło",
+  
+  "lightTheme": "Jasny",
+  "darkTheme": "Ciemny",
+  "systemTheme": "Systemowy",
+  
+  "polish": "Polski",
+  "english": "Angielski",
+  
+  "currentPassword": "Obecne hasło",
+  "newPassword": "Nowe hasło",
+  "confirmNewPassword": "Potwierdź nowe hasło",
+  "enterCurrentPassword": "Wprowadź obecne hasło",
+  "enterNewPassword": "Wprowadź nowe hasło",
+  "passwordRequirements": "Nowe hasło musi mieć co najmniej 6 znaków i zawierać litery oraz cyfry.",
+  "passwordsDoNotMatch": "Hasła nie są identyczne",
+  
+  "enableNotifications": "Włącz powiadomienia",
+  "reminderDays": "Dni przypomnienia wcześniej",
+  "notificationTime": "Czas powiadomienia",
+  
+  "hello": "Witaj {name}!",
+  
+  "errorGeneral": "Wystąpił błąd. Spróbuj ponownie.",
+  "errorNetwork": "Błąd sieci. Sprawdź połączenie.",
+  "errorAuth": "Błąd uwierzytelnienia. Zaloguj się ponownie.",
+  "errorInvalidEmail": "Nieprawidłowy adres email",
+  "errorWeakPassword": "Hasło jest za słabe",
+  "errorEmailAlreadyInUse": "Email jest już używany",
+  "errorUserNotFound": "Użytkownik nie znaleziony",
+  "errorWrongPassword": "Nieprawidłowe hasło",
+  "errorPasswordMismatch": "Hasła nie pasują do siebie",
+  
+  "success": "Sukces",
+  "subscriptionAdded": "Subskrypcja została dodana",
+  "subscriptionUpdated": "Subskrypcja została zaktualizowana",
+  "subscriptionDeleted": "Subskrypcja została usunięta",
+  "profileUpdated": "Profil został zaktualizowany",
+  "passwordChanged": "Hasło zostało zmienione",
+  
+  "confirmDelete": "Czy na pewno chcesz usunąć tę subskrypcję?",
+  "confirmLogout": "Czy na pewno chcesz się wylogować?",
+  "yes": "Tak",
+  "no": "Nie",
+  
+  "enterSubscriptionName": "Wprowadź nazwę subskrypcji",
+  "enterCost": "Wprowadź koszt",
+  "selectCategory": "Wybierz kategorię",
+  "selectIcon": "Wybierz ikonę",
+  "enterNotes": "Wprowadź notatki (opcjonalnie)",
+  "selectDate": "Wybierz datę",
+  
+  "enterFirstName": "Wprowadź imię",
+  "enterLastName": "Wprowadź nazwisko",
+  "pleaseEnterFirstName": "Podaj swoje imię",
+  "pleaseEnterLastName": "Podaj swoje nazwisko",
+  "emailCannotBeChanged": "Email nie może być zmieniony",
+  "accountEmail": "Email konta",
+  "saveChanges": "Zapisz zmiany",
+  
+  "validation_required": "To pole jest wymagane",
+  "validation_email": "Wprowadź prawidłowy adres email",
+  "validation_password": "Hasło musi mieć co najmniej 6 znaków",
+  "validation_passwordMatch": "Hasła muszą być identyczne",
+  "validation_cost": "Wprowadź prawidłowy koszt",
+  "validation_name": "Wprowadź prawidłowe imię/nazwisko",
+
+  "paymentDate": "Płatność: {date}",
+  "@paymentDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionMarkedAsPaid": "Subskrypcja została oznaczona jako opłacona",
+
+  "allCurrentSubscriptionsPaid": "Wszystkie bieżące subskrypcje są opłacone",
+  "paymentTomorrow": "Płatność jutro",
+  "daysUntilPayment": "{days} dni do płatności",
+  "@daysUntilPayment": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "addFirstSubscription": "Dodaj swoją pierwszą subskrypcję, aby zacząć zarządzać wydatkami",
+  "confirmDeleteSubscription": "Czy na pewno chcesz usunąć subskrypcję \"{title}\"? Tej operacji nie można cofnąć.",
+  "@confirmDeleteSubscription": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "markingAsPaid": "Oznaczanie jako opłacone...",
+
+  "enterValidCost": "Podaj prawidłowy koszt",
+  "updateSubscription": "Zaktualizuj subskrypcję",
+  "nextPaymentDate": "Data następnej płatności",
+  "paymentDateLabel": "Data płatności",
+  "paymentOverdue": "Płatność przeterminowana ({days} dni)",
+  "@paymentOverdue": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "paymentInDays": "Płatność za {days} dni",
+  "@paymentInDays": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "authenticationError": "Błąd uwierzytelnienia",
+  "defaultIcon": "Domyślna",
+
+  "subscriptionNotFound": "Subskrypcja nie została znaleziona",
+  "disabled": "Wyłączone",
+
+  "createNewAccount": "Utwórz nowe konto",
+  "fillFormToCreateAccount": "Wypełnij formularz aby założyć konto",
+  "provideFirstName": "Podaj imię",
+  "firstNameMinLength": "Imię musi mieć co najmniej 2 znaki",
+  "lastNameMinLength": "Nazwisko musi mieć co najmniej 2 znaki",
+  "provideValidEmail": "Podaj prawidłowy adres email",
+  "providePassword": "Podaj hasło",
+  "passwordMinLength": "Hasło musi mieć co najmniej 6 znaków",
+  "enterPasswordAgain": "Wprowadź hasło ponownie",
+  "repeatPasswordField": "Powtórz hasło",
+  "passwordsNotMatch": "Hasła nie są identyczne",
+  "alreadyHaveAccountQuestion": "Masz już konto? ",
+
+  "every3Days": "co 3 dni",
+  "biweekly": "co 2 tygodnie",
+  "quarterly": "co kwartał",
+
+  "paymentHistory": "Daty płatności",
+  "lastPaymentLabel": "Ostatnia płatność",
+  "nextPaymentLabel": "Następna płatność",
+  "additionalInformation": "Dodatkowe informacje",
+  "creationDate": "Data utworzenia",
+  "markAsPaidButton": "Oznacz jako opłacona",
+  "deleteButton": "Usuń",
+
+  "periodDaily": "codziennie",
+  "periodWeekly": "tygodniowo", 
+  "periodMonthly": "miesięcznie",
+  "periodYearly": "rocznie",
+  "period3Days": "co 3 dni",
+  "periodBiweekly": "co 2 tygodnie",
+  "periodQuarterly": "co kwartał",
+
+  "addSubscriptionsToSeeStats": "Dodaj subskrypcje, aby zobaczyć statystyki",
+  "paymentPeriods": "Okresy płatności",
+  "mostExpensiveSubscriptions": "Najdroższe subskrypcje",
+  "noPaymentsNext7Days": "Brak płatności w ciągu najbliższych 7 dni",
+
+  "subscriptionTitle": "Nazwa subskrypcji",
+  "subscriptionCost": "Koszt subskrypcji",
+  "reminderDaysBefore": "Przypomnienie (dni przed)",
+
+  "editMenuItem": "Edytuj",
+  "viewMenuItem": "Szczegóły", 
+  "markAsPaidMenuItem": "Oznacz jako opłacone",
+  "deleteMenuItem": "Usuń",
+  "everyXDays": "Co {days} dni",
+  "@everyXDays": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "everyXWeeks": "Co {weeks} tygodni",
+  "@everyXWeeks": {
+    "placeholders": {
+      "weeks": {
+        "type": "int"
+      }
+    }
+  },
+  "everyXMonths": "Co {months} miesiąc(e)",
+  "@everyXMonths": {
+    "placeholders": {
+      "months": {
+        "type": "int"
+      }
+    }
+  },
+  "everyXYears": "Co {years} lat(a)",
+  "@everyXYears": {
+    "placeholders": {
+      "years": {
+        "type": "int"
+      }
+    }
+  },
+  "categoryBreakdown": "Podział według kategorii",
+  "totalAmount": "Całkowita kwota",
+  "averagePerMonth": "Średnia na miesiąc",
+  "categoryEntertainment": "Rozrywka",
+  "categoryMusic": "Muzyka", 
+  "categoryVideo": "Video",
+  "categoryGames": "Gry",
+  "categoryProductivity": "Produktywność",
+  "categoryEducation": "Edukacja",
+  "categoryHealth": "Zdrowie",
+  "categorySport": "Sport",
+  "categoryFinance": "Finanse",
+  "categoryOther": "Inne",
+  "periodType": "Typ",
+  "periodInterval": "Co ile",
+  "paymentToday": "Płatność dziś",
+  "paidThisMonth": "Opłacone w tym miesiącu",
+  "daysToPayment": "{days} dni do płatności",
+  "@daysToPayment": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "daysShort": "{days} dni",
+  "@daysShort": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "monthlyLabel": "Miesięcznie",
+  "yearlyLabel": "Rocznie",
+  "subscriptionNotFoundForEdit": "Nie znaleziono subskrypcji do edycji",
+  "subscriptionNameHint": "np. Netflix, Spotify...",
+  "minimumOne": "Min. 1",
+  "notesHint": "Dodatkowe informacje..."
+}

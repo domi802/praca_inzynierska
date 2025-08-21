@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../../l10n/app_localizations.dart';
 
 /// Główny scaffold aplikacji z dolną nawigacją
 class MainScaffold extends StatelessWidget {
@@ -25,26 +26,26 @@ class MainScaffold extends StatelessWidget {
       type: BottomNavigationBarType.fixed,
       currentIndex: _getSelectedIndex(currentPath),
       onTap: (index) => _onItemTapped(context, index),
-      items: const [
+      items: [
         BottomNavigationBarItem(
           icon: Icon(Icons.home),
-          label: 'Główna',
+          label: AppLocalizations.of(context)!.main,
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.calendar_month),
-          label: 'Kalendarz',
+          label: AppLocalizations.of(context)!.calendar,
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.add_circle, size: 32),
-          label: 'Dodaj',
+          label: AppLocalizations.of(context)!.add,
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.analytics),
-          label: 'Statystyki',
+          label: AppLocalizations.of(context)!.stats,
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person),
-          label: 'Profil',
+          label: AppLocalizations.of(context)!.profile,
         ),
       ],
     );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../data/subscription_model.dart';
 import '../logic/subscriptions_bloc.dart';
 import '../../../core/services/logger_service.dart';
@@ -41,6 +42,35 @@ class _SubscriptionDetailScreenState extends State<SubscriptionDetailScreen> {
     }
   }
 
+  String _getLocalizedCategoryName(String polishCategory) {
+    final localizations = AppLocalizations.of(context)!;
+    
+    switch (polishCategory) {
+      case 'Rozrywka':
+        return localizations.categoryEntertainment;
+      case 'Muzyka':
+        return localizations.categoryMusic;
+      case 'Video':
+        return localizations.categoryVideo;
+      case 'Gry':
+        return localizations.categoryGames;
+      case 'Produktywność':
+        return localizations.categoryProductivity;
+      case 'Edukacja':
+        return localizations.categoryEducation;
+      case 'Sport':
+        return localizations.categorySport;
+      case 'Zdrowie':
+        return localizations.categoryHealth;
+      case 'Finanse':
+        return localizations.categoryFinance;
+      case 'Inne':
+        return localizations.categoryOther;
+      default:
+        return polishCategory; // fallback to original
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +79,7 @@ class _SubscriptionDetailScreenState extends State<SubscriptionDetailScreen> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.go('/'),
         ),
-        title: Text(_subscription?.title ?? 'Szczegóły subskrypcji'),
+        title: Text(_subscription?.title ?? AppLocalizations.of(context)!.subscriptionDetails),
         actions: [
           if (_subscription != null) ...[
             IconButton(
@@ -70,23 +100,23 @@ class _SubscriptionDetailScreenState extends State<SubscriptionDetailScreen> {
                 }
               },
               itemBuilder: (context) => [
-                const PopupMenuItem(
+                PopupMenuItem(
                   value: 'mark_paid',
                   child: Row(
                     children: [
                       Icon(Icons.payment),
                       SizedBox(width: 8),
-                      Text('Oznacz jako opłacona'),
+                      Text(AppLocalizations.of(context)!.markAsPaidMenuItem),
                     ],
                   ),
                 ),
-                const PopupMenuItem(
+                PopupMenuItem(
                   value: 'delete',
                   child: Row(
                     children: [
                       Icon(Icons.delete, color: Colors.red),
                       SizedBox(width: 8),
-                      Text('Usuń subskrypcję', style: TextStyle(color: Colors.red)),
+                      Text(AppLocalizations.of(context)!.deleteSubscription, style: TextStyle(color: Colors.red)),
                     ],
                   ),
                 ),
@@ -182,7 +212,7 @@ class _SubscriptionDetailScreenState extends State<SubscriptionDetailScreen> {
                               const SizedBox(height: 4),
                               Chip(
                                 label: Text(
-                                  subscription.category!,
+                                  _getLocalizedCategoryName(subscription.category!),
                                   style: const TextStyle(fontSize: 12),
                                 ),
                                 materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -198,13 +228,13 @@ class _SubscriptionDetailScreenState extends State<SubscriptionDetailScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       _buildInfoColumn(
-                        'Koszt',
+                        AppLocalizations.of(context)!.cost,
                         '${subscription.cost.toStringAsFixed(2)} ${subscription.currency}',
                         Icons.attach_money,
                       ),
                       _buildInfoColumn(
-                        'Okres',
-                        subscription.period.description,
+                        AppLocalizations.of(context)!.period,
+                        subscription.period.getLocalizedDescription(AppLocalizations.of(context)!),
                         Icons.schedule,
                       ),
                     ],
@@ -224,21 +254,21 @@ class _SubscriptionDetailScreenState extends State<SubscriptionDetailScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Daty płatności',
+                    AppLocalizations.of(context)!.paymentDates,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   const SizedBox(height: 16),
                   _buildDateInfo(
-                    'Ostatnia płatność',
+                    AppLocalizations.of(context)!.lastPayment,
                     subscription.lastPaidAt,
                     Icons.check_circle,
                     Colors.green,
                   ),
                   const SizedBox(height: 12),
                   _buildDateInfo(
-                    'Następna płatność',
+                    AppLocalizations.of(context)!.nextPayment,
                     subscription.nextPaymentAt,
                     Icons.schedule,
                     _getNextPaymentColor(subscription.nextPaymentAt),
@@ -260,24 +290,24 @@ class _SubscriptionDetailScreenState extends State<SubscriptionDetailScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Dodatkowe informacje',
+                    AppLocalizations.of(context)!.additionalInfo,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   const SizedBox(height: 16),
                   _buildInfoRow(
-                    'Powiadomienia',
-                    subscription.notify ? 'Włączone' : 'Wyłączone',
+                    AppLocalizations.of(context)!.notifications,
+                    subscription.notify ? AppLocalizations.of(context)!.enabled : AppLocalizations.of(context)!.disabled,
                     subscription.notify ? Icons.notifications_active : Icons.notifications_off,
                   ),
                   _buildInfoRow(
-                    'Przypomnienie',
-                    '${subscription.reminderDays} dni przed',
+                    AppLocalizations.of(context)!.reminder,
+                    AppLocalizations.of(context)!.daysBeforeParam(subscription.reminderDays),
                     Icons.alarm,
                   ),
                   _buildInfoRow(
-                    'Data utworzenia',
+                    AppLocalizations.of(context)!.createdDate,
                     _formatDate(subscription.createdAt),
                     Icons.calendar_today,
                   ),
@@ -311,7 +341,7 @@ class _SubscriptionDetailScreenState extends State<SubscriptionDetailScreen> {
                 child: ElevatedButton.icon(
                   onPressed: _markAsPaid,
                   icon: const Icon(Icons.payment),
-                  label: const Text('Oznacz jako opłacona'),
+                  label: Text(AppLocalizations.of(context)!.markAsPaidButton),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.green,
                     foregroundColor: Colors.white,
@@ -322,7 +352,7 @@ class _SubscriptionDetailScreenState extends State<SubscriptionDetailScreen> {
               ElevatedButton.icon(
                 onPressed: _showDeleteDialog,
                 icon: const Icon(Icons.delete),
-                label: const Text('Usuń'),
+                label: Text(AppLocalizations.of(context)!.deleteButton),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.red,
                   foregroundColor: Colors.white,
@@ -417,16 +447,16 @@ class _SubscriptionDetailScreenState extends State<SubscriptionDetailScreen> {
     Color color;
     
     if (difference < 0) {
-      text = 'Płatność przeterminowana (${(-difference)} dni)';
+      text = AppLocalizations.of(context)!.paymentOverdue(-difference);
       color = Color(0xFFE53935);
     } else if (difference == 0) {
-      text = 'Płatność dzisiaj';
+      text = AppLocalizations.of(context)!.paymentToday;
       color = Color(0xFFFFB300);
     } else if (difference <= 3) {
-      text = 'Płatność za $difference dni';
+      text = AppLocalizations.of(context)!.paymentInDays(difference);
       color = Color(0xFFFFB300);
     } else {
-      text = 'Płatność za $difference dni';
+      text = AppLocalizations.of(context)!.paymentInDays(difference);
       color = Color(0xFF66BB6A);
     }
     
@@ -495,12 +525,12 @@ class _SubscriptionDetailScreenState extends State<SubscriptionDetailScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Usuń subskrypcję'),
-        content: Text('Czy na pewno chcesz usunąć subskrypcję "${_subscription?.title}"?'),
+        title: Text(AppLocalizations.of(context)!.deleteSubscription),
+        content: Text(AppLocalizations.of(context)!.confirmDeleteSubscription(_subscription?.title ?? '')),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Anuluj'),
+            child: Text(AppLocalizations.of(context)!.cancel),
           ),
           ElevatedButton(
             onPressed: () {
@@ -510,8 +540,8 @@ class _SubscriptionDetailScreenState extends State<SubscriptionDetailScreen> {
               );
               context.pop(); // Wróć do listy
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Subskrypcja została usunięta'),
+                SnackBar(
+                  content: Text(AppLocalizations.of(context)!.subscriptionDeleted),
                   backgroundColor: Colors.green,
                 ),
               );
@@ -520,7 +550,7 @@ class _SubscriptionDetailScreenState extends State<SubscriptionDetailScreen> {
               backgroundColor: Colors.red,
               foregroundColor: Colors.white,
             ),
-            child: const Text('Usuń'),
+            child: Text(AppLocalizations.of(context)!.deleteButton),
           ),
         ],
       ),

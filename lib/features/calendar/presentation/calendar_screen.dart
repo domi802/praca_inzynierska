@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../subscriptions/data/subscription_model.dart';
 import '../../subscriptions/logic/subscriptions_bloc.dart';
+import '../../../l10n/app_localizations.dart';
 
 /// Ekran kalendarza z terminami płatności
 class CalendarScreen extends StatefulWidget {
@@ -41,15 +42,16 @@ class _CalendarScreenState extends State<CalendarScreen> with TickerProviderStat
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Kalendarz płatności'),
+        title: Text(localizations.paymentCalendar),
         bottom: TabBar(
           controller: _tabController,
-          tabs: const [
-            Tab(text: 'Dzisiaj', icon: Icon(Icons.today)),
-            Tab(text: 'Ten tydzień', icon: Icon(Icons.date_range)),
-            Tab(text: 'Ten miesiąc', icon: Icon(Icons.calendar_month)),
+          tabs: [
+            Tab(text: localizations.today, icon: const Icon(Icons.today)),
+            Tab(text: localizations.thisWeek, icon: const Icon(Icons.date_range)),
+            Tab(text: localizations.thisMonth, icon: const Icon(Icons.calendar_month)),
           ],
         ),
       ),
@@ -66,13 +68,13 @@ class _CalendarScreenState extends State<CalendarScreen> with TickerProviderStat
                 children: [
                   const Icon(Icons.error, size: 64, color: Colors.red),
                   const SizedBox(height: 16),
-                  Text('Błąd: ${state.message}'),
+                  Text('${localizations.error}: ${state.message}'),
                   const SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: () {
                       context.read<SubscriptionsBloc>().add(SubscriptionsLoadRequested());
                     },
-                    child: const Text('Spróbuj ponownie'),
+                    child: Text(localizations.tryAgain),
                   ),
                 ],
               ),
@@ -93,8 +95,8 @@ class _CalendarScreenState extends State<CalendarScreen> with TickerProviderStat
           }
           
           if (state is! SubscriptionsLoaded) {
-            return const Center(
-              child: Text('Brak danych do wyświetlenia'),
+            return Center(
+              child: Text(localizations.noDataToDisplay),
             );
           }
 
@@ -124,7 +126,7 @@ class _CalendarScreenState extends State<CalendarScreen> with TickerProviderStat
             child: Column(
               children: [
                 Text(
-                  'Podsumowanie dzisiejsze',
+                  AppLocalizations.of(context)!.todaySummary,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -134,12 +136,12 @@ class _CalendarScreenState extends State<CalendarScreen> with TickerProviderStat
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     _buildSummaryItem(
-                      'Liczba płatności',
+                      AppLocalizations.of(context)!.paymentCount,
                       todaySubscriptions.length.toString(),
                       Icons.payment,
                     ),
                     _buildSummaryItem(
-                      'Łączny koszt',
+                      AppLocalizations.of(context)!.totalCost,
                       '${_calculateTotalCost(todaySubscriptions).toStringAsFixed(2)} PLN',
                       Icons.attach_money,
                     ),
@@ -152,10 +154,10 @@ class _CalendarScreenState extends State<CalendarScreen> with TickerProviderStat
         // Lista płatności
         Expanded(
           child: _buildSubscriptionsList(
-            'Płatności dzisiaj',
+            AppLocalizations.of(context)!.paymentsToday,
             todaySubscriptions,
             Icons.today,
-            emptyMessage: 'Brak płatności na dzisiaj',
+            emptyMessage: AppLocalizations.of(context)!.noPaymentsToday,
             showTotal: false,
           ),
         ),
@@ -176,7 +178,7 @@ class _CalendarScreenState extends State<CalendarScreen> with TickerProviderStat
             child: Column(
               children: [
                 Text(
-                  'Podsumowanie tygodniowe',
+                  AppLocalizations.of(context)!.weeklySummary,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -186,12 +188,12 @@ class _CalendarScreenState extends State<CalendarScreen> with TickerProviderStat
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     _buildSummaryItem(
-                      'Liczba płatności',
+                      AppLocalizations.of(context)!.paymentCount,
                       weekSubscriptions.length.toString(),
                       Icons.payment,
                     ),
                     _buildSummaryItem(
-                      'Łączny koszt',
+                      AppLocalizations.of(context)!.totalCost,
                       '${_calculateTotalCost(weekSubscriptions).toStringAsFixed(2)} PLN',
                       Icons.attach_money,
                     ),
@@ -204,10 +206,10 @@ class _CalendarScreenState extends State<CalendarScreen> with TickerProviderStat
         // Lista płatności
         Expanded(
           child: _buildSubscriptionsList(
-            'Płatności w tym tygodniu',
+            AppLocalizations.of(context)!.paymentsThisWeek,
             weekSubscriptions,
             Icons.date_range,
-            emptyMessage: 'Brak płatności w tym tygodniu',
+            emptyMessage: AppLocalizations.of(context)!.noPaymentsThisWeek,
             showTotal: false,
           ),
         ),
@@ -228,7 +230,7 @@ class _CalendarScreenState extends State<CalendarScreen> with TickerProviderStat
             child: Column(
               children: [
                 Text(
-                  'Podsumowanie miesięczne',
+                  AppLocalizations.of(context)!.monthlySummary,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -238,12 +240,12 @@ class _CalendarScreenState extends State<CalendarScreen> with TickerProviderStat
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     _buildSummaryItem(
-                      'Liczba płatności',
+                      AppLocalizations.of(context)!.paymentCount,
                       monthSubscriptions.length.toString(),
                       Icons.payment,
                     ),
                     _buildSummaryItem(
-                      'Łączny koszt',
+                      AppLocalizations.of(context)!.totalCost,
                       '${_calculateTotalCost(monthSubscriptions).toStringAsFixed(2)} PLN',
                       Icons.attach_money,
                     ),
@@ -256,10 +258,10 @@ class _CalendarScreenState extends State<CalendarScreen> with TickerProviderStat
         // Lista płatności
         Expanded(
           child: _buildSubscriptionsList(
-            'Płatności w tym miesiącu',
+            AppLocalizations.of(context)!.paymentsThisMonth,
             monthSubscriptions,
             Icons.calendar_month,
-            emptyMessage: 'Brak płatności w tym miesiącu',
+            emptyMessage: AppLocalizations.of(context)!.noPaymentsThisMonth,
             showTotal: false,
           ),
         ),
@@ -324,7 +326,7 @@ class _CalendarScreenState extends State<CalendarScreen> with TickerProviderStat
                 Icon(Icons.calculate, color: Color(0xFF1976D2)),
                 const SizedBox(width: 12),
                 Text(
-                  'Łączny koszt: ${totalCost.toStringAsFixed(2)} PLN',
+                  AppLocalizations.of(context)!.totalCostWithCurrency(totalCost.toStringAsFixed(2)),
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF1976D2),
@@ -383,22 +385,22 @@ class _CalendarScreenState extends State<CalendarScreen> with TickerProviderStat
       cardColor = Color(0xFFFFEBEE);
       textColor = Color(0xFFD32F2F);
       statusIcon = Icons.warning;
-      statusText = 'Przeterminowana (${-difference} dni)';
+      statusText = AppLocalizations.of(context)!.paymentOverdue(-difference);
     } else if (difference == 0) {
       cardColor = Color(0xFFFFF8E1);
       textColor = Color(0xFFF57C00);
       statusIcon = Icons.today;
-      statusText = 'Dzisiaj';
+      statusText = AppLocalizations.of(context)!.today;
     } else if (difference <= 3) {
       cardColor = Color(0xFFFFF3E0);
       textColor = Color(0xFFEF6C00);
       statusIcon = Icons.schedule;
-      statusText = 'Za $difference dni';
+      statusText = AppLocalizations.of(context)!.daysLeft(difference);
     } else {
       cardColor = Color(0xFFE8F5E8);
       textColor = Color(0xFF4CAF50);
       statusIcon = Icons.check_circle_outline;
-      statusText = 'Za $difference dni';
+      statusText = AppLocalizations.of(context)!.daysLeft(difference);
     }
 
     return Card(
@@ -458,7 +460,7 @@ class _CalendarScreenState extends State<CalendarScreen> with TickerProviderStat
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'Płatność: ${_formatDate(nextPayment)}',
+                      AppLocalizations.of(context)!.paymentDate(_formatDate(nextPayment)),
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: Colors.grey[600],
                       ),
@@ -478,7 +480,7 @@ class _CalendarScreenState extends State<CalendarScreen> with TickerProviderStat
                       overflow: TextOverflow.ellipsis,
                     ),
                     Text(
-                      subscription.period.description,
+                      subscription.period.getLocalizedDescription(AppLocalizations.of(context)!),
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: Colors.grey[600],
                       ),
@@ -496,8 +498,8 @@ class _CalendarScreenState extends State<CalendarScreen> with TickerProviderStat
                         SubscriptionMarkAsPaidRequested(subscription.id),
                       );
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Subskrypcja została oznaczona jako opłacona'),
+                        SnackBar(
+                          content: Text(AppLocalizations.of(context)!.subscriptionMarkedAsPaid),
                           backgroundColor: Color(0xFF66BB6A),
                         ),
                       );
@@ -508,23 +510,23 @@ class _CalendarScreenState extends State<CalendarScreen> with TickerProviderStat
                   }
                 },
                 itemBuilder: (context) => [
-                  const PopupMenuItem(
+                  PopupMenuItem(
                     value: 'mark_paid',
                     child: Row(
                       children: [
                         Icon(Icons.payment),
                         SizedBox(width: 8),
-                        Text('Oznacz jako opłacona'),
+                        Text(AppLocalizations.of(context)!.markAsPaid),
                       ],
                     ),
                   ),
-                  const PopupMenuItem(
+                  PopupMenuItem(
                     value: 'details',
                     child: Row(
                       children: [
                         Icon(Icons.info),
                         SizedBox(width: 8),
-                        Text('Szczegóły'),
+                        Text(AppLocalizations.of(context)!.details),
                       ],
                     ),
                   ),

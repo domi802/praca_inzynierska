@@ -9,6 +9,8 @@ import '../features/subscriptions/presentation/add_edit_subscription_screen.dart
 import '../features/calendar/presentation/calendar_screen.dart';
 import '../features/stats/presentation/stats_screen.dart';
 import '../features/settings/presentation/settings_screen.dart';
+import '../features/settings/presentation/edit_profile_screen.dart';
+import '../features/settings/presentation/change_password_screen.dart';
 import '../core/widgets/main_scaffold.dart';
 import '../core/services/logger_service.dart';
 
@@ -25,6 +27,8 @@ class AppRouter {
   static const String calendarRoute = '/calendar';
   static const String statsRoute = '/stats';
   static const String settingsRoute = '/settings';
+  static const String editProfileRoute = '/profile/edit';
+  static const String changePasswordRoute = '/profile/change-password';
 
   /// Tworzy konfigurację routera
   static GoRouter createRouter({required bool isAuthenticated}) {
@@ -118,6 +122,16 @@ class AppRouter {
             ),
           ],
         ),
+        
+        // Trasy profilu (poza MainScaffold)
+        GoRoute(
+          path: editProfileRoute,
+          builder: (context, state) => const EditProfileScreen(),
+        ),
+        GoRoute(
+          path: changePasswordRoute,
+          builder: (context, state) => const ChangePasswordScreen(),
+        ),
       ],
       
       // Obsługa błędów routingu
@@ -167,6 +181,8 @@ class AppRouter {
       calendarRoute, // '/calendar'
       statsRoute, // '/stats'
       settingsRoute, // '/settings'
+      editProfileRoute, // '/profile/edit'
+      changePasswordRoute, // '/profile/change-password'
     ];
     
     final isProtected = protectedRoutes.any((route) => 

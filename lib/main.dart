@@ -9,6 +9,7 @@ import 'core/services/notification_service.dart';
 import 'core/services/logger_service.dart';
 import 'features/auth/logic/auth_bloc.dart';
 import 'features/subscriptions/logic/subscriptions_bloc.dart';
+import 'features/settings/logic/settings_cubit.dart';
 import 'firebase_options.dart';
 
 /// Główny punkt wejścia aplikacji
@@ -78,6 +79,9 @@ class SubscriptionManagerApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider<SettingsCubit>(
+          create: (context) => SettingsCubit()..loadSettings(),
+        ),
         BlocProvider<AuthBloc>(
           create: (context) => AuthBloc()..add(AuthInitialized()),
         ),

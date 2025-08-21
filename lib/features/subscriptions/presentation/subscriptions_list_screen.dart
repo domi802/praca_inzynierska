@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import '../../../l10n/app_localizations.dart';
 
 import '../logic/subscriptions_bloc.dart';
 import '../data/subscription_model.dart';
@@ -26,6 +27,22 @@ class _SubscriptionsListScreenState extends State<SubscriptionsListScreen> {
     }
   }
 
+  String _getPaymentStatusText(BuildContext context, Subscription subscription) {
+    final localizations = AppLocalizations.of(context)!;
+    
+    if (subscription.isOverdue) {
+      return localizations.overdue;
+    } else if (subscription.daysUntilNextPayment == 0) {
+      return localizations.paymentToday;
+    } else if (subscription.daysUntilNextPayment == 1) {
+      return localizations.paymentTomorrow;
+    } else if (subscription.needsReminder) {
+      return localizations.paymentTomorrow;
+    } else {
+      return localizations.daysShort(subscription.daysUntilNextPayment);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,10 +52,10 @@ class _SubscriptionsListScreenState extends State<SubscriptionsListScreen> {
             if (authState is AuthAuthenticated) {
               return Align(
                 alignment: Alignment.centerLeft,
-                child: Text('Witaj ${authState.user.firstName}!'),
+                child: Text(AppLocalizations.of(context)!.welcomeUser(authState.user.firstName)),
               );
             }
-            return const Text('Moje Subskrypcje');
+            return Text(AppLocalizations.of(context)!.subscriptionTitle);
           },
         ),
       ),
@@ -129,7 +146,7 @@ class _SubscriptionsListScreenState extends State<SubscriptionsListScreen> {
           child: Padding(
             padding: const EdgeInsets.fromLTRB(16, 24, 16, 8),
             child: Text(
-              'Wszystkie subskrypcje',
+              AppLocalizations.of(context)!.allSubscriptions,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.w600,
               ),
@@ -160,7 +177,7 @@ class _SubscriptionsListScreenState extends State<SubscriptionsListScreen> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text(
-              'Nadchodzące płatności',
+              AppLocalizations.of(context)!.upcomingPayments,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -189,7 +206,7 @@ class _SubscriptionsListScreenState extends State<SubscriptionsListScreen> {
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
-                      'Wszystkie bieżące subskrypcje są opłacone',
+                      AppLocalizations.of(context)!.allCurrentSubscriptionsPaid,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: Colors.green[700],
                         fontWeight: FontWeight.w500,
@@ -230,17 +247,19 @@ class _SubscriptionsListScreenState extends State<SubscriptionsListScreen> {
       cardColor = Colors.red[50]!;
       textColor = Colors.red[700]!;
       iconColor = Colors.red;
-      timeText = 'Przeterminowane';
+      timeText = AppLocalizations.of(context)!.overdue;
     } else if (needsReminder) {
       cardColor = Colors.orange[50]!;
       textColor = Colors.orange[700]!;
       iconColor = Colors.orange;
-      timeText = subscription.daysUntilNextPayment == 0 ? 'Dziś' : 'Jutro';
+      timeText = subscription.daysUntilNextPayment == 0 
+          ? AppLocalizations.of(context)!.paymentToday 
+          : AppLocalizations.of(context)!.paymentTomorrow;
     } else {
       cardColor = Colors.blue[50]!;
       textColor = Colors.blue[700]!;
       iconColor = Colors.blue;
-      timeText = '${subscription.daysUntilNextPayment} dni';
+      timeText = AppLocalizations.of(context)!.daysShort(subscription.daysUntilNextPayment);
     }
     
     return GestureDetector(
@@ -372,24 +391,20 @@ class _SubscriptionsListScreenState extends State<SubscriptionsListScreen> {
                 const SizedBox(height: 24),
                 _buildDetailRow(
                   Icons.schedule,
-                  'Następna płatność',
-                  subscription.isOverdue 
-                      ? 'Przeterminowane' 
-                      : subscription.daysUntilNextPayment == 0 
-                          ? 'Dziś' 
-                          : '${subscription.daysUntilNextPayment} dni',
+                  AppLocalizations.of(context)!.nextPayment,
+                  _getPaymentStatusText(context, subscription),
                 ),
                 const SizedBox(height: 16),
                 _buildDetailRow(
                   Icons.calendar_today,
-                  'Data płatności',
+                  AppLocalizations.of(context)!.paymentDateLabel,
                   '${subscription.nextPaymentAt.day}.${subscription.nextPaymentAt.month.toString().padLeft(2, '0')}.${subscription.nextPaymentAt.year}',
                 ),
                 const SizedBox(height: 16),
                 _buildDetailRow(
                   Icons.repeat,
-                  'Okres płatności',
-                  subscription.period.description,
+                  AppLocalizations.of(context)!.paymentPeriod,
+                  subscription.period.getLocalizedDescription(AppLocalizations.of(context)!),
                 ),
                 const SizedBox(height: 24),
                 Row(
@@ -400,7 +415,7 @@ class _SubscriptionsListScreenState extends State<SubscriptionsListScreen> {
                           Navigator.of(context).pop();
                           context.go('/subscription/${subscription.id}');
                         },
-                        child: const Text('Szczegóły'),
+                        child: Text(AppLocalizations.of(context)!.details),
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -412,7 +427,7 @@ class _SubscriptionsListScreenState extends State<SubscriptionsListScreen> {
                             SubscriptionMarkAsPaidRequested(subscription.id),
                           );
                         },
-                        child: const Text('Oznacz jako opłacone'),
+                        child: Text(AppLocalizations.of(context)!.markAsPaid),
                       ),
                     ),
                   ],
@@ -454,7 +469,6 @@ class _SubscriptionsListScreenState extends State<SubscriptionsListScreen> {
   }
 
   Widget _buildSubscriptionCard(subscription) {
-    final daysUntilPayment = subscription.daysUntilNextPayment;
     final isOverdue = subscription.isOverdue;
     final needsReminder = subscription.needsReminder;
 
@@ -484,7 +498,7 @@ class _SubscriptionsListScreenState extends State<SubscriptionsListScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 4),
-            Text('${subscription.formattedCost} • ${subscription.period.description}'),
+            Text('${subscription.formattedCost} • ${subscription.period.getLocalizedDescription(AppLocalizations.of(context)!)}'),
             const SizedBox(height: 4),
             Row(
               children: [
@@ -503,11 +517,7 @@ class _SubscriptionsListScreenState extends State<SubscriptionsListScreen> {
                 ),
                 const SizedBox(width: 4),
                 Text(
-                  isOverdue 
-                      ? 'Przeterminowane'
-                      : needsReminder 
-                          ? 'Płatność jutro'
-                          : '$daysUntilPayment dni do płatności',
+                  _getPaymentStatusText(context, subscription),
                   style: TextStyle(
                     color: isOverdue 
                         ? Color(0xFFE53935)
@@ -526,20 +536,20 @@ class _SubscriptionsListScreenState extends State<SubscriptionsListScreen> {
             PopupMenuItem(
               value: 'view',
               child: Row(
-                children: const [
+                children: [
                   Icon(Icons.visibility),
                   SizedBox(width: 8),
-                  Text('Szczegóły'),
+                  Text(AppLocalizations.of(context)!.viewMenuItem),
                 ],
               ),
             ),
             PopupMenuItem(
               value: 'edit',
               child: Row(
-                children: const [
+                children: [
                   Icon(Icons.edit),
                   SizedBox(width: 8),
-                  Text('Edytuj'),
+                  Text(AppLocalizations.of(context)!.editMenuItem),
                 ],
               ),
             ),
@@ -547,20 +557,20 @@ class _SubscriptionsListScreenState extends State<SubscriptionsListScreen> {
               PopupMenuItem(
                 value: 'paid',
                 child: Row(
-                  children: const [
+                  children: [
                     Icon(Icons.payment),
                     SizedBox(width: 8),
-                    Text('Oznacz jako opłacone'),
+                    Text(AppLocalizations.of(context)!.markAsPaidMenuItem),
                   ],
                 ),
               ),
             PopupMenuItem(
               value: 'delete',
               child: Row(
-                children: const [
+                children: [
                   Icon(Icons.delete, color: Colors.red),
                   SizedBox(width: 8),
-                  Text('Usuń', style: TextStyle(color: Colors.red)),
+                  Text(AppLocalizations.of(context)!.deleteMenuItem, style: TextStyle(color: Colors.red)),
                 ],
               ),
             ),
