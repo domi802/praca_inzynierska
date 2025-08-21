@@ -302,6 +302,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get cancel => 'Anuluj';
 
   @override
+  String get confirm => 'Zatwierdź';
+
+  @override
   String get delete => 'Usuń';
 
   @override

@@ -223,96 +223,123 @@ class SettingsScreen extends StatelessWidget {
   }
 
   void _showLanguageDialog(BuildContext context, SettingsState settingsState, AppLocalizations localizations) {
+    String selectedLanguage = settingsState.locale.languageCode;
+    
     showDialog(
       context: context,
-      builder: (dialogContext) => AlertDialog(
-        title: Text(localizations.selectLanguage),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            RadioListTile<String>(
-              title: const Text('Polski'),
-              value: 'pl',
-              groupValue: settingsState.locale.languageCode,
-              onChanged: (value) {
-                if (value != null) {
-                  context.read<SettingsCubit>().changeLocale(Locale(value));
-                  Navigator.of(dialogContext).pop();
-                }
-              },
+      builder: (dialogContext) => StatefulBuilder(
+        builder: (context, setState) => AlertDialog(
+          title: Text(localizations.selectLanguage),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              RadioListTile<String>(
+                title: const Text('Polski'),
+                value: 'pl',
+                groupValue: selectedLanguage,
+                onChanged: (value) {
+                  if (value != null) {
+                    setState(() {
+                      selectedLanguage = value;
+                    });
+                  }
+                },
+              ),
+              RadioListTile<String>(
+                title: const Text('English'),
+                value: 'en',
+                groupValue: selectedLanguage,
+                onChanged: (value) {
+                  if (value != null) {
+                    setState(() {
+                      selectedLanguage = value;
+                    });
+                  }
+                },
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: Text(localizations.cancel),
             ),
-            RadioListTile<String>(
-              title: const Text('English'),
-              value: 'en',
-              groupValue: settingsState.locale.languageCode,
-              onChanged: (value) {
-                if (value != null) {
-                  context.read<SettingsCubit>().changeLocale(Locale(value));
-                  Navigator.of(dialogContext).pop();
-                }
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+                context.read<SettingsCubit>().changeLocale(Locale(selectedLanguage));
               },
+              child: Text(localizations.confirm),
             ),
           ],
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(dialogContext).pop(),
-            child: Text(localizations.cancel),
-          ),
-        ],
       ),
     );
   }
 
   void _showThemeDialog(BuildContext context, SettingsState settingsState, AppLocalizations localizations) {
+    ThemeMode selectedThemeMode = settingsState.themeMode;
+    
     showDialog(
       context: context,
-      builder: (dialogContext) => AlertDialog(
-        title: Text(localizations.selectTheme),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            RadioListTile<ThemeMode>(
-              title: Text(localizations.lightTheme),
-              value: ThemeMode.light,
-              groupValue: settingsState.themeMode,
-              onChanged: (value) {
-                if (value != null) {
-                  context.read<SettingsCubit>().changeThemeMode(value);
-                  Navigator.of(dialogContext).pop();
-                }
-              },
+      builder: (dialogContext) => StatefulBuilder(
+        builder: (context, setState) => AlertDialog(
+          title: Text(localizations.selectTheme),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              RadioListTile<ThemeMode>(
+                title: Text(localizations.lightTheme),
+                value: ThemeMode.light,
+                groupValue: selectedThemeMode,
+                onChanged: (value) {
+                  if (value != null) {
+                    setState(() {
+                      selectedThemeMode = value;
+                    });
+                  }
+                },
+              ),
+              RadioListTile<ThemeMode>(
+                title: Text(localizations.darkTheme),
+                value: ThemeMode.dark,
+                groupValue: selectedThemeMode,
+                onChanged: (value) {
+                  if (value != null) {
+                    setState(() {
+                      selectedThemeMode = value;
+                    });
+                  }
+                },
+              ),
+              RadioListTile<ThemeMode>(
+                title: Text(localizations.systemTheme),
+                value: ThemeMode.system,
+                groupValue: selectedThemeMode,
+                onChanged: (value) {
+                  if (value != null) {
+                    setState(() {
+                      selectedThemeMode = value;
+                    });
+                  }
+                },
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: Text(localizations.cancel),
             ),
-            RadioListTile<ThemeMode>(
-              title: Text(localizations.darkTheme),
-              value: ThemeMode.dark,
-              groupValue: settingsState.themeMode,
-              onChanged: (value) {
-                if (value != null) {
-                  context.read<SettingsCubit>().changeThemeMode(value);
-                  Navigator.of(dialogContext).pop();
-                }
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+                context.read<SettingsCubit>().changeThemeMode(selectedThemeMode);
               },
-            ),
-            RadioListTile<ThemeMode>(
-              title: Text(localizations.systemTheme),
-              value: ThemeMode.system,
-              groupValue: settingsState.themeMode,
-              onChanged: (value) {
-                if (value != null) {
-                  context.read<SettingsCubit>().changeThemeMode(value);
-                  Navigator.of(dialogContext).pop();
-                }
-              },
+              child: Text(localizations.confirm),
             ),
           ],
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(dialogContext).pop(),
-            child: Text(localizations.cancel),
-          ),
-        ],
       ),
     );
   }
