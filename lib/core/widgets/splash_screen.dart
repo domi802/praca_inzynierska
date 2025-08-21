@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../l10n/app_localizations.dart';
 
 /// Ekran splash wyświetlany podczas inicjalizacji aplikacji
 class SplashScreen extends StatelessWidget {
@@ -6,9 +7,10 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
-      body: const Center(
+      body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -22,7 +24,7 @@ class SplashScreen extends StatelessWidget {
             
             // Nazwa aplikacji
             Text(
-              'Menedżer Subskrypcji',
+              localizations.appTitle,
               style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
@@ -39,7 +41,7 @@ class SplashScreen extends StatelessWidget {
             SizedBox(height: 16),
             
             Text(
-              'Inicjalizowanie...',
+              localizations.loadingDefault,
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.white70,

@@ -13,6 +13,7 @@ import '../features/settings/presentation/edit_profile_screen.dart';
 import '../features/settings/presentation/change_password_screen.dart';
 import '../core/widgets/main_scaffold.dart';
 import '../core/services/logger_service.dart';
+import '../l10n/app_localizations.dart';
 
 /// Klasa zarządzająca routingiem aplikacji
 class AppRouter {
@@ -135,36 +136,39 @@ class AppRouter {
       ],
       
       // Obsługa błędów routingu
-      errorBuilder: (context, state) => Scaffold(
-        appBar: AppBar(title: const Text('Błąd')),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(
-                Icons.error_outline,
-                size: 64,
-                color: Colors.red,
-              ),
-              const SizedBox(height: 16),
-              Text(
-                'Nie znaleziono strony',
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'Ścieżka: ${state.uri.path}',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () => context.go(homeRoute),
-                child: const Text('Wróć do głównej'),
-              ),
-            ],
+      errorBuilder: (context, state) {
+        final localizations = AppLocalizations.of(context);
+        return Scaffold(
+          appBar: AppBar(title: Text(localizations?.errorPageTitle ?? 'Error')),
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.error_outline,
+                  size: 64,
+                  color: Colors.red,
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'Nie znaleziono strony',
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Ścieżka: ${state.uri.path}',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: () => context.go(homeRoute),
+                  child: const Text('Wróć do głównej'),
+                ),
+              ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
   

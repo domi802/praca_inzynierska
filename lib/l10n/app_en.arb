@@ -427,5 +427,39 @@
   "subscriptionNotFoundForEdit": "Subscription not found for editing",
   "subscriptionNameHint": "e.g. Netflix, Spotify...",
   "minimumOne": "Min. 1",
-  "notesHint": "Additional information..."
+  "notesHint": "Additional information...",
+  
+  "loadingChangingPassword": "Changing password...",
+  "loadingUpdatingProfile": "Updating profile...",
+  "loadingUpdatingSubscription": "Updating subscription...",
+  "loadingDeletingSubscription": "Deleting subscription...",
+  "loadingMarkingAsPaid": "Marking as paid...",
+  "loadingProcessing": "Processing...",
+  "loadingPleaseWait": "Please wait...",
+  "loadingDefault": "Loading...",
+  
+  "errorChangingPassword": "Error while changing password: {error}",
+  "@errorChangingPassword": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "errorInitializingApp": "Error while initializing app",
+  "errorLoadingApp": "Error loading app",
+  "errorPageTitle": "Error",
+  "errorLogin": "Error occurred during login",
+  "errorRegister": "Error occurred during registration",
+  
+  "errorInvalidLogin": "Invalid login or password",
+  "errorEmailAlreadyExists": "Account with this email already exists",
+  "errorWeakPasswordAuth": "Password is too weak",
+  "errorUserDisabled": "User account has been disabled",
+  "errorTooManyRequests": "Too many login attempts. Please try again later",
+  "errorOperationNotAllowed": "Operation is not allowed",
+  "errorNetworkFailed": "No internet connection",
+  "errorGenericAuth": "An error occurred. Please try again later",
+  "errorUnexpected": "An unexpected error occurred",
+  "errorUserDataNotFound": "User data not found"
 }

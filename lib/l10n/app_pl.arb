@@ -411,5 +411,39 @@
   "subscriptionNotFoundForEdit": "Nie znaleziono subskrypcji do edycji",
   "subscriptionNameHint": "np. Netflix, Spotify...",
   "minimumOne": "Min. 1",
-  "notesHint": "Dodatkowe informacje..."
+  "notesHint": "Dodatkowe informacje...",
+  
+  "loadingChangingPassword": "Zmiana hasła...",
+  "loadingUpdatingProfile": "Aktualizowanie profilu...",
+  "loadingUpdatingSubscription": "Aktualizowanie subskrypcji...",
+  "loadingDeletingSubscription": "Usuwanie subskrypcji...",
+  "loadingMarkingAsPaid": "Oznaczanie jako opłacone...",
+  "loadingProcessing": "Przetwarzanie...",
+  "loadingPleaseWait": "Proszę czekać...",
+  "loadingDefault": "Ładowanie...",
+  
+  "errorChangingPassword": "Błąd podczas zmiany hasła: {error}",
+  "@errorChangingPassword": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "errorInitializingApp": "Błąd podczas inicjalizacji aplikacji",
+  "errorLoadingApp": "Błąd ładowania aplikacji",
+  "errorPageTitle": "Błąd",
+  "errorLogin": "Wystąpił błąd podczas logowania",
+  "errorRegister": "Wystąpił błąd podczas rejestracji",
+  
+  "errorInvalidLogin": "Błędny login lub hasło",
+  "errorEmailAlreadyExists": "Konto z tym adresem email już istnieje",
+  "errorWeakPasswordAuth": "Hasło jest zbyt słabe",
+  "errorUserDisabled": "Konto użytkownika zostało zablokowane",
+  "errorTooManyRequests": "Zbyt wiele prób logowania. Spróbuj ponownie później",
+  "errorOperationNotAllowed": "Operacja nie jest dozwolona",
+  "errorNetworkFailed": "Brak połączenia z internetem",
+  "errorGenericAuth": "Wystąpił błąd. Spróbuj ponownie później",
+  "errorUnexpected": "Wystąpił nieoczekiwany błąd",
+  "errorUserDataNotFound": "Nie znaleziono danych użytkownika"
 }

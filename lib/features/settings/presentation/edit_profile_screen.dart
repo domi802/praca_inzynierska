@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../auth/logic/auth_bloc.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../core/widgets/loading_overlay.dart';
 
 /// Ekran edycji profilu użytkownika
 class EditProfileScreen extends StatefulWidget {
@@ -18,6 +19,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   late TextEditingController _firstNameController;
   late TextEditingController _lastNameController;
   late TextEditingController _emailController;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -45,14 +47,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(localizations.editProfile),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.go('/settings'),
+    return LoadingOverlay(
+      isLoading: _isLoading,
+      loadingText: localizations.loadingUpdatingProfile,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(localizations.editProfile),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => context.go('/settings'),
+          ),
         ),
-      ),
       body: Form(
         key: _formKey,
         child: ListView(
@@ -221,7 +226,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           ],
         ),
       ),
+       ) // Zamknięcie Scaffold
     );
+    // Zamknięcie LoadingOverlay
   }
 
   void _saveProfile() {

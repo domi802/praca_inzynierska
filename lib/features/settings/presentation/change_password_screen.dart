@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../core/widgets/loading_overlay.dart';
 
 /// Ekran zmiany hasła
 class ChangePasswordScreen extends StatefulWidget {
@@ -19,6 +20,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   bool _showCurrentPassword = false;
   bool _showNewPassword = false;
   bool _showConfirmPassword = false;
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -31,73 +33,76 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(localizations.changePassword),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.go('/settings'),
+    return LoadingOverlay(
+      isLoading: _isLoading,
+      loadingText: localizations.loadingChangingPassword,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(localizations.changePassword),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => context.go('/settings'),
+          ),
         ),
-      ),
-      body: Form(
-        key: _formKey,
-        child: ListView(
-          padding: const EdgeInsets.all(16),
-          children: [
-            // Instrukcje
-            Card(
-              color: Colors.blue.shade50,
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.info_outline,
-                      color: Colors.blue.shade700,
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        AppLocalizations.of(context)!.passwordRequirements,
-                        style: TextStyle(
-                          color: Colors.blue.shade700,
-                          fontSize: 14,
+        body: Form(
+          key: _formKey,
+          child: ListView(
+            padding: const EdgeInsets.all(16),
+            children: [
+              // Instrukcje
+              Card(
+                color: Colors.blue.shade50,
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.info_outline,
+                        color: Colors.blue.shade700,
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          AppLocalizations.of(context)!.passwordRequirements,
+                          style: TextStyle(
+                            color: Colors.blue.shade700,
+                            fontSize: 14,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-            
-            const SizedBox(height: 24),
-            
-            // Obecne hasło
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      AppLocalizations.of(context)!.currentPassword,
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                    const SizedBox(height: 8),
-                    TextFormField(
-                      controller: _currentPasswordController,
-                      obscureText: !_showCurrentPassword,
-                      decoration: InputDecoration(
-                        hintText: AppLocalizations.of(context)!.enterCurrentPassword,
-                        prefixIcon: const Icon(Icons.lock_outline),
-                        suffixIcon: IconButton(
-                          onPressed: () {
-                            setState(() {
-                              _showCurrentPassword = !_showCurrentPassword;
-                            });
-                          },
-                          icon: Icon(
-                            _showCurrentPassword ? Icons.visibility : Icons.visibility_off,
+              
+              const SizedBox(height: 24),
+              
+              // Obecne hasło
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        AppLocalizations.of(context)!.currentPassword,
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      const SizedBox(height: 8),
+                      TextFormField(
+                        controller: _currentPasswordController,
+                        obscureText: !_showCurrentPassword,
+                        decoration: InputDecoration(
+                          hintText: AppLocalizations.of(context)!.enterCurrentPassword,
+                          prefixIcon: const Icon(Icons.lock_outline),
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                _showCurrentPassword = !_showCurrentPassword;
+                              });
+                            },
+                            icon: Icon(
+                              _showCurrentPassword ? Icons.visibility : Icons.visibility_off,
                           ),
                         ),
                         border: const OutlineInputBorder(),
@@ -230,20 +235,47 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
           ],
         ),
       ),
+    ),
     );
   }
 
-  void _changePassword() {
+  void _changePassword() async {
     if (_formKey.currentState!.validate()) {
-      final localizations = AppLocalizations.of(context)!;
-      // TODO: Implement password change
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(localizations.passwordChanged),
-          backgroundColor: Colors.green,
-        ),
-      );
-      context.go('/settings');
+      setState(() {
+        _isLoading = true;
+      });
+
+      try {
+        // Symulacja zmiany hasła (dodaj prawdziwą implementację)
+        await Future.delayed(const Duration(seconds: 2));
+        
+        if (mounted) {
+          final localizations = AppLocalizations.of(context)!;
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(localizations.passwordChanged),
+              backgroundColor: Colors.green,
+            ),
+          );
+          context.go('/settings');
+        }
+      } catch (e) {
+        if (mounted) {
+          final localizations = AppLocalizations.of(context)!;
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(localizations.errorChangingPassword(e.toString())),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      } finally {
+        if (mounted) {
+          setState(() {
+            _isLoading = false;
+          });
+        }
+      }
     }
   }
 }

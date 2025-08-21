@@ -873,4 +873,80 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get notesHint => 'Dodatkowe informacje...';
+
+  @override
+  String get loadingChangingPassword => 'Zmiana hasła...';
+
+  @override
+  String get loadingUpdatingProfile => 'Aktualizowanie profilu...';
+
+  @override
+  String get loadingUpdatingSubscription => 'Aktualizowanie subskrypcji...';
+
+  @override
+  String get loadingDeletingSubscription => 'Usuwanie subskrypcji...';
+
+  @override
+  String get loadingMarkingAsPaid => 'Oznaczanie jako opłacone...';
+
+  @override
+  String get loadingProcessing => 'Przetwarzanie...';
+
+  @override
+  String get loadingPleaseWait => 'Proszę czekać...';
+
+  @override
+  String get loadingDefault => 'Ładowanie...';
+
+  @override
+  String errorChangingPassword(String error) {
+    return 'Błąd podczas zmiany hasła: $error';
+  }
+
+  @override
+  String get errorInitializingApp => 'Błąd podczas inicjalizacji aplikacji';
+
+  @override
+  String get errorLoadingApp => 'Błąd ładowania aplikacji';
+
+  @override
+  String get errorPageTitle => 'Błąd';
+
+  @override
+  String get errorLogin => 'Wystąpił błąd podczas logowania';
+
+  @override
+  String get errorRegister => 'Wystąpił błąd podczas rejestracji';
+
+  @override
+  String get errorInvalidLogin => 'Błędny login lub hasło';
+
+  @override
+  String get errorEmailAlreadyExists =>
+      'Konto z tym adresem email już istnieje';
+
+  @override
+  String get errorWeakPasswordAuth => 'Hasło jest zbyt słabe';
+
+  @override
+  String get errorUserDisabled => 'Konto użytkownika zostało zablokowane';
+
+  @override
+  String get errorTooManyRequests =>
+      'Zbyt wiele prób logowania. Spróbuj ponownie później';
+
+  @override
+  String get errorOperationNotAllowed => 'Operacja nie jest dozwolona';
+
+  @override
+  String get errorNetworkFailed => 'Brak połączenia z internetem';
+
+  @override
+  String get errorGenericAuth => 'Wystąpił błąd. Spróbuj ponownie później';
+
+  @override
+  String get errorUnexpected => 'Wystąpił nieoczekiwany błąd';
+
+  @override
+  String get errorUserDataNotFound => 'Nie znaleziono danych użytkownika';
 }

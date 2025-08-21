@@ -8,6 +8,7 @@ import '../features/auth/logic/auth_bloc.dart';
 import '../features/settings/logic/settings_cubit.dart';
 import '../core/widgets/splash_screen.dart';
 import '../l10n/app_localizations.dart';
+import '../core/services/localization_service.dart';
 
 /// Główny widget aplikacji
 class App extends StatelessWidget {
@@ -73,9 +74,14 @@ class App extends StatelessWidget {
               
               // Builder do obsługi błędów routingu
               builder: (context, child) {
-                return child ?? const Scaffold(
+                final localizations = AppLocalizations.of(context);
+                // Inicjalizuj serwis lokalizacji
+                if (localizations != null) {
+                  LocalizationService.initialize(context);
+                }
+                return child ?? Scaffold(
                   body: Center(
-                    child: Text('Błąd ładowania aplikacji'),
+                    child: Text(localizations?.errorLoadingApp ?? 'Error loading app'),
                   ),
                 );
               },

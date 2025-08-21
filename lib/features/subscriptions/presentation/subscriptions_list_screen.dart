@@ -638,17 +638,18 @@ class _SubscriptionsListScreenState extends State<SubscriptionsListScreen> {
   }
 
   void _showDeleteConfirmation(subscription) {
+    final localizations = AppLocalizations.of(context)!;
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Usuń subskrypcję'),
+        title: Text(localizations.deleteSubscription),
         content: Text(
-          'Czy na pewno chcesz usunąć subskrypcję "${subscription.title}"? Tej operacji nie można cofnąć.',
+          localizations.confirmDeleteSubscription(subscription.title),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Anuluj'),
+            child: Text(localizations.cancel),
           ),
           ElevatedButton(
             onPressed: () {
@@ -660,7 +661,7 @@ class _SubscriptionsListScreenState extends State<SubscriptionsListScreen> {
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.red,
             ),
-            child: const Text('Usuń'),
+            child: Text(localizations.delete),
           ),
         ],
       ),
@@ -668,17 +669,18 @@ class _SubscriptionsListScreenState extends State<SubscriptionsListScreen> {
   }
 
   String _getActionText(String actionType) {
+    final localizations = AppLocalizations.of(context)!;
     switch (actionType) {
       case 'add':
-        return 'Dodawanie subskrypcji...';
+        return localizations.loadingUpdatingSubscription; // Adding will use same text as updating
       case 'update':
-        return 'Aktualizowanie subskrypcji...';
+        return localizations.loadingUpdatingSubscription;
       case 'delete':
-        return 'Usuwanie subskrypcji...';
+        return localizations.loadingDeletingSubscription;
       case 'mark_paid':
-        return 'Oznaczanie jako opłacone...';
+        return localizations.loadingMarkingAsPaid;
       default:
-        return 'Przetwarzanie...';
+        return localizations.loadingProcessing;
     }
   }
 

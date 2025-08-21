@@ -872,4 +872,80 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notesHint => 'Additional information...';
+
+  @override
+  String get loadingChangingPassword => 'Changing password...';
+
+  @override
+  String get loadingUpdatingProfile => 'Updating profile...';
+
+  @override
+  String get loadingUpdatingSubscription => 'Updating subscription...';
+
+  @override
+  String get loadingDeletingSubscription => 'Deleting subscription...';
+
+  @override
+  String get loadingMarkingAsPaid => 'Marking as paid...';
+
+  @override
+  String get loadingProcessing => 'Processing...';
+
+  @override
+  String get loadingPleaseWait => 'Please wait...';
+
+  @override
+  String get loadingDefault => 'Loading...';
+
+  @override
+  String errorChangingPassword(String error) {
+    return 'Error while changing password: $error';
+  }
+
+  @override
+  String get errorInitializingApp => 'Error while initializing app';
+
+  @override
+  String get errorLoadingApp => 'Error loading app';
+
+  @override
+  String get errorPageTitle => 'Error';
+
+  @override
+  String get errorLogin => 'Error occurred during login';
+
+  @override
+  String get errorRegister => 'Error occurred during registration';
+
+  @override
+  String get errorInvalidLogin => 'Invalid login or password';
+
+  @override
+  String get errorEmailAlreadyExists =>
+      'Account with this email already exists';
+
+  @override
+  String get errorWeakPasswordAuth => 'Password is too weak';
+
+  @override
+  String get errorUserDisabled => 'User account has been disabled';
+
+  @override
+  String get errorTooManyRequests =>
+      'Too many login attempts. Please try again later';
+
+  @override
+  String get errorOperationNotAllowed => 'Operation is not allowed';
+
+  @override
+  String get errorNetworkFailed => 'No internet connection';
+
+  @override
+  String get errorGenericAuth => 'An error occurred. Please try again later';
+
+  @override
+  String get errorUnexpected => 'An unexpected error occurred';
+
+  @override
+  String get errorUserDataNotFound => 'User data not found';
 }

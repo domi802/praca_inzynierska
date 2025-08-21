@@ -1747,6 +1747,150 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Additional information...'**
   String get notesHint;
+
+  /// No description provided for @loadingChangingPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Changing password...'**
+  String get loadingChangingPassword;
+
+  /// No description provided for @loadingUpdatingProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Updating profile...'**
+  String get loadingUpdatingProfile;
+
+  /// No description provided for @loadingUpdatingSubscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Updating subscription...'**
+  String get loadingUpdatingSubscription;
+
+  /// No description provided for @loadingDeletingSubscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleting subscription...'**
+  String get loadingDeletingSubscription;
+
+  /// No description provided for @loadingMarkingAsPaid.
+  ///
+  /// In en, this message translates to:
+  /// **'Marking as paid...'**
+  String get loadingMarkingAsPaid;
+
+  /// No description provided for @loadingProcessing.
+  ///
+  /// In en, this message translates to:
+  /// **'Processing...'**
+  String get loadingProcessing;
+
+  /// No description provided for @loadingPleaseWait.
+  ///
+  /// In en, this message translates to:
+  /// **'Please wait...'**
+  String get loadingPleaseWait;
+
+  /// No description provided for @loadingDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading...'**
+  String get loadingDefault;
+
+  /// No description provided for @errorChangingPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Error while changing password: {error}'**
+  String errorChangingPassword(String error);
+
+  /// No description provided for @errorInitializingApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Error while initializing app'**
+  String get errorInitializingApp;
+
+  /// No description provided for @errorLoadingApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading app'**
+  String get errorLoadingApp;
+
+  /// No description provided for @errorPageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get errorPageTitle;
+
+  /// No description provided for @errorLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Error occurred during login'**
+  String get errorLogin;
+
+  /// No description provided for @errorRegister.
+  ///
+  /// In en, this message translates to:
+  /// **'Error occurred during registration'**
+  String get errorRegister;
+
+  /// No description provided for @errorInvalidLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid login or password'**
+  String get errorInvalidLogin;
+
+  /// No description provided for @errorEmailAlreadyExists.
+  ///
+  /// In en, this message translates to:
+  /// **'Account with this email already exists'**
+  String get errorEmailAlreadyExists;
+
+  /// No description provided for @errorWeakPasswordAuth.
+  ///
+  /// In en, this message translates to:
+  /// **'Password is too weak'**
+  String get errorWeakPasswordAuth;
+
+  /// No description provided for @errorUserDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'User account has been disabled'**
+  String get errorUserDisabled;
+
+  /// No description provided for @errorTooManyRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many login attempts. Please try again later'**
+  String get errorTooManyRequests;
+
+  /// No description provided for @errorOperationNotAllowed.
+  ///
+  /// In en, this message translates to:
+  /// **'Operation is not allowed'**
+  String get errorOperationNotAllowed;
+
+  /// No description provided for @errorNetworkFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'No internet connection'**
+  String get errorNetworkFailed;
+
+  /// No description provided for @errorGenericAuth.
+  ///
+  /// In en, this message translates to:
+  /// **'An error occurred. Please try again later'**
+  String get errorGenericAuth;
+
+  /// No description provided for @errorUnexpected.
+  ///
+  /// In en, this message translates to:
+  /// **'An unexpected error occurred'**
+  String get errorUnexpected;
+
+  /// No description provided for @errorUserDataNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'User data not found'**
+  String get errorUserDataNotFound;
 }
 
 class _AppLocalizationsDelegate
