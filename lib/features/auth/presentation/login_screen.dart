@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../logic/auth_bloc.dart';
 import '../../../core/widgets/custom_text_field.dart';
 import '../../../core/widgets/loading_overlay.dart';
+import '../../../l10n/app_localizations.dart';
 
 /// Ekran logowania użytkownika
 class LoginScreen extends StatefulWidget {
@@ -29,6 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: BlocListener<AuthBloc, AuthState>(
@@ -76,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         const SizedBox(height: 16),
                         Text(
-                          'Menedżer Subskrypcji',
+                          localizations.appTitle,
                           style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
@@ -84,7 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          'Zaloguj się do swojego konta',
+                          localizations.loginToAccount,
                           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                             color: Colors.grey[600],
                           ),
@@ -95,16 +97,16 @@ class _LoginScreenState extends State<LoginScreen> {
                         // Pole email
                         CustomTextField(
                           controller: _emailController,
-                          labelText: 'Adres email',
-                          hintText: 'Wprowadź swój email',
+                          labelText: localizations.emailAddress,
+                          hintText: localizations.enterEmail,
                           keyboardType: TextInputType.emailAddress,
                           prefixIcon: Icons.email_outlined,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Podaj adres email';
+                              return localizations.pleaseEnterEmail;
                             }
                             if (!value.contains('@')) {
-                              return 'Podaj prawidłowy adres email';
+                              return localizations.pleaseEnterValidEmail;
                             }
                             return null;
                           },
@@ -114,8 +116,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         // Pole hasła
                         CustomTextField(
                           controller: _passwordController,
-                          labelText: 'Hasło',
-                          hintText: 'Wprowadź swoje hasło',
+                          labelText: localizations.password,
+                          hintText: localizations.enterPassword,
                           obscureText: _obscurePassword,
                           prefixIcon: Icons.lock_outlined,
                           suffixIcon: _obscurePassword 
@@ -128,10 +130,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           },
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Podaj hasło';
+                              return localizations.pleaseEnterPassword;
                             }
                             if (value.length < 6) {
-                              return 'Hasło musi mieć co najmniej 6 znaków';
+                              return localizations.passwordTooShort;
                             }
                             return null;
                           },
@@ -144,7 +146,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 16),
                           ),
-                          child: const Text('Zaloguj się'),
+                          child: Text(localizations.login),
                         ),
                         const SizedBox(height: 16),
                         
@@ -153,7 +155,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              'Nie masz konta? ',
+                              localizations.dontHaveAccount,
                               style: Theme.of(context).textTheme.bodyMedium,
                             ),
                             TextButton(
@@ -161,7 +163,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 print('Kliknięto przycisk rejestracji');
                                 context.go('/register');
                               },
-                              child: const Text('Zarejestruj się'),
+                              child: Text(localizations.register),
                             ),
                           ],
                         ),
@@ -172,7 +174,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         TextButton(
                           onPressed: _showPasswordResetDialog,
                           child: Text(
-                            'Zapomniałeś hasła?',
+                            localizations.forgotPassword,
                             style: TextStyle(
                               color: Colors.grey[600],
                             ),
@@ -204,24 +206,23 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _showPasswordResetDialog() {
+    final localizations = AppLocalizations.of(context)!;
     final emailController = TextEditingController();
     
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Reset hasła'),
+        title: Text(localizations.resetPassword),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text(
-              'Podaj adres email, na który wyślemy link do resetowania hasła.',
-            ),
+            Text(localizations.resetPasswordInstruction),
             const SizedBox(height: 16),
             TextField(
               controller: emailController,
-              decoration: const InputDecoration(
-                labelText: 'Adres email',
-                hintText: 'Wprowadź swój email',
+              decoration: InputDecoration(
+                labelText: localizations.emailAddress,
+                hintText: localizations.enterEmail,
               ),
               keyboardType: TextInputType.emailAddress,
             ),
@@ -230,7 +231,7 @@ class _LoginScreenState extends State<LoginScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Anuluj'),
+            child: Text(localizations.cancel),
           ),
           ElevatedButton(
             onPressed: () {
@@ -239,13 +240,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 // TODO: Implementuj reset hasła
                 Navigator.of(context).pop();
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Link do resetowania hasła został wysłany'),
+                  SnackBar(
+                    content: Text(localizations.passwordResetSent),
                   ),
                 );
               }
             },
-            child: const Text('Wyślij'),
+            child: Text(localizations.sendResetLink),
           ),
         ],
       ),

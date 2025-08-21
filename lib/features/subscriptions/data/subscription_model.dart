@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../../l10n/app_localizations.dart';
 
 /// Model reprezentujący okres płatności subskrypcji
 class SubscriptionPeriod extends Equatable {
@@ -48,6 +49,38 @@ class SubscriptionPeriod extends Equatable {
     }
     
     return interval == 1 ? 'co $typeText' : 'co $interval $typeText';
+  }
+
+  /// Zwraca zlokalizowany opis okresu
+  String getLocalizedDescription(AppLocalizations localizations) {
+    switch (type) {
+      case 'daily':
+        if (interval == 1) {
+          return localizations.daily;
+        } else {
+          return localizations.everyXDays(interval);
+        }
+      case 'weekly':
+        if (interval == 1) {
+          return localizations.weekly;
+        } else {
+          return localizations.everyXWeeks(interval);
+        }
+      case 'monthly':
+        if (interval == 1) {
+          return localizations.monthly;
+        } else {
+          return localizations.everyXMonths(interval);
+        }
+      case 'yearly':
+        if (interval == 1) {
+          return localizations.yearly;
+        } else {
+          return localizations.everyXYears(interval);
+        }
+      default:
+        return '$interval $type';
+    }
   }
 
   @override

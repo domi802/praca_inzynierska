@@ -6,6 +6,7 @@ import '../logic/auth_bloc.dart';
 import '../../../core/widgets/custom_text_field.dart';
 import '../../../core/widgets/loading_overlay.dart';
 import '../../../core/services/logger_service.dart';
+import '../../../l10n/app_localizations.dart';
 
 /// Ekran rejestracji nowego użytkownika
 class RegisterScreen extends StatefulWidget {
@@ -37,10 +38,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
     LoggerService.info('RegisterScreen zbudowany - ekran rejestracji jest aktywny');
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Rejestracja'),
+        title: Text(localizations.register),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => context.go('/login'),
@@ -73,7 +75,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       children: [
                         // Nagłówek
                         Text(
-                          'Utwórz nowe konto',
+                          AppLocalizations.of(context)!.createNewAccount,
                           style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
@@ -81,7 +83,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          'Wypełnij formularz aby założyć konto',
+                          AppLocalizations.of(context)!.fillFormToCreateAccount,
                           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                             color: Colors.grey[600],
                           ),
@@ -92,15 +94,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         // Imię
                         CustomTextField(
                           controller: _firstNameController,
-                          labelText: 'Imię',
-                          hintText: 'Wprowadź swoje imię',
+                          labelText: AppLocalizations.of(context)!.firstName,
+                          hintText: AppLocalizations.of(context)!.enterFirstName,
                           prefixIcon: Icons.person_outlined,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Podaj imię';
+                              return AppLocalizations.of(context)!.provideFirstName;
                             }
                             if (value.length < 2) {
-                              return 'Imię musi mieć co najmniej 2 znaki';
+                              return AppLocalizations.of(context)!.firstNameMinLength;
                             }
                             return null;
                           },
@@ -111,14 +113,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         CustomTextField(
                           controller: _lastNameController,
                           labelText: 'Nazwisko',
-                          hintText: 'Wprowadź swoje nazwisko',
+                          hintText: AppLocalizations.of(context)!.enterLastName,
                           prefixIcon: Icons.person_outlined,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Podaj nazwisko';
                             }
                             if (value.length < 2) {
-                              return 'Nazwisko musi mieć co najmniej 2 znaki';
+                              return AppLocalizations.of(context)!.lastNameMinLength;
                             }
                             return null;
                           },
@@ -129,7 +131,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         CustomTextField(
                           controller: _emailController,
                           labelText: 'Adres email',
-                          hintText: 'Wprowadź swój email',
+                          hintText: AppLocalizations.of(context)!.enterEmail,
                           keyboardType: TextInputType.emailAddress,
                           prefixIcon: Icons.email_outlined,
                           validator: (value) {
@@ -137,7 +139,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               return 'Podaj adres email';
                             }
                             if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-                              return 'Podaj prawidłowy adres email';
+                              return AppLocalizations.of(context)!.provideValidEmail;
                             }
                             return null;
                           },
@@ -147,8 +149,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         // Hasło
                         CustomTextField(
                           controller: _passwordController,
-                          labelText: 'Hasło',
-                          hintText: 'Wprowadź hasło (min. 6 znaków)',
+                          labelText: AppLocalizations.of(context)!.password,
+                          hintText: AppLocalizations.of(context)!.enterPassword,
                           obscureText: _obscurePassword,
                           prefixIcon: Icons.lock_outlined,
                           suffixIcon: _obscurePassword 
@@ -161,10 +163,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           },
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Podaj hasło';
+                              return AppLocalizations.of(context)!.providePassword;
                             }
                             if (value.length < 6) {
-                              return 'Hasło musi mieć co najmniej 6 znaków';
+                              return AppLocalizations.of(context)!.passwordMinLength;
                             }
                             return null;
                           },
@@ -174,8 +176,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         // Powtórz hasło
                         CustomTextField(
                           controller: _confirmPasswordController,
-                          labelText: 'Powtórz hasło',
-                          hintText: 'Wprowadź hasło ponownie',
+                          labelText: AppLocalizations.of(context)!.confirmPassword,
+                          hintText: AppLocalizations.of(context)!.enterPasswordAgain,
                           obscureText: _obscureConfirmPassword,
                           prefixIcon: Icons.lock_outlined,
                           suffixIcon: _obscureConfirmPassword 
@@ -188,10 +190,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           },
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Powtórz hasło';
+                              return AppLocalizations.of(context)!.repeatPasswordField;
                             }
                             if (value != _passwordController.text) {
-                              return 'Hasła nie są identyczne';
+                              return AppLocalizations.of(context)!.passwordsNotMatch;
                             }
                             return null;
                           },
@@ -204,7 +206,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 16),
                           ),
-                          child: const Text('Zarejestruj się'),
+                          child: Text(localizations.register),
                         ),
                         const SizedBox(height: 16),
                         
@@ -213,12 +215,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              'Masz już konto? ',
+                              AppLocalizations.of(context)!.alreadyHaveAccountQuestion,
                               style: Theme.of(context).textTheme.bodyMedium,
                             ),
                             TextButton(
                               onPressed: () => context.go('/login'),
-                              child: const Text('Zaloguj się'),
+                              child: Text(localizations.login),
                             ),
                           ],
                         ),

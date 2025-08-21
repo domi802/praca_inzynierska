@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../l10n/app_localizations.dart';
 import '../data/subscription_model.dart';
 import '../logic/subscriptions_bloc.dart';
 import '../../auth/logic/auth_bloc.dart';
@@ -47,15 +48,30 @@ class _AddEditSubscriptionScreenState extends State<AddEditSubscriptionScreen> {
     'Finanse',
     'Inne',
   ];
+
+  Map<String, String> _getCategoryMap(AppLocalizations localizations) {
+    return {
+      'Rozrywka': localizations.categoryEntertainment,
+      'Muzyka': localizations.categoryMusic,
+      'Video': localizations.categoryVideo,
+      'Gry': localizations.categoryGames,
+      'Produktywność': localizations.categoryProductivity,
+      'Edukacja': localizations.categoryEducation,
+      'Sport': localizations.categorySport,
+      'Zdrowie': localizations.categoryHealth,
+      'Finanse': localizations.categoryFinance,
+      'Inne': localizations.categoryOther,
+    };
+  }
   
-  final Map<String, String> _periodTypes = {
-    'daily': 'Dziennie',
-    'weekly': 'Tygodniowo', 
-    'monthly': 'Miesięcznie',
-    'yearly': 'Rocznie',
+  Map<String, String> get _periodTypes => {
+    'daily': AppLocalizations.of(context)!.daily,
+    'weekly': AppLocalizations.of(context)!.weekly, 
+    'monthly': AppLocalizations.of(context)!.monthly,
+    'yearly': AppLocalizations.of(context)!.yearly,
   };
   
-  final Map<String, String> _iconOptions = {
+  Map<String, String> get _iconOptions => {
     'subscription_icons/netflix.png': 'Netflix',
     'subscription_icons/spotify.png': 'Spotify',
     'subscription_icons/youtube.png': 'YouTube',
@@ -65,7 +81,7 @@ class _AddEditSubscriptionScreenState extends State<AddEditSubscriptionScreen> {
     'subscription_icons/google.png': 'Google',
     'subscription_icons/microsoft.png': 'Microsoft',
     'subscription_icons/adobe.png': 'Adobe',
-    'subscription_icons/default.png': 'Domyślna',
+    'subscription_icons/default.png': AppLocalizations.of(context)!.defaultIcon,
   };
 
   @override
@@ -109,8 +125,8 @@ class _AddEditSubscriptionScreenState extends State<AddEditSubscriptionScreen> {
       } catch (e) {
         LoggerService.error('Nie znaleziono subskrypcji do edycji: ${widget.subscriptionId}', e);
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Nie znaleziono subskrypcji do edycji'),
+          SnackBar(
+            content: Text(AppLocalizations.of(context)!.subscriptionNotFoundForEdit),
             backgroundColor: Colors.red,
           ),
         );
@@ -130,7 +146,9 @@ class _AddEditSubscriptionScreenState extends State<AddEditSubscriptionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(isEditing ? 'Edytuj subskrypcję' : 'Dodaj subskrypcję'),
+        title: Text(isEditing 
+            ? AppLocalizations.of(context)!.editSubscription 
+            : AppLocalizations.of(context)!.addSubscription),
         actions: [
           BlocBuilder<SubscriptionsBloc, SubscriptionsState>(
             builder: (context, state) {
@@ -174,8 +192,8 @@ class _AddEditSubscriptionScreenState extends State<AddEditSubscriptionScreen> {
               SnackBar(
                 content: Text(
                   isEditing 
-                    ? 'Subskrypcja została zaktualizowana' 
-                    : 'Subskrypcja została dodana',
+                    ? AppLocalizations.of(context)!.subscriptionUpdated 
+                    : AppLocalizations.of(context)!.subscriptionAdded,
                   style: const TextStyle(color: Colors.white),
                 ),
                 backgroundColor: Colors.green,
@@ -201,20 +219,20 @@ class _AddEditSubscriptionScreenState extends State<AddEditSubscriptionScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Nazwa subskrypcji',
+                        AppLocalizations.of(context)!.subscriptionName,
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
                       const SizedBox(height: 8),
                       TextFormField(
                         controller: _titleController,
-                        decoration: const InputDecoration(
-                          hintText: 'np. Netflix, Spotify...',
-                          prefixIcon: Icon(Icons.subscriptions),
-                          border: OutlineInputBorder(),
+                        decoration: InputDecoration(
+                          hintText: AppLocalizations.of(context)!.subscriptionNameHint,
+                          prefixIcon: const Icon(Icons.subscriptions),
+                          border: const OutlineInputBorder(),
                         ),
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
-                            return 'Podaj nazwę subskrypcji';
+                            return AppLocalizations.of(context)!.validation_required;
                           }
                           return null;
                         },
@@ -237,7 +255,7 @@ class _AddEditSubscriptionScreenState extends State<AddEditSubscriptionScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Koszt (PLN)',
+                        AppLocalizations.of(context)!.costPLN,
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
                       const SizedBox(height: 8),
@@ -251,11 +269,11 @@ class _AddEditSubscriptionScreenState extends State<AddEditSubscriptionScreen> {
                         keyboardType: const TextInputType.numberWithOptions(decimal: true),
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
-                            return 'Podaj koszt';
+                            return AppLocalizations.of(context)!.enterCost;
                           }
                           final cost = double.tryParse(value.replaceAll(',', '.'));
                           if (cost == null || cost <= 0) {
-                            return 'Podaj prawidłowy koszt';
+                            return AppLocalizations.of(context)!.enterValidCost;
                           }
                           return null;
                         },
@@ -282,16 +300,16 @@ class _AddEditSubscriptionScreenState extends State<AddEditSubscriptionScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Notatki (opcjonalnie)',
+                        AppLocalizations.of(context)!.notes,
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
                       const SizedBox(height: 8),
                       TextFormField(
                         controller: _notesController,
-                        decoration: const InputDecoration(
-                          hintText: 'Dodatkowe informacje...',
-                          prefixIcon: Icon(Icons.note),
-                          border: OutlineInputBorder(),
+                        decoration: InputDecoration(
+                          hintText: AppLocalizations.of(context)!.notesHint,
+                          prefixIcon: const Icon(Icons.note),
+                          border: const OutlineInputBorder(),
                         ),
                         maxLines: 3,
                       ),
@@ -308,7 +326,9 @@ class _AddEditSubscriptionScreenState extends State<AddEditSubscriptionScreen> {
                 child: ElevatedButton(
                   onPressed: _saveSubscription,
                   child: Text(
-                    isEditing ? 'Zaktualizuj subskrypcję' : 'Dodaj subskrypcję',
+                    isEditing 
+                        ? AppLocalizations.of(context)!.updateSubscription 
+                        : AppLocalizations.of(context)!.addSubscription,
                     style: const TextStyle(fontSize: 16),
                   ),
                 ),
@@ -328,7 +348,7 @@ class _AddEditSubscriptionScreenState extends State<AddEditSubscriptionScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Ikona subskrypcji',
+              AppLocalizations.of(context)!.subscriptionIcon,
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 12),
@@ -412,7 +432,7 @@ class _AddEditSubscriptionScreenState extends State<AddEditSubscriptionScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Kategoria',
+              AppLocalizations.of(context)!.category,
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 8),
@@ -423,9 +443,10 @@ class _AddEditSubscriptionScreenState extends State<AddEditSubscriptionScreen> {
                 border: OutlineInputBorder(),
               ),
               items: _categories.map((category) {
+                final categoryMap = _getCategoryMap(AppLocalizations.of(context)!);
                 return DropdownMenuItem(
                   value: category,
-                  child: Text(category),
+                  child: Text(categoryMap[category] ?? category),
                 );
               }).toList(),
               onChanged: (value) {
@@ -450,7 +471,7 @@ class _AddEditSubscriptionScreenState extends State<AddEditSubscriptionScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Okres płatności',
+              AppLocalizations.of(context)!.paymentPeriod,
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 12),
@@ -460,8 +481,8 @@ class _AddEditSubscriptionScreenState extends State<AddEditSubscriptionScreen> {
                   flex: 2,
                   child: DropdownButtonFormField<String>(
                     value: _selectedPeriodType,
-                    decoration: const InputDecoration(
-                      labelText: 'Typ',
+                    decoration: InputDecoration(
+                      labelText: AppLocalizations.of(context)!.periodType,
                       border: OutlineInputBorder(),
                     ),
                     items: _periodTypes.entries.map((entry) {
@@ -485,15 +506,15 @@ class _AddEditSubscriptionScreenState extends State<AddEditSubscriptionScreen> {
                   flex: 1,
                   child: TextFormField(
                     initialValue: _periodInterval.toString(),
-                    decoration: const InputDecoration(
-                      labelText: 'Co ile',
+                    decoration: InputDecoration(
+                      labelText: AppLocalizations.of(context)!.periodInterval,
                       border: OutlineInputBorder(),
                     ),
                     keyboardType: TextInputType.number,
                     validator: (value) {
                       final interval = int.tryParse(value ?? '');
                       if (interval == null || interval < 1) {
-                        return 'Min. 1';
+                        return AppLocalizations.of(context)!.minimumOne;
                       }
                       return null;
                     },
@@ -524,7 +545,7 @@ class _AddEditSubscriptionScreenState extends State<AddEditSubscriptionScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Data następnej płatności',
+              AppLocalizations.of(context)!.nextPaymentDate,
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 8),
@@ -593,8 +614,8 @@ class _AddEditSubscriptionScreenState extends State<AddEditSubscriptionScreen> {
     final authState = context.read<AuthBloc>().state;
     if (authState is! AuthAuthenticated) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Błąd uwierzytelnienia'),
+        SnackBar(
+          content: Text(AppLocalizations.of(context)!.authenticationError),
           backgroundColor: Colors.red,
         ),
       );

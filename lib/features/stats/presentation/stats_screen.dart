@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../subscriptions/data/subscription_model.dart';
 import '../../subscriptions/logic/subscriptions_bloc.dart';
+import '../../../l10n/app_localizations.dart';
 
 /// Ekran statystyk wydatków
 class StatsScreen extends StatelessWidget {
@@ -10,9 +11,10 @@ class StatsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Statystyki'),
+        title: Text(localizations.stats),
       ),
       body: BlocBuilder<SubscriptionsBloc, SubscriptionsState>(
         builder: (context, state) {
@@ -27,13 +29,13 @@ class StatsScreen extends StatelessWidget {
                 children: [
                   const Icon(Icons.error, size: 64, color: Color(0xFFE53935)),
                   const SizedBox(height: 16),
-                  Text('Błąd: ${state.message}'),
+                  Text('${localizations.error}: ${state.message}'),
                   const SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: () {
                       context.read<SubscriptionsBloc>().add(SubscriptionsLoadRequested());
                     },
-                    child: const Text('Spróbuj ponownie'),
+                    child: Text(localizations.tryAgain),
                   ),
                 ],
               ),
@@ -51,13 +53,13 @@ class StatsScreen extends StatelessWidget {
           }
           
           if (state is! SubscriptionsLoaded) {
-            return const Center(
-              child: Text('Brak danych do wyświetlenia'),
+            return Center(
+              child: Text(localizations.noDataToDisplay),
             );
           }
 
           if (state.subscriptions.isEmpty) {
-            return const Center(
+            return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -68,7 +70,7 @@ class StatsScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 16),
                   Text(
-                    'Brak subskrypcji',
+                    AppLocalizations.of(context)!.noSubscriptions,
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -77,7 +79,7 @@ class StatsScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 8),
                   Text(
-                    'Dodaj subskrypcje, aby zobaczyć statystyki',
+                    AppLocalizations.of(context)!.addSubscriptionsToSeeStats,
                     style: TextStyle(color: Colors.grey),
                   ),
                 ],
@@ -91,23 +93,23 @@ class StatsScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Podsumowanie kosztów
-                _buildCostSummary(state),
+                _buildCostSummary(context, state),
                 const SizedBox(height: 20),
                 
                 // Statystyki według kategorii
-                _buildCategoryStats(state.subscriptions),
+                _buildCategoryStats(context, state.subscriptions),
                 const SizedBox(height: 20),
                 
                 // Statystyki według okresu
-                _buildPeriodStats(state.subscriptions),
+                _buildPeriodStats(context, state.subscriptions),
                 const SizedBox(height: 20),
                 
                 // Najbardziej kosztowne subskrypcje
-                _buildMostExpensive(state.subscriptions),
+                _buildMostExpensive(context, state.subscriptions),
                 const SizedBox(height: 20),
                 
                 // Nadchodzące płatności
-                _buildUpcomingPayments(state.subscriptions),
+                _buildUpcomingPayments(context, state.subscriptions),
               ],
             ),
           );
@@ -116,7 +118,7 @@ class StatsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCostSummary(SubscriptionsLoaded state) {
+  Widget _buildCostSummary(BuildContext context, SubscriptionsLoaded state) {
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(20),
@@ -133,7 +135,7 @@ class StatsScreen extends StatelessWidget {
                 const SizedBox(width: 8),
                 Flexible(
                   child: Text(
-                    'Podsumowanie kosztów',
+                    AppLocalizations.of(context)!.costSummary,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -148,7 +150,7 @@ class StatsScreen extends StatelessWidget {
               children: [
                 Expanded(
                   child: _buildCostCard(
-                    'Miesięcznie',
+                    AppLocalizations.of(context)!.monthlyLabel,
                     '${state.totalMonthlyCost.toStringAsFixed(2)} PLN',
                     Icons.calendar_month,
                     Color(0xFF29B6F6),
@@ -157,7 +159,7 @@ class StatsScreen extends StatelessWidget {
                 const SizedBox(width: 16),
                 Expanded(
                   child: _buildCostCard(
-                    'Rocznie',
+                    AppLocalizations.of(context)!.yearlyLabel,
                     '${state.totalYearlyCost.toStringAsFixed(2)} PLN',
                     Icons.calendar_today,
                     Color(0xFF66BB6A),
@@ -169,8 +171,8 @@ class StatsScreen extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: _buildCostCard(
-                'Średnia koszt na subskrypcję',
-                '${(state.totalMonthlyCost / state.subscriptions.length).toStringAsFixed(2)} PLN/miesiąc',
+                AppLocalizations.of(context)!.averageCostPerSubscription,
+                '${(state.totalMonthlyCost / state.subscriptions.length).toStringAsFixed(2)} PLN${AppLocalizations.of(context)!.perMonth}',
                 Icons.savings,
                 Color(0xFFFFB300),
               ),
@@ -216,12 +218,12 @@ class StatsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCategoryStats(List<Subscription> subscriptions) {
+  Widget _buildCategoryStats(BuildContext context, List<Subscription> subscriptions) {
     final categoryStats = <String, double>{};
     final categoryCounts = <String, int>{};
     
     for (final subscription in subscriptions) {
-      final category = subscription.category ?? 'Inne';
+      final category = subscription.category ?? AppLocalizations.of(context)!.categoryOther;
       categoryStats[category] = (categoryStats[category] ?? 0) + subscription.cost;
       categoryCounts[category] = (categoryCounts[category] ?? 0) + 1;
     }
@@ -245,7 +247,7 @@ class StatsScreen extends StatelessWidget {
                 const SizedBox(width: 8),
                 Flexible(
                   child: Text(
-                    'Wydatki według kategorii',
+                    AppLocalizations.of(context)!.expensesByCategory,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -257,6 +259,7 @@ class StatsScreen extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             ...sortedCategories.map((entry) => _buildCategoryItem(
+              context,
               entry.key,
               entry.value,
               categoryCounts[entry.key]!,
@@ -268,7 +271,7 @@ class StatsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCategoryItem(String category, double amount, int count, double total) {
+  Widget _buildCategoryItem(BuildContext context, String category, double amount, int count, double total) {
     final percentage = (amount / total * 100);
     
     return Container(
@@ -293,7 +296,7 @@ class StatsScreen extends StatelessWidget {
               // Nazwa kategorii
               Expanded(
                 child: Text(
-                  category,
+                  _getLocalizedCategoryName(context, category),
                   style: const TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: 14,
@@ -355,7 +358,7 @@ class StatsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildPeriodStats(List<Subscription> subscriptions) {
+  Widget _buildPeriodStats(BuildContext context, List<Subscription> subscriptions) {
     final periodStats = <String, int>{};
     
     for (final subscription in subscriptions) {
@@ -379,7 +382,7 @@ class StatsScreen extends StatelessWidget {
                 const SizedBox(width: 8),
                 Flexible(
                   child: Text(
-                    'Okresy płatności',
+                    AppLocalizations.of(context)!.paymentPeriods,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -440,7 +443,7 @@ class StatsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMostExpensive(List<Subscription> subscriptions) {
+  Widget _buildMostExpensive(BuildContext context, List<Subscription> subscriptions) {
     final sortedByPrice = List<Subscription>.from(subscriptions)
       ..sort((a, b) => b.cost.compareTo(a.cost));
     
@@ -462,7 +465,7 @@ class StatsScreen extends StatelessWidget {
                 const SizedBox(width: 8),
                 Flexible(
                   child: Text(
-                    'Najdroższe subskrypcje',
+                    AppLocalizations.of(context)!.mostExpensiveSubscriptions,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -480,7 +483,7 @@ class StatsScreen extends StatelessWidget {
                 index + 1,
                 subscription.title,
                 '${subscription.cost.toStringAsFixed(2)} ${subscription.currency}',
-                subscription.period.description,
+                subscription.period.getLocalizedDescription(AppLocalizations.of(context)!),
                 subscription.iconPath,
               );
             }),
@@ -594,7 +597,7 @@ class StatsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildUpcomingPayments(List<Subscription> subscriptions) {
+  Widget _buildUpcomingPayments(BuildContext context, List<Subscription> subscriptions) {
     final now = DateTime.now();
     final upcoming = subscriptions.where((sub) {
       final daysUntil = sub.nextPaymentAt.difference(now).inDays;
@@ -617,7 +620,7 @@ class StatsScreen extends StatelessWidget {
                 const SizedBox(width: 8),
                 Flexible(
                   child: Text(
-                    'Nadchodzące płatności',
+                    AppLocalizations.of(context)!.upcomingPayments,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -629,12 +632,12 @@ class StatsScreen extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             if (upcoming.isEmpty)
-              const Center(
+              Center(
                 child: Padding(
-                  padding: EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(20),
                   child: Text(
-                    'Brak płatności w ciągu najbliższych 7 dni',
-                    style: TextStyle(
+                    AppLocalizations.of(context)!.noPaymentsNext7Days,
+                    style: const TextStyle(
                       color: Colors.grey,
                       fontSize: 16,
                     ),
@@ -642,27 +645,27 @@ class StatsScreen extends StatelessWidget {
                 ),
               )
             else
-              ...upcoming.map((subscription) => _buildUpcomingPaymentItem(subscription)),
+              ...upcoming.map((subscription) => _buildUpcomingPaymentItem(context, subscription)),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildUpcomingPaymentItem(Subscription subscription) {
+  Widget _buildUpcomingPaymentItem(BuildContext context, Subscription subscription) {
     final daysUntil = subscription.nextPaymentAt.difference(DateTime.now()).inDays;
     
     String timeText;
     Color timeColor;
     
     if (daysUntil == 0) {
-      timeText = 'Dzisiaj';
+      timeText = AppLocalizations.of(context)!.today;
       timeColor = Color(0xFFE53935);
     } else if (daysUntil == 1) {
-      timeText = 'Jutro';
+      timeText = AppLocalizations.of(context)!.tomorrow;
       timeColor = Color(0xFFFFB300);
     } else {
-      timeText = 'Za $daysUntil dni';
+      timeText = AppLocalizations.of(context)!.paymentInDays(daysUntil);
       timeColor = Color(0xFF66BB6A);
     }
 
@@ -848,5 +851,35 @@ class StatsScreen extends StatelessWidget {
   /// Oblicza roczny koszt wszystkich subskrypcji
   double _calculateYearlyCost(List<Subscription> subscriptions) {
     return _calculateMonthlyCost(subscriptions) * 12;
+  }
+
+  /// Zwraca zlokalizowaną nazwę kategorii
+  String _getLocalizedCategoryName(BuildContext context, String polishCategory) {
+    final localizations = AppLocalizations.of(context)!;
+    
+    switch (polishCategory) {
+      case 'Rozrywka':
+        return localizations.categoryEntertainment;
+      case 'Muzyka':
+        return localizations.categoryMusic;
+      case 'Video':
+        return localizations.categoryVideo;
+      case 'Gry':
+        return localizations.categoryGames;
+      case 'Produktywność':
+        return localizations.categoryProductivity;
+      case 'Edukacja':
+        return localizations.categoryEducation;
+      case 'Sport':
+        return localizations.categorySport;
+      case 'Zdrowie':
+        return localizations.categoryHealth;
+      case 'Finanse':
+        return localizations.categoryFinance;
+      case 'Inne':
+        return localizations.categoryOther;
+      default:
+        return polishCategory; // fallback to original
+    }
   }
 }

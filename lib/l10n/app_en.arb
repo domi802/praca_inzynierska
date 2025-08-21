@@ -1,0 +1,431 @@
+{
+  "@@locale": "en",
+  "appTitle": "Subscription Manager",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  
+  "login": "Sign In",
+  "register": "Sign Up",
+  "logout": "Sign Out",
+  "loginToAccount": "Sign in to your account",
+  "registerNewAccount": "Create a new account",
+  "emailAddress": "Email address",
+  "enterEmail": "Enter your email",
+  "enterPassword": "Enter your password",
+  "pleaseEnterEmail": "Please enter your email",
+  "pleaseEnterPassword": "Please enter your password",
+  "pleaseEnterValidEmail": "Please enter a valid email address",
+  "passwordTooShort": "Password must be at least 6 characters",
+  
+  "resetPassword": "Reset Password",
+  "resetPasswordInstruction": "Enter your email address and we'll send you a link to reset your password.",
+  "passwordResetSent": "Password reset link has been sent",
+  "sendResetLink": "Send Link",
+  
+  "userProfile": "User Profile",
+  "appSettings": "App Settings", 
+  "account": "Account",
+  "selectLanguage": "Select Language",
+  "selectTheme": "Select Theme",
+  
+  "error": "Error",
+  "tryAgain": "Try Again", 
+  "noDataToDisplay": "No data to display",
+  
+  "paymentCalendar": "Payment Calendar",
+  "thisWeek": "This Week",
+  "thisMonth": "This Month", 
+  "details": "Details",
+  "subscriptionMarkedPaid": "Subscription marked as paid",
+  
+  "todaySummary": "Today's Summary",
+  "weeklySummary": "Weekly Summary",
+  "monthlySummary": "Monthly Summary", 
+  "paymentCount": "Payment Count",
+  "totalCost": "Total Cost",
+  "paymentsToday": "Payments Today",
+  "paymentsThisWeek": "Payments This Week", 
+  "paymentsThisMonth": "Payments This Month",
+  "noPaymentsToday": "No payments today",
+  "noPaymentsThisWeek": "No payments this week",
+  "noPaymentsThisMonth": "No payments this month",
+  
+  "welcomeUser": "Welcome {userName}!",
+  "@welcomeUser": {
+    "placeholders": {
+      "userName": {
+        "type": "String"
+      }
+    }
+  },
+  "mySubscriptions": "My Subscriptions",
+  
+  "allSubscriptions": "All Subscriptions",
+  "dueTomorrow": "Due Tomorrow",
+  "dueToday": "Due Today", 
+  "period": "Period",
+  "paymentDates": "Payment Dates",
+  "lastPayment": "Last Payment",
+  "payToday": "Pay Today",
+  "additionalInfo": "Additional Information",
+  "reminder": "Reminder",
+  "createdDate": "Created Date",
+  "enabled": "Enabled",
+  "daysBefore": "days before",
+  "daysBeforeParam": "{days} days before",
+  "@daysBeforeParam": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "subscriptionIcon": "Subscription Icon",
+  "costPLN": "Cost (PLN)",
+  "type": "Type",
+  "howOften": "How Often",
+  "costSummary": "Cost Summary",
+  "averageCostPerSubscription": "Average Cost per Subscription",
+  "perMonth": "/month",
+  "expensesByCategory": "Expenses by Category",
+  "totalCostWithCurrency": "Total Cost: {cost} PLN",
+  "@totalCostWithCurrency": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
+  "email": "Email",
+  "password": "Password",
+  "firstName": "First Name",
+  "lastName": "Last Name",
+  "confirmPassword": "Confirm Password",
+  "forgotPassword": "Forgot Password?",
+  "dontHaveAccount": "Don't have an account?",
+  "alreadyHaveAccount": "Already have an account?",
+  "createAccount": "Create Account",
+  "signInWithGoogle": "Sign in with Google",
+  "or": "or",
+  
+  "main": "Home",
+  "calendar": "Calendar",
+  "add": "Add",
+  "stats": "Statistics",
+  "profile": "Profile",
+  
+  "subscriptions": "Subscriptions",
+  "addSubscription": "Add Subscription",
+  "editSubscription": "Edit Subscription",
+  "subscriptionDetails": "Subscription Details",
+  "subscriptionName": "Subscription Name",
+  "category": "Category",
+  "cost": "Cost",
+  "currency": "Currency",
+  "nextPayment": "Next Payment",
+  "paymentPeriod": "Payment Period",
+  "notes": "Notes",
+  "icon": "Icon",
+  "save": "Save",
+  "cancel": "Cancel",
+  "delete": "Delete",
+  "edit": "Edit",
+  
+  "daily": "daily",
+  "weekly": "weekly",
+  "monthly": "monthly",
+  "yearly": "yearly",
+  
+  "entertainment": "Entertainment",
+  "music": "Music",
+  "video": "Video",
+  "gaming": "Gaming",
+  "productivity": "Productivity",
+  "education": "Education",
+  "fitness": "Fitness",
+  "health": "Health",
+  "shopping": "Shopping",
+  "transport": "Transport",
+  "other": "Other",
+  
+  "markAsPaid": "Mark as Paid",
+  "deleteSubscription": "Delete Subscription",
+  "upcomingPayments": "Upcoming Payments",
+  "overduePayments": "Overdue Payments",
+  "noSubscriptions": "No Subscriptions",
+  "noSubscriptionsDescription": "Add your first subscription to start managing your expenses",
+  
+  "today": "Today",
+  "tomorrow": "Tomorrow",
+  "daysLeft": "{days} days left",
+  "@daysLeft": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "overdue": "Overdue",
+  
+  "totalMonthly": "Total Monthly",
+  "totalYearly": "Total Yearly",
+  "averagePerSubscription": "Average per Subscription",
+  "mostExpensive": "Most Expensive",
+  "cheapest": "Cheapest",
+  
+  "settings": "Settings",
+  "editProfile": "Edit Profile",
+  "notifications": "Notifications",
+  "theme": "Theme",
+  "language": "Language",
+  "security": "Security",
+  "changePassword": "Change Password",
+  
+  "lightTheme": "Light",
+  "darkTheme": "Dark",
+  "systemTheme": "System",
+  
+  "polish": "Polish",
+  "english": "English",
+  
+  "currentPassword": "Current Password",
+  "newPassword": "New Password",
+  "confirmNewPassword": "Confirm New Password",
+  "enterCurrentPassword": "Enter current password",
+  "enterNewPassword": "Enter new password",
+  "passwordRequirements": "New password must be at least 6 characters and contain letters and numbers.",
+  "passwordsDoNotMatch": "Passwords do not match",
+  
+  "enableNotifications": "Enable Notifications",
+  "reminderDays": "Reminder Days Before",
+  "notificationTime": "Notification Time",
+  
+  "hello": "Hello {name}!",
+  "@hello": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  
+  "errorGeneral": "An error occurred. Please try again.",
+  "errorNetwork": "Network error. Check your connection.",
+  "errorAuth": "Authentication error. Please sign in again.",
+  "errorInvalidEmail": "Invalid email address",
+  "errorWeakPassword": "Password is too weak",
+  "errorEmailAlreadyInUse": "Email is already in use",
+  "errorUserNotFound": "User not found",
+  "errorWrongPassword": "Wrong password",
+  "errorPasswordMismatch": "Passwords don't match",
+  
+  "success": "Success",
+  "subscriptionAdded": "Subscription added successfully",
+  "subscriptionUpdated": "Subscription updated successfully",
+  "subscriptionDeleted": "Subscription deleted successfully",
+  "profileUpdated": "Profile updated successfully",
+  "passwordChanged": "Password changed successfully",
+  
+  "confirmDelete": "Are you sure you want to delete this subscription?",
+  "confirmLogout": "Are you sure you want to sign out?",
+  "yes": "Yes",
+  "no": "No",
+  
+  "enterSubscriptionName": "Enter subscription name",
+  "enterCost": "Enter cost",
+  "selectCategory": "Select category",
+  "selectIcon": "Select icon",
+  "enterNotes": "Enter notes (optional)",
+  "selectDate": "Select date",
+  
+  "enterFirstName": "Enter first name",
+  "enterLastName": "Enter last name",
+  "pleaseEnterFirstName": "Please enter your first name",
+  "pleaseEnterLastName": "Please enter your last name",
+  "emailCannotBeChanged": "Email cannot be changed",
+  "accountEmail": "Account email",
+  "saveChanges": "Save changes",
+  
+  "validation_required": "This field is required",
+  "validation_email": "Please enter a valid email address",
+  "validation_password": "Password must be at least 6 characters",
+  "validation_passwordMatch": "Passwords must match",
+  "validation_cost": "Please enter a valid cost",
+    "validation_name": "Enter valid first/last name",
+
+  "paymentDate": "Payment: {date}",
+  "@paymentDate": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionMarkedAsPaid": "Subscription marked as paid",
+
+  "allCurrentSubscriptionsPaid": "All current subscriptions are paid",
+  "paymentTomorrow": "Payment tomorrow",
+  "daysUntilPayment": "{days} days until payment",
+  "@daysUntilPayment": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "addFirstSubscription": "Add your first subscription to start managing expenses",
+  "confirmDeleteSubscription": "Are you sure you want to delete subscription \"{title}\"? This operation cannot be undone.",
+  "@confirmDeleteSubscription": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "markingAsPaid": "Marking as paid...",
+
+  "enterValidCost": "Enter valid cost",
+  "updateSubscription": "Update subscription",
+  "nextPaymentDate": "Next payment date",
+  "paymentDateLabel": "Payment Date",
+  "paymentOverdue": "Payment overdue ({days} days)",
+  "@paymentOverdue": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "paymentInDays": "Payment in {days} days",
+  "@paymentInDays": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "authenticationError": "Authentication error",
+  "defaultIcon": "Default",
+
+  "subscriptionNotFound": "Subscription not found",
+  "disabled": "Disabled",
+
+  "createNewAccount": "Create new account",
+  "fillFormToCreateAccount": "Fill the form to create account",
+  "provideFirstName": "Provide first name",
+  "firstNameMinLength": "First name must be at least 2 characters",
+  "lastNameMinLength": "Last name must be at least 2 characters",
+  "provideValidEmail": "Provide valid email address",
+  "providePassword": "Provide password",
+  "passwordMinLength": "Password must be at least 6 characters",
+  "enterPasswordAgain": "Enter password again",
+  "repeatPasswordField": "Repeat password",
+  "passwordsNotMatch": "Passwords are not identical",
+  "alreadyHaveAccountQuestion": "Already have an account? ",
+
+  "every3Days": "every 3 days",
+  "biweekly": "every 2 weeks",
+  "quarterly": "quarterly",
+
+  "paymentHistory": "Payment dates",
+  "lastPaymentLabel": "Last payment",
+  "nextPaymentLabel": "Next payment",
+  "additionalInformation": "Additional information",
+  "creationDate": "Creation date",
+  "markAsPaidButton": "Mark as paid",
+  "deleteButton": "Delete",
+
+  "periodDaily": "daily",
+  "periodWeekly": "weekly", 
+  "periodMonthly": "monthly",
+  "periodYearly": "yearly",
+  "period3Days": "every 3 days",
+  "periodBiweekly": "biweekly",
+  "periodQuarterly": "quarterly",
+
+  "addSubscriptionsToSeeStats": "Add subscriptions to see statistics",
+  "paymentPeriods": "Payment periods",
+  "mostExpensiveSubscriptions": "Most expensive subscriptions",
+  "noPaymentsNext7Days": "No payments in the next 7 days",
+
+  "subscriptionTitle": "Subscription name",
+  "subscriptionCost": "Subscription cost", 
+  "reminderDaysBefore": "Reminder (days before)",
+
+  "editMenuItem": "Edit",
+  "viewMenuItem": "Details",
+  "markAsPaidMenuItem": "Mark as paid", 
+  "deleteMenuItem": "Delete",
+  "everyXDays": "Every {days} days",
+  "@everyXDays": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "everyXWeeks": "Every {weeks} weeks",
+  "@everyXWeeks": {
+    "placeholders": {
+      "weeks": {
+        "type": "int"
+      }
+    }
+  },
+  "everyXMonths": "Every {months} months",
+  "@everyXMonths": {
+    "placeholders": {
+      "months": {
+        "type": "int"
+      }
+    }
+  },
+  "everyXYears": "Every {years} years",
+  "@everyXYears": {
+    "placeholders": {
+      "years": {
+        "type": "int"
+      }
+    }
+  },
+  "categoryBreakdown": "Category Breakdown", 
+  "totalAmount": "Total Amount",
+  "averagePerMonth": "Average per Month",
+  "categoryEntertainment": "Entertainment",
+  "categoryMusic": "Music",
+  "categoryVideo": "Video", 
+  "categoryGames": "Games",
+  "categoryProductivity": "Productivity",
+  "categoryEducation": "Education",
+  "categoryHealth": "Health",
+  "categorySport": "Sport",
+  "categoryFinance": "Finance",
+  "categoryOther": "Other",
+  "periodType": "Type", 
+  "periodInterval": "Every",
+  "paymentToday": "Payment today",
+  "paidThisMonth": "Paid this month",
+  "daysToPayment": "{days} days until payment",
+  "@daysToPayment": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "daysShort": "{days} days",
+  "@daysShort": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "monthlyLabel": "Monthly",
+  "yearlyLabel": "Yearly",
+  "subscriptionNotFoundForEdit": "Subscription not found for editing",
+  "subscriptionNameHint": "e.g. Netflix, Spotify...",
+  "minimumOne": "Min. 1",
+  "notesHint": "Additional information..."
+}
