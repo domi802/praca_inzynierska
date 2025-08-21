@@ -112,12 +112,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         // Nazwisko
                         CustomTextField(
                           controller: _lastNameController,
-                          labelText: 'Nazwisko',
+                          labelText: AppLocalizations.of(context)!.lastName,
                           hintText: AppLocalizations.of(context)!.enterLastName,
                           prefixIcon: Icons.person_outlined,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Podaj nazwisko';
+                              return AppLocalizations.of(context)!.pleaseEnterLastName;
                             }
                             if (value.length < 2) {
                               return AppLocalizations.of(context)!.lastNameMinLength;
@@ -130,13 +130,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         // Email
                         CustomTextField(
                           controller: _emailController,
-                          labelText: 'Adres email',
+                          labelText: AppLocalizations.of(context)!.emailAddress,
                           hintText: AppLocalizations.of(context)!.enterEmail,
                           keyboardType: TextInputType.emailAddress,
                           prefixIcon: Icons.email_outlined,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Podaj adres email';
+                              return AppLocalizations.of(context)!.pleaseEnterEmail;
                             }
                             if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
                               return AppLocalizations.of(context)!.provideValidEmail;
