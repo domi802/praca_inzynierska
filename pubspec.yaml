@@ -51,6 +51,7 @@ dependencies:
   # Grafika i ikony
   flutter_svg: ^2.0.12
   cached_network_image: ^3.4.1
+  home_widget: ^0.8.0
 
 dev_dependencies:
   flutter_test:

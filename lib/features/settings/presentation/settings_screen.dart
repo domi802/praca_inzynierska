@@ -6,6 +6,7 @@ import '../logic/settings_cubit.dart';
 import '../../auth/logic/auth_bloc.dart';
 import '../../../l10n/app_localizations.dart';
 
+
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key}) : super(key: key);
 
@@ -161,6 +162,7 @@ class SettingsScreen extends StatelessWidget {
                 _showThemeDialog(context, settingsState, localizations);
               },
             ),
+            
           ],
         ),
       ),

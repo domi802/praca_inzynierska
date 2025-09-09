@@ -60,7 +60,30 @@ class NotificationService {
   /// Obsługa kliknięcia w powiadomienie
   void _onNotificationTapped(NotificationResponse response) {
     LoggerService.info('Kliknięto powiadomienie: ${response.payload}');
-    // TODO: Implementuj nawigację do odpowiedniego ekranu
+    
+    if (response.payload != null && response.payload!.isNotEmpty) {
+      // Tutaj możemy dodać nawigację do szczegółów subskrypcji
+      // Zapisz payload do SharedPreferences lub wywołaj callback
+      _handleNotificationTap(response.payload!);
+    }
+  }
+
+  /// Obsługa kliknięcia - można to rozszerzyć o nawigację
+  void _handleNotificationTap(String subscriptionId) {
+    // Można tutaj dodać nawigację lub callback
+    LoggerService.info('Obsługa kliknięcia dla subskrypcji: $subscriptionId');
+    
+    // Przykład: zapisz ID do obsługi w głównej aplikacji
+    _lastTappedNotificationId = subscriptionId;
+  }
+
+  String? _lastTappedNotificationId;
+  
+  /// Pobierz ID ostatnio klikniętego powiadomienia i wyczyść
+  String? getAndClearLastTappedNotification() {
+    final id = _lastTappedNotificationId;
+    _lastTappedNotificationId = null;
+    return id;
   }
 
   /// Żądanie uprawnień do powiadomień

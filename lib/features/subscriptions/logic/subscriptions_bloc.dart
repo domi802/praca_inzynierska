@@ -1,9 +1,10 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
 import '../data/subscription_model.dart';
 import '../data/subscription_repository.dart';
 import '../../../core/services/logger_service.dart';
+import '../../../core/services/notification_service.dart';
 
 // Events
 abstract class SubscriptionsEvent extends Equatable {
@@ -139,6 +140,9 @@ class SubscriptionsBloc extends Bloc<SubscriptionsEvent, SubscriptionsState> {
       final subscriptions = await _subscriptionRepository.getSubscriptions();
       final costs = _calculateCosts(subscriptions);
       
+      // Zaplanuj powiadomienia dla wszystkich subskrypcji
+      await _scheduleAllNotifications(subscriptions);
+      
       emit(SubscriptionsLoaded(
         subscriptions: subscriptions,
         totalMonthlyCost: costs['monthly']!,
@@ -194,6 +198,10 @@ class SubscriptionsBloc extends Bloc<SubscriptionsEvent, SubscriptionsState> {
     
     try {
       await _subscriptionRepository.addSubscription(event.subscription);
+      
+      // Zaplanuj powiadomienie dla nowej subskrypcji
+      await _scheduleNotificationForSubscription(event.subscription);
+      
       add(SubscriptionsLoadRequested());
       LoggerService.info('Dodano nową subskrypcję: ${event.subscription.title}');
     } catch (e) {
@@ -220,6 +228,11 @@ class SubscriptionsBloc extends Bloc<SubscriptionsEvent, SubscriptionsState> {
     
     try {
       await _subscriptionRepository.updateSubscription(event.subscription);
+      
+      // Anuluj stare powiadomienie i zaplanuj nowe
+      await NotificationService.instance.cancelNotification(event.subscription.id.hashCode);
+      await _scheduleNotificationForSubscription(event.subscription);
+      
       add(SubscriptionsLoadRequested());
       LoggerService.info('Zaktualizowano subskrypcję: ${event.subscription.title}');
     } catch (e) {
@@ -245,6 +258,9 @@ class SubscriptionsBloc extends Bloc<SubscriptionsEvent, SubscriptionsState> {
     }
     
     try {
+      // Anuluj powiadomienie przed usunięciem
+      await NotificationService.instance.cancelNotification(event.subscriptionId.hashCode);
+      
       await _subscriptionRepository.deleteSubscription(event.subscriptionId);
       add(SubscriptionsLoadRequested());
       LoggerService.info('Usunięto subskrypcję: ${event.subscriptionId}');
@@ -314,6 +330,50 @@ class SubscriptionsBloc extends Bloc<SubscriptionsEvent, SubscriptionsState> {
       'monthly': monthlyTotal,
       'yearly': yearlyTotal,
     };
+  }
+
+  /// Zaplanuj powiadomienie dla konkretnej subskrypcji
+  Future<void> _scheduleNotificationForSubscription(Subscription subscription) async {
+    try {
+      // Oblicz datę przypomnienia (dzień przed płatnością)
+      final reminderDate = subscription.nextPaymentAt
+          .subtract(Duration(days: subscription.reminderDays));
+
+      // Sprawdź czy data nie jest w przeszłości
+      if (reminderDate.isBefore(DateTime.now())) {
+        LoggerService.warning('Data przypomnienia jest w przeszłości: ${subscription.title}');
+        return;
+      }
+
+      await NotificationService.instance.scheduleSubscriptionReminder(
+        id: subscription.id.hashCode,
+        title: '💳 Przypomnienie o płatności',
+        body: 'Jutro płatność za ${subscription.title}: ${subscription.cost} ${subscription.currency}',
+        scheduledDate: reminderDate,
+        payload: subscription.id,
+      );
+
+      LoggerService.info('Zaplanowano powiadomienie: ${subscription.title} na $reminderDate');
+    } catch (e, stackTrace) {
+      LoggerService.error('Błąd planowania powiadomienia dla ${subscription.title}', e, stackTrace);
+    }
+  }
+
+  /// Zaplanuj powiadomienia dla wszystkich aktywnych subskrypcji
+  Future<void> _scheduleAllNotifications(List<Subscription> subscriptions) async {
+    try {
+      // Najpierw anuluj wszystkie istniejące powiadomienia
+      await NotificationService.instance.cancelAllNotifications();
+
+      // Zaplanuj nowe dla każdej subskrypcji
+      for (final subscription in subscriptions) {
+        await _scheduleNotificationForSubscription(subscription);
+      }
+
+      LoggerService.info('Zaplanowano powiadomienia dla ${subscriptions.length} subskrypcji');
+    } catch (e, stackTrace) {
+      LoggerService.error('Błąd planowania powiadomień', e, stackTrace);
+    }
   }
 
   String _getErrorMessage(dynamic error) {
