@@ -462,5 +462,17 @@
   "errorNetworkFailed": "No internet connection",
   "errorGenericAuth": "An error occurred. Please try again later",
   "errorUnexpected": "An unexpected error occurred",
-  "errorUserDataNotFound": "User data not found"
+  "errorUserDataNotFound": "User data not found",
+  
+  "verifyYourEmail": "Verify your email",
+  "checkEmailForVerification": "Check your inbox and click the verification link.",
+  "checkVerification": "Check verification",
+  "resendEmail": "Resend email",
+  "hide": "Hide",
+  "emailVerificationSent": "Verification email has been sent again",
+  "emailVerified": "Email has been verified! 🎉",
+  "continueWithGoogle": "Continue with Google",
+  "orSignInWith": "Or sign in with",
+  "orSignUpWith": "Or sign up with",
+  "enterValidEmail": "Enter a valid email address"
 }

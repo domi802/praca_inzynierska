@@ -210,6 +210,45 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         const SizedBox(height: 16),
                         
+                        // Divider "LUB"
+                        Row(
+                          children: [
+                            const Expanded(child: Divider()),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 16),
+                              child: Text(
+                                localizations.or.toUpperCase(),
+                                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                  color: Colors.grey[600],
+                                ),
+                              ),
+                            ),
+                            const Expanded(child: Divider()),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        
+                        // Google Sign-In Button
+                        OutlinedButton.icon(
+                          onPressed: () {
+                            context.read<AuthBloc>().add(AuthGoogleSignInRequested());
+                          },
+                          icon: Image.asset(
+                            'assets/icons/google.png',
+                            height: 20,
+                            width: 20,
+                            errorBuilder: (context, error, stackTrace) {
+                              return const Icon(Icons.g_mobiledata, size: 20);
+                            },
+                          ),
+                          label: Text(localizations.continueWithGoogle),
+                          style: OutlinedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            side: BorderSide(color: Colors.grey[300]!),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        
                         // Link do logowania
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,

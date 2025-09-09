@@ -951,4 +951,38 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errorUserDataNotFound => 'User data not found';
+
+  @override
+  String get verifyYourEmail => 'Verify your email';
+
+  @override
+  String get checkEmailForVerification =>
+      'Check your inbox and click the verification link.';
+
+  @override
+  String get checkVerification => 'Check verification';
+
+  @override
+  String get resendEmail => 'Resend email';
+
+  @override
+  String get hide => 'Hide';
+
+  @override
+  String get emailVerificationSent => 'Verification email has been sent again';
+
+  @override
+  String get emailVerified => 'Email has been verified! 🎉';
+
+  @override
+  String get continueWithGoogle => 'Continue with Google';
+
+  @override
+  String get orSignInWith => 'Or sign in with';
+
+  @override
+  String get orSignUpWith => 'Or sign up with';
+
+  @override
+  String get enterValidEmail => 'Enter a valid email address';
 }

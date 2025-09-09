@@ -446,5 +446,17 @@
   "errorNetworkFailed": "Brak połączenia z internetem",
   "errorGenericAuth": "Wystąpił błąd. Spróbuj ponownie później",
   "errorUnexpected": "Wystąpił nieoczekiwany błąd",
-  "errorUserDataNotFound": "Nie znaleziono danych użytkownika"
+  "errorUserDataNotFound": "Nie znaleziono danych użytkownika",
+  
+  "verifyYourEmail": "Zweryfikuj swój email",
+  "checkEmailForVerification": "Sprawdź swoją skrzynkę pocztową i kliknij link weryfikacyjny.",
+  "checkVerification": "Sprawdź weryfikację",
+  "resendEmail": "Wyślij ponownie",
+  "hide": "Ukryj",
+  "emailVerificationSent": "Email weryfikacyjny został wysłany ponownie",
+  "emailVerified": "Email został zweryfikowany! 🎉",
+  "continueWithGoogle": "Kontynuuj z Google",
+  "orSignInWith": "Lub zaloguj się przez",
+  "orSignUpWith": "Lub zarejestruj się przez",
+  "enterValidEmail": "Wprowadź prawidłowy adres email"
 }

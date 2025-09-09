@@ -9,10 +9,23 @@
       "client_info": {
         "mobilesdk_app_id": "1:50575926322:android:bc87a43262e8857b97882b",
         "android_client_info": {
-          "package_name": "com.dominik.pracainzynierska"
+          "package_name": "com.example.praca_inzynierska"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "50575926322-vi1okg502i7fed299sso4bm608dg6np8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.praca_inzynierska",
+            "certificate_hash": "c051527b8c7fa936bd345478c438871e3a52d312"
+          }
+        },
+        {
+          "client_id": "50575926322-gauqsifvapjam13ksahlk52rife60tak.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyC6jR6_kA5RZ9qkITt-7I0YWsUgD_S2FtM"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "50575926322-gauqsifvapjam13ksahlk52rife60tak.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "50575926322-cs9fr4o3i4ba7c70sg56vsondr049c63.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.pracaInzynierska"
+              }
+            }
+          ]
         }
       }
     }

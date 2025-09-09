@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import 'user_model.dart';
 import '../../../core/services/logger_service.dart';
@@ -9,12 +10,15 @@ import '../../../app/constants.dart';
 class AuthRepository {
   final firebase_auth.FirebaseAuth _firebaseAuth;
   final FirebaseFirestore _firestore;
+  final GoogleSignIn _googleSignIn;
 
   AuthRepository({
     firebase_auth.FirebaseAuth? firebaseAuth,
     FirebaseFirestore? firestore,
+    GoogleSignIn? googleSignIn,
   })  : _firebaseAuth = firebaseAuth ?? firebase_auth.FirebaseAuth.instance,
-        _firestore = firestore ?? FirebaseFirestore.instance;
+        _firestore = firestore ?? FirebaseFirestore.instance,
+        _googleSignIn = googleSignIn ?? GoogleSignIn();
 
   /// Stream zmian stanu uwierzytelnienia
   Stream<firebase_auth.User?> get authStateChanges =>
@@ -90,6 +94,92 @@ class AuthRepository {
     } catch (e) {
       LoggerService.error('Błąd podczas wysyłania emaila resetującego', e);
       throw Exception('Wystąpił błąd podczas wysyłania emaila resetującego');
+    }
+  }
+
+  /// Wysyła email weryfikacyjny
+  Future<void> sendEmailVerification() async {
+    try {
+      final user = _firebaseAuth.currentUser;
+      if (user != null && !user.emailVerified) {
+        await user.sendEmailVerification();
+        LoggerService.info('Email weryfikacyjny wysłany do: ${user.email}');
+      }
+    } catch (e) {
+      LoggerService.error('Błąd podczas wysyłania emaila weryfikacyjnego', e);
+      throw Exception('Nie udało się wysłać emaila weryfikacyjnego');
+    }
+  }
+
+  /// Sprawdza czy email jest zweryfikowany
+  bool get isEmailVerified => _firebaseAuth.currentUser?.emailVerified ?? false;
+
+  /// Odświeża dane użytkownika (sprawdza weryfikację email)
+  Future<void> reloadUser() async {
+    try {
+      await _firebaseAuth.currentUser?.reload();
+    } catch (e) {
+      LoggerService.error('Błąd podczas odświeżania danych użytkownika', e);
+    }
+  }
+
+  /// Logowanie przez Google
+  Future<firebase_auth.User> signInWithGoogle() async {
+    try {
+      // Rozpocznij proces logowania Google
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      
+      if (googleUser == null) {
+        throw Exception('Logowanie Google zostało anulowane');
+      }
+
+      // Uzyskaj szczegóły uwierzytelnienia
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+
+      // Utwórz credential Firebase
+      final credential = firebase_auth.GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      // Zaloguj do Firebase
+      final userCredential = await _firebaseAuth.signInWithCredential(credential);
+      
+      if (userCredential.user == null) {
+        throw Exception('Nie udało się zalogować przez Google');
+      }
+
+      // Sprawdź czy to nowy użytkownik
+      if (userCredential.additionalUserInfo?.isNewUser == true) {
+        // Zapisz dane nowego użytkownika
+        final user = User(
+          uid: userCredential.user!.uid,
+          email: userCredential.user!.email ?? '',
+          firstName: userCredential.user!.displayName?.split(' ').first ?? '',
+          lastName: userCredential.user!.displayName?.split(' ').skip(1).join(' ') ?? '',
+          photoUrl: userCredential.user!.photoURL,
+          createdAt: DateTime.now(),
+          updatedAt: DateTime.now(),
+        );
+        await saveUserData(user);
+      }
+
+      LoggerService.info('Użytkownik zalogowany przez Google: ${userCredential.user!.email}');
+      return userCredential.user!;
+    } catch (e) {
+      LoggerService.error('Błąd podczas logowania przez Google', e);
+      rethrow;
+    }
+  }
+
+  /// Wylogowanie z Google
+  Future<void> signOutGoogle() async {
+    try {
+      await _googleSignIn.signOut();
+      await _firebaseAuth.signOut();
+    } catch (e) {
+      LoggerService.error('Błąd podczas wylogowania z Google', e);
+      throw Exception('Nie udało się wylogować z Google');
     }
   }
 
