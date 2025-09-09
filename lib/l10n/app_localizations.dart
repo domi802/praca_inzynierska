@@ -1897,6 +1897,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'User data not found'**
   String get errorUserDataNotFound;
+
+  /// No description provided for @verifyYourEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify your email'**
+  String get verifyYourEmail;
+
+  /// No description provided for @checkEmailForVerification.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your inbox and click the verification link.'**
+  String get checkEmailForVerification;
+
+  /// No description provided for @checkVerification.
+  ///
+  /// In en, this message translates to:
+  /// **'Check verification'**
+  String get checkVerification;
+
+  /// No description provided for @resendEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend email'**
+  String get resendEmail;
+
+  /// No description provided for @hide.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide'**
+  String get hide;
+
+  /// No description provided for @emailVerificationSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification email has been sent again'**
+  String get emailVerificationSent;
+
+  /// No description provided for @emailVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'Email has been verified! 🎉'**
+  String get emailVerified;
+
+  /// No description provided for @continueWithGoogle.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Google'**
+  String get continueWithGoogle;
+
+  /// No description provided for @orSignInWith.
+  ///
+  /// In en, this message translates to:
+  /// **'Or sign in with'**
+  String get orSignInWith;
+
+  /// No description provided for @orSignUpWith.
+  ///
+  /// In en, this message translates to:
+  /// **'Or sign up with'**
+  String get orSignUpWith;
+
+  /// No description provided for @enterValidEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid email address'**
+  String get enterValidEmail;
 }
 
 class _AppLocalizationsDelegate

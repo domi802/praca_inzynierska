@@ -7,6 +7,7 @@ class User extends Equatable {
   final String email;
   final String firstName;
   final String lastName;
+  final String? photoUrl;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -15,6 +16,7 @@ class User extends Equatable {
     required this.email,
     required this.firstName,
     required this.lastName,
+    this.photoUrl,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -26,6 +28,7 @@ class User extends Equatable {
       email: map['email'] as String,
       firstName: map['firstName'] as String,
       lastName: map['lastName'] as String,
+      photoUrl: map['photoUrl'] as String?,
       createdAt: (map['createdAt'] as Timestamp).toDate(),
       updatedAt: (map['updatedAt'] as Timestamp).toDate(),
     );
@@ -38,6 +41,7 @@ class User extends Equatable {
       'email': email,
       'firstName': firstName,
       'lastName': lastName,
+      'photoUrl': photoUrl,
       'createdAt': Timestamp.fromDate(createdAt),
       'updatedAt': Timestamp.fromDate(updatedAt),
     };
@@ -49,6 +53,7 @@ class User extends Equatable {
     String? email,
     String? firstName,
     String? lastName,
+    String? photoUrl,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) {
@@ -57,6 +62,7 @@ class User extends Equatable {
       email: email ?? this.email,
       firstName: firstName ?? this.firstName,
       lastName: lastName ?? this.lastName,
+      photoUrl: photoUrl ?? this.photoUrl,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );
@@ -78,12 +84,13 @@ class User extends Equatable {
         email,
         firstName,
         lastName,
+        photoUrl,
         createdAt,
         updatedAt,
       ];
 
   @override
   String toString() {
-    return 'User(uid: $uid, email: $email, firstName: $firstName, lastName: $lastName)';
+    return 'User(uid: $uid, email: $email, firstName: $firstName, lastName: $lastName, photoUrl: $photoUrl)';
   }
 }

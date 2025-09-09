@@ -952,4 +952,39 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get errorUserDataNotFound => 'Nie znaleziono danych użytkownika';
+
+  @override
+  String get verifyYourEmail => 'Zweryfikuj swój email';
+
+  @override
+  String get checkEmailForVerification =>
+      'Sprawdź swoją skrzynkę pocztową i kliknij link weryfikacyjny.';
+
+  @override
+  String get checkVerification => 'Sprawdź weryfikację';
+
+  @override
+  String get resendEmail => 'Wyślij ponownie';
+
+  @override
+  String get hide => 'Ukryj';
+
+  @override
+  String get emailVerificationSent =>
+      'Email weryfikacyjny został wysłany ponownie';
+
+  @override
+  String get emailVerified => 'Email został zweryfikowany! 🎉';
+
+  @override
+  String get continueWithGoogle => 'Kontynuuj z Google';
+
+  @override
+  String get orSignInWith => 'Lub zaloguj się przez';
+
+  @override
+  String get orSignUpWith => 'Lub zarejestruj się przez';
+
+  @override
+  String get enterValidEmail => 'Wprowadź prawidłowy adres email';
 }

@@ -49,6 +49,19 @@ class AuthRegisterRequested extends AuthEvent {
 
 class AuthLogoutRequested extends AuthEvent {}
 
+class AuthGoogleSignInRequested extends AuthEvent {}
+
+class AuthEmailVerificationRequested extends AuthEvent {}
+
+class AuthPasswordResetRequested extends AuthEvent {
+  final String email;
+  
+  const AuthPasswordResetRequested({required this.email});
+  
+  @override
+  List<Object?> get props => [email];
+}
+
 class AuthUserChanged extends AuthEvent {
   final firebase_auth.User? firebaseUser;
   
@@ -107,6 +120,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthLoginRequested>(_onAuthLoginRequested);
     on<AuthRegisterRequested>(_onAuthRegisterRequested);
     on<AuthLogoutRequested>(_onAuthLogoutRequested);
+    on<AuthGoogleSignInRequested>(_onAuthGoogleSignInRequested);
+    on<AuthEmailVerificationRequested>(_onAuthEmailVerificationRequested);
+    on<AuthPasswordResetRequested>(_onAuthPasswordResetRequested);
     on<AuthUserChanged>(_onAuthUserChanged);
   }
 
@@ -179,6 +195,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       );
       
       await _authRepository.saveUserData(user);
+      
+      // Automatycznie wyślij email weryfikacyjny
+      try {
+        await _authRepository.sendEmailVerification();
+        LoggerService.info('Email weryfikacyjny został wysłany do: ${event.email}');
+      } catch (e) {
+        LoggerService.error('Nie udało się wysłać emaila weryfikacyjnego', e);
+        // Nie przerywamy procesu rejestracji jeśli email się nie wyśle
+      }
+      
       emit(AuthAuthenticated(user));
       LoggerService.info('Nowy użytkownik zarejestrowany: ${user.email}');
     } catch (e) {
@@ -197,6 +223,56 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       LoggerService.info('Użytkownik wylogowany');
     } catch (e) {
       LoggerService.error('Błąd wylogowania', e);
+      emit(AuthError(_getErrorMessage(e)));
+    }
+  }
+
+  Future<void> _onAuthGoogleSignInRequested(
+    AuthGoogleSignInRequested event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(AuthLoading());
+    
+    try {
+      final firebaseUser = await _authRepository.signInWithGoogle();
+      
+      final user = await _authRepository.getUserData(firebaseUser.uid);
+      if (user != null) {
+        emit(AuthAuthenticated(user));
+        LoggerService.info('Użytkownik zalogowany przez Google: ${user.email}');
+      } else {
+        emit(AuthError(LocalizationService.getAuthError('user-data-not-found')));
+      }
+    } catch (e) {
+      LoggerService.error('Błąd logowania Google', e);
+      emit(AuthError(_getErrorMessage(e)));
+    }
+  }
+
+  Future<void> _onAuthEmailVerificationRequested(
+    AuthEmailVerificationRequested event,
+    Emitter<AuthState> emit,
+  ) async {
+    try {
+      await _authRepository.sendEmailVerification();
+      // Nie zmieniamy stanu - użytkownik nadal jest zalogowany
+      LoggerService.info('Email weryfikacyjny został wysłany');
+    } catch (e) {
+      LoggerService.error('Błąd wysyłania emaila weryfikacyjnego', e);
+      emit(AuthError(_getErrorMessage(e)));
+    }
+  }
+
+  Future<void> _onAuthPasswordResetRequested(
+    AuthPasswordResetRequested event,
+    Emitter<AuthState> emit,
+  ) async {
+    try {
+      await _authRepository.sendPasswordResetEmail(event.email);
+      LoggerService.info('Email resetujący hasło został wysłany na: ${event.email}');
+      // Możemy emitować sukces, ale nie zmieniamy stanu autoryzacji
+    } catch (e) {
+      LoggerService.error('Błąd wysyłania emaila resetującego hasło', e);
       emit(AuthError(_getErrorMessage(e)));
     }
   }

@@ -21,6 +21,7 @@ dependencies:
   firebase_auth: ^5.3.1
   cloud_firestore: ^5.4.3
   firebase_storage: ^12.3.2
+  google_sign_in: ^6.2.1
   
   # Zarządzanie stanem
   flutter_bloc: ^8.1.6

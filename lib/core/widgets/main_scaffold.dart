@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'animated_bottom_navigation_bar.dart';
+import 'email_verification_banner.dart';
 
 /// Główny scaffold aplikacji z dolną nawigacją
 class MainScaffold extends StatelessWidget {
@@ -14,7 +15,18 @@ class MainScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: child,
+      body: SafeArea(
+        child: Column(
+          children: [
+            // Dodatkowe odstępy dla bannera
+            const SizedBox(height: 8),
+            // Banner weryfikacji email
+            const EmailVerificationBanner(),
+            // Główna zawartość
+            Expanded(child: child),
+          ],
+        ),
+      ),
       bottomNavigationBar: _buildBottomNavigationBar(context),
     );
   }
