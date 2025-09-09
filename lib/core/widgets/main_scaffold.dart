@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../../l10n/app_localizations.dart';
+import 'animated_bottom_navigation_bar.dart';
 
 /// Główny scaffold aplikacji z dolną nawigacją
 class MainScaffold extends StatelessWidget {
@@ -22,38 +22,19 @@ class MainScaffold extends StatelessWidget {
   Widget _buildBottomNavigationBar(BuildContext context) {
     final String currentPath = GoRouterState.of(context).uri.path;
     
-    return BottomNavigationBar(
-      type: BottomNavigationBarType.fixed,
+    return AnimatedBottomNavigationBar(
       currentIndex: _getSelectedIndex(currentPath),
       onTap: (index) => _onItemTapped(context, index),
-      items: [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: AppLocalizations.of(context)!.main,
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.calendar_month),
-          label: AppLocalizations.of(context)!.calendar,
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.add_circle, size: 32),
-          label: AppLocalizations.of(context)!.add,
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.analytics),
-          label: AppLocalizations.of(context)!.stats,
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.person),
-          label: AppLocalizations.of(context)!.profile,
-        ),
-      ],
     );
   }
 
   int _getSelectedIndex(String currentPath) {
-    if (currentPath == '/' || currentPath.startsWith('/subscription')) {
+    if (currentPath == '/') {
       return 0; // Główna
+    } else if (currentPath.startsWith('/subscription/add')) {
+      return 2; // ADD - aby nie podświetlać innych przycisków
+    } else if (currentPath.startsWith('/subscription')) {
+      return 0; // Inne strony subskrypcji -> Główna
     } else if (currentPath.startsWith('/calendar')) {
       return 1; // Kalendarz
     } else if (currentPath.startsWith('/stats')) {
@@ -65,21 +46,23 @@ class MainScaffold extends StatelessWidget {
   }
 
   void _onItemTapped(BuildContext context, int index) {
+    final String currentPath = GoRouterState.of(context).uri.path;
+    
     switch (index) {
       case 0:
-        context.go('/');
+        context.go('/?from=$currentPath');
         break;
       case 1:
-        context.go('/calendar');
+        context.go('/calendar?from=$currentPath');
         break;
       case 2:
         context.go('/subscription/add');
         break;
       case 3:
-        context.go('/stats');
+        context.go('/stats?from=$currentPath');
         break;
       case 4:
-        context.go('/settings');
+        context.go('/settings?from=$currentPath');
         break;
     }
   }

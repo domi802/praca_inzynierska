@@ -13,6 +13,7 @@ import '../features/settings/presentation/edit_profile_screen.dart';
 import '../features/settings/presentation/change_password_screen.dart';
 import '../core/widgets/main_scaffold.dart';
 import '../core/services/logger_service.dart';
+import '../core/animations/page_transitions.dart';
 import '../l10n/app_localizations.dart';
 
 /// Klasa zarządzająca routingiem aplikacji
@@ -59,11 +60,19 @@ class AppRouter {
         // Trasy uwierzytelnienia
         GoRoute(
           path: loginRoute,
-          builder: (context, state) => const LoginScreen(),
+          pageBuilder: (context, state) => PageTransitions.fadeTransition(
+            context, 
+            state, 
+            const LoginScreen(),
+          ),
         ),
         GoRoute(
           path: registerRoute,
-          builder: (context, state) => const RegisterScreen(),
+          pageBuilder: (context, state) => PageTransitions.slideLeftTransition(
+            context, 
+            state, 
+            const RegisterScreen(),
+          ),
         ),
         
         // Główna nawigacja z dolną belką
@@ -72,54 +81,101 @@ class AppRouter {
             return MainScaffold(child: child);
           },
           routes: [
-            // Lista subskrypcji (ekran główny)
+            // Lista subskrypcji (ekran główny) - indeks 0
             GoRoute(
               path: homeRoute,
-              builder: (context, state) => const SubscriptionsListScreen(),
+              pageBuilder: (context, state) {
+                // Sprawdzamy skąd przyszliśmy, aby określić kierunek animacji
+                final String? from = state.uri.queryParameters['from'];
+                bool slideLeft = _shouldSlideLeft('/', from);
+                return PageTransitions.navigationTransition(
+                  context, 
+                  state, 
+                  const SubscriptionsListScreen(),
+                  slideLeft: slideLeft,
+                );
+              },
             ),
             
             // Dodawanie nowej subskrypcji
             GoRoute(
               path: addSubscriptionRoute,
-              builder: (context, state) => const AddEditSubscriptionScreen(),
+              pageBuilder: (context, state) => PageTransitions.slideUpTransition(
+                context, 
+                state, 
+                const AddEditSubscriptionScreen(),
+              ),
             ),
             
             // Szczegóły subskrypcji
             GoRoute(
               path: subscriptionDetailRoute,
-              builder: (context, state) {
+              pageBuilder: (context, state) {
                 final String subscriptionId = state.pathParameters['id']!;
-                return SubscriptionDetailScreen(subscriptionId: subscriptionId);
+                return PageTransitions.slideAndFadeTransition(
+                  context, 
+                  state, 
+                  SubscriptionDetailScreen(subscriptionId: subscriptionId),
+                );
               },
             ),
             
             // Edycja subskrypcji
             GoRoute(
               path: editSubscriptionRoute,
-              builder: (context, state) {
+              pageBuilder: (context, state) {
                 final String subscriptionId = state.pathParameters['id']!;
-                return AddEditSubscriptionScreen(
-                  subscriptionId: subscriptionId,
+                return PageTransitions.slideLeftTransition(
+                  context, 
+                  state, 
+                  AddEditSubscriptionScreen(subscriptionId: subscriptionId),
                 );
               },
             ),
             
-            // Kalendarz
+            // Kalendarz - indeks 1
             GoRoute(
               path: calendarRoute,
-              builder: (context, state) => const CalendarScreen(),
+              pageBuilder: (context, state) {
+                final String? from = state.uri.queryParameters['from'];
+                bool slideLeft = _shouldSlideLeft('/calendar', from);
+                return PageTransitions.navigationTransition(
+                  context, 
+                  state, 
+                  const CalendarScreen(),
+                  slideLeft: slideLeft,
+                );
+              },
             ),
             
-            // Statystyki
+            // Statystyki - indeks 3
             GoRoute(
               path: statsRoute,
-              builder: (context, state) => const StatsScreen(),
+              pageBuilder: (context, state) {
+                final String? from = state.uri.queryParameters['from'];
+                bool slideLeft = _shouldSlideLeft('/stats', from);
+                return PageTransitions.navigationTransition(
+                  context, 
+                  state, 
+                  const StatsScreen(),
+                  slideLeft: slideLeft,
+                );
+              },
             ),
             
-            // Ustawienia
+            // Ustawienia - indeks 4
             GoRoute(
               path: settingsRoute,
-              builder: (context, state) => const SettingsScreen(),
+              pageBuilder: (context, state) {
+                final String? from = state.uri.queryParameters['from'];
+                bool slideLeft = _shouldSlideLeft('/settings', from);
+                return PageTransitions.navigationTransition(
+                  context, 
+                  state, 
+                  const SettingsScreen(),
+                  slideLeft: slideLeft,
+                );
+              },
             ),
           ],
         ),
@@ -127,11 +183,19 @@ class AppRouter {
         // Trasy profilu (poza MainScaffold)
         GoRoute(
           path: editProfileRoute,
-          builder: (context, state) => const EditProfileScreen(),
+          pageBuilder: (context, state) => PageTransitions.slideLeftTransition(
+            context, 
+            state, 
+            const EditProfileScreen(),
+          ),
         ),
         GoRoute(
           path: changePasswordRoute,
-          builder: (context, state) => const ChangePasswordScreen(),
+          pageBuilder: (context, state) => PageTransitions.slideLeftTransition(
+            context, 
+            state, 
+            const ChangePasswordScreen(),
+          ),
         ),
       ],
       
@@ -210,5 +274,28 @@ class AppRouter {
   /// Sprawdza czy trasa jest trasą uwierzytelnienia
   static bool _isAuthRoute(String location) {
     return location == loginRoute || location == registerRoute;
+  }
+
+  /// Określa kierunek animacji na podstawie indeksów ekranów
+  static bool _shouldSlideLeft(String currentPath, String? fromPath) {
+    // Mapowanie ścieżek na indeksy nawigacji
+    final Map<String, int> pathToIndex = {
+      '/': 0,
+      '/calendar': 1,
+      '/stats': 3,
+      '/settings': 4,
+    };
+
+    final int currentIndex = pathToIndex[currentPath] ?? 0;
+    final int fromIndex = fromPath != null ? (pathToIndex[fromPath] ?? 0) : 0;
+
+    // Debug
+    print('Navigation: $fromPath -> $currentPath (${fromIndex} -> ${currentIndex})');
+    
+    // Jeśli idziemy do wyższego indeksu - slide right (animacja w prawo, slideLeft = false)
+    // Jeśli idziemy do niższego indeksu - slide left (animacja w lewo, slideLeft = true)
+    final shouldSlideLeft = currentIndex < fromIndex;
+    print('slideLeft: $shouldSlideLeft');
+    return shouldSlideLeft;
   }
 }
