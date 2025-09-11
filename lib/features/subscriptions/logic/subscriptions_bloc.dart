@@ -18,6 +18,8 @@ class SubscriptionsLoadRequested extends SubscriptionsEvent {}
 
 class SubscriptionsRefreshRequested extends SubscriptionsEvent {}
 
+class SubscriptionsClearRequested extends SubscriptionsEvent {}
+
 class SubscriptionAddRequested extends SubscriptionsEvent {
   final Subscription subscription;
   
@@ -122,6 +124,7 @@ class SubscriptionsBloc extends Bloc<SubscriptionsEvent, SubscriptionsState> {
     
     on<SubscriptionsLoadRequested>(_onSubscriptionsLoadRequested);
     on<SubscriptionsRefreshRequested>(_onSubscriptionsRefreshRequested);
+    on<SubscriptionsClearRequested>(_onSubscriptionsClearRequested);
     on<SubscriptionAddRequested>(_onSubscriptionAddRequested);
     on<SubscriptionUpdateRequested>(_onSubscriptionUpdateRequested);
     on<SubscriptionDeleteRequested>(_onSubscriptionDeleteRequested);
@@ -181,6 +184,22 @@ class SubscriptionsBloc extends Bloc<SubscriptionsEvent, SubscriptionsState> {
         emit(SubscriptionsError(_getErrorMessage(e)));
       }
     }
+  }
+
+  Future<void> _onSubscriptionsClearRequested(
+    SubscriptionsClearRequested event,
+    Emitter<SubscriptionsState> emit,
+  ) async {
+    try {
+      // Wyczyść wszystkie zaplanowane powiadomienia
+      await NotificationService.instance.cancelAllNotifications();
+      LoggerService.info('Anulowano wszystkie powiadomienia przy zmianie użytkownika');
+    } catch (e) {
+      LoggerService.error('Błąd podczas anulowania powiadomień', e);
+    }
+    
+    emit(SubscriptionsInitial());
+    LoggerService.info('Wyczyszczono stan subskrypcji');
   }
 
   Future<void> _onSubscriptionAddRequested(

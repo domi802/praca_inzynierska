@@ -81,8 +81,7 @@ class SubscriptionManagerApp extends StatelessWidget {
       providers: [
         BlocProvider<SettingsCubit>(
           create: (context) => SettingsCubit()..loadSettings(),
-        ),
-        BlocProvider<AuthBloc>(
+        ),        BlocProvider<AuthBloc>(
           create: (context) => AuthBloc()..add(AuthInitialized()),
         ),
         BlocProvider<SubscriptionsBloc>(

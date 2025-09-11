@@ -59,23 +59,38 @@ class _SubscriptionsListScreenState extends State<SubscriptionsListScreen> {
           },
         ),
       ),
-      body: BlocListener<SubscriptionsBloc, SubscriptionsState>(
-        listener: (context, state) {
-          if (state is SubscriptionsError) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.message),
-                backgroundColor: Colors.red,
-                action: SnackBarAction(
-                  label: 'Spróbuj ponownie',
-                  onPressed: () {
-                    context.read<SubscriptionsBloc>().add(SubscriptionsLoadRequested());
-                  },
-                ),
-              ),
-            );
-          }
-        },
+      body: MultiBlocListener(
+        listeners: [
+          BlocListener<AuthBloc, AuthState>(
+            listener: (context, authState) {
+              if (authState is AuthUnauthenticated) {
+                // Wyczyść stan subskrypcji gdy użytkownik się wyloguje
+                context.read<SubscriptionsBloc>().add(SubscriptionsClearRequested());
+              } else if (authState is AuthAuthenticated) {
+                // Załaduj subskrypcje dla nowego użytkownika
+                context.read<SubscriptionsBloc>().add(SubscriptionsLoadRequested());
+              }
+            },
+          ),
+          BlocListener<SubscriptionsBloc, SubscriptionsState>(
+            listener: (context, state) {
+              if (state is SubscriptionsError) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(state.message),
+                    backgroundColor: Colors.red,
+                    action: SnackBarAction(
+                      label: 'Spróbuj ponownie',
+                      onPressed: () {
+                        context.read<SubscriptionsBloc>().add(SubscriptionsLoadRequested());
+                      },
+                    ),
+                  ),
+                );
+              }
+            },
+          ),
+        ],
         child: BlocBuilder<SubscriptionsBloc, SubscriptionsState>(
           builder: (context, state) {
             if (state is SubscriptionsLoading) {
