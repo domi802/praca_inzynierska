@@ -145,7 +145,7 @@ class _AnimatedBottomNavigationBarState extends State<AnimatedBottomNavigationBa
                   child: Icon(
                     isSelected ? activeIcon : icon,
                     color: isSelected ? selectedColor : unselectedColor,
-                    size: 20,
+                    size: 24,
                   ),
                 ),
                 const SizedBox(height: 1),
@@ -170,7 +170,8 @@ class _AnimatedBottomNavigationBarState extends State<AnimatedBottomNavigationBa
 
   Widget _buildAddButton(BuildContext context) {
     final theme = Theme.of(context);
-    final primaryColor = theme.primaryColor;
+    // Użyj koloru z FloatingActionButtonTheme zamiast primaryColor
+    final fabColor = theme.floatingActionButtonTheme.backgroundColor ?? theme.primaryColor;
 
     return Material(
       color: Colors.transparent,
@@ -186,8 +187,8 @@ class _AnimatedBottomNavigationBarState extends State<AnimatedBottomNavigationBa
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                primaryColor.withValues(alpha: 0.9),
-                primaryColor,
+                fabColor.withValues(alpha: 0.9),
+                fabColor,
               ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -195,7 +196,7 @@ class _AnimatedBottomNavigationBarState extends State<AnimatedBottomNavigationBa
             borderRadius: BorderRadius.circular(25),
             boxShadow: [
               BoxShadow(
-                color: primaryColor.withValues(alpha: 0.3),
+                color: fabColor.withValues(alpha: 0.3),
                 blurRadius: 10,
                 offset: const Offset(0, 3),
               ),

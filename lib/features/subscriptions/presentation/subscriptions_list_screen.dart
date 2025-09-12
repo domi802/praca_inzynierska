@@ -252,6 +252,7 @@ class _SubscriptionsListScreenState extends State<SubscriptionsListScreen> {
   Widget _buildPaymentPill(Subscription subscription) {
     final isOverdue = subscription.isOverdue;
     final needsReminder = subscription.needsReminder;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     
     Color cardColor;
     Color textColor;
@@ -259,21 +260,21 @@ class _SubscriptionsListScreenState extends State<SubscriptionsListScreen> {
     String timeText;
     
     if (isOverdue) {
-      cardColor = Colors.red[50]!;
-      textColor = Colors.red[700]!;
-      iconColor = Colors.red;
+      cardColor = isDark ? Colors.red[900]!.withOpacity(0.3) : Colors.red[50]!;
+      textColor = isDark ? Colors.red[300]! : Colors.red[700]!;
+      iconColor = isDark ? Colors.red[400]! : Colors.red;
       timeText = AppLocalizations.of(context)!.overdue;
     } else if (needsReminder) {
-      cardColor = Colors.orange[50]!;
-      textColor = Colors.orange[700]!;
-      iconColor = Colors.orange;
+      cardColor = isDark ? Colors.orange[900]!.withOpacity(0.3) : Colors.orange[50]!;
+      textColor = isDark ? Colors.orange[300]! : Colors.orange[700]!;
+      iconColor = isDark ? Colors.orange[400]! : Colors.orange;
       timeText = subscription.daysUntilNextPayment == 0 
           ? AppLocalizations.of(context)!.paymentToday 
           : AppLocalizations.of(context)!.paymentTomorrow;
     } else {
-      cardColor = Colors.blue[50]!;
-      textColor = Colors.blue[700]!;
-      iconColor = Colors.blue;
+      cardColor = isDark ? Colors.blue[900]!.withOpacity(0.3) : Colors.blue[50]!;
+      textColor = isDark ? Colors.blue[300]! : Colors.blue[700]!;
+      iconColor = isDark ? Colors.blue[400]! : Colors.blue;
       timeText = AppLocalizations.of(context)!.daysShort(subscription.daysUntilNextPayment);
     }
     
@@ -486,17 +487,23 @@ class _SubscriptionsListScreenState extends State<SubscriptionsListScreen> {
   Widget _buildSubscriptionCard(subscription) {
     final isOverdue = subscription.isOverdue;
     final needsReminder = subscription.needsReminder;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    Color avatarColor;
+    if (isOverdue) {
+      avatarColor = isDark ? Colors.red[400]! : Colors.red;
+    } else if (needsReminder) {
+      avatarColor = isDark ? Colors.orange[400]! : Colors.orange;
+    } else {
+      avatarColor = Theme.of(context).primaryColor;
+    }
 
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: ListTile(
         contentPadding: const EdgeInsets.all(16),
         leading: CircleAvatar(
-          backgroundColor: isOverdue 
-              ? Colors.red 
-              : needsReminder 
-                  ? Colors.orange 
-                  : Theme.of(context).primaryColor,
+          backgroundColor: avatarColor,
           child: Icon(
             _getIconForPath(subscription.iconPath),
             color: Colors.white,

@@ -32,8 +32,14 @@ class _EmailVerificationBannerState extends State<EmailVerificationBanner> {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       decoration: BoxDecoration(
-        color: Colors.amber[50],
-        border: Border.all(color: Colors.amber[300]!),
+        color: Theme.of(context).brightness == Brightness.dark
+            ? Colors.orange[900]!.withOpacity(0.3) // Ciemny pomarańczowy w dark mode
+            : Colors.amber[50], // Jasny amber w light mode
+        border: Border.all(
+          color: Theme.of(context).brightness == Brightness.dark
+              ? Colors.orange[600]! // Pomarańczowa ramka w dark mode
+              : Colors.amber[300]!, // Amber ramka w light mode
+        ),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Padding(
@@ -43,12 +49,16 @@ class _EmailVerificationBannerState extends State<EmailVerificationBanner> {
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: Colors.amber[100],
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? Colors.orange[800]!.withOpacity(0.4) // Ciemny pomarańczowy w dark mode
+                    : Colors.amber[100], // Jasny amber w light mode
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Icon(
                 Icons.email_outlined,
-                color: Colors.amber[800],
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? Colors.orange[300] // Jasny pomarańczowy w dark mode
+                    : Colors.amber[800], // Ciemny amber w light mode
                 size: 20,
               ),
             ),
@@ -62,7 +72,9 @@ class _EmailVerificationBannerState extends State<EmailVerificationBanner> {
                     l10n.verifyYourEmail,
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
-                      color: Colors.amber[900],
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.orange[200] // Jasny pomarańczowy w dark mode
+                          : Colors.amber[900], // Ciemny amber w light mode
                       fontSize: 14,
                     ),
                   ),
@@ -71,7 +83,9 @@ class _EmailVerificationBannerState extends State<EmailVerificationBanner> {
                     l10n.checkEmailForVerification,
                     style: TextStyle(
                       fontSize: 12,
-                      color: Colors.amber[700],
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.orange[300] // Jasny pomarańczowy w dark mode
+                          : Colors.amber[700], // Amber w light mode
                     ),
                   ),
                 ],
@@ -99,7 +113,9 @@ class _EmailVerificationBannerState extends State<EmailVerificationBanner> {
               },
               icon: Icon(
                 Icons.refresh,
-                color: Colors.amber[700],
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? Colors.orange[300] // Jasny pomarańczowy w dark mode
+                    : Colors.amber[700], // Amber w light mode
                 size: 20,
               ),
               tooltip: l10n.checkVerification,
@@ -111,7 +127,9 @@ class _EmailVerificationBannerState extends State<EmailVerificationBanner> {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(l10n.emailVerificationSent),
-                    backgroundColor: Colors.amber[700],
+                    backgroundColor: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.orange[700] // Ciemny pomarańczowy w dark mode
+                        : Colors.amber[700], // Amber w light mode
                     duration: const Duration(seconds: 3),
                   ),
                 );
@@ -123,7 +141,9 @@ class _EmailVerificationBannerState extends State<EmailVerificationBanner> {
               child: Text(
                 l10n.resendEmail,
                 style: TextStyle(
-                  color: Colors.amber[800],
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.orange[300] // Jasny pomarańczowy w dark mode
+                      : Colors.amber[800], // Ciemny amber w light mode
                   fontWeight: FontWeight.w600,
                   fontSize: 12,
                 ),
@@ -138,7 +158,9 @@ class _EmailVerificationBannerState extends State<EmailVerificationBanner> {
               },
               icon: Icon(
                 Icons.close,
-                color: Colors.amber[600],
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? Colors.orange[400] // Jasny pomarańczowy w dark mode
+                    : Colors.amber[600], // Amber w light mode
                 size: 18,
               ),
               tooltip: l10n.hide,

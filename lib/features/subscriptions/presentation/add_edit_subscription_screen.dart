@@ -263,7 +263,7 @@ class _AddEditSubscriptionScreenState extends State<AddEditSubscriptionScreen> {
                         controller: _costController,
                         decoration: const InputDecoration(
                           hintText: '0.00',
-                          prefixIcon: Icon(Icons.attach_money),
+                          prefixIcon: Icon(Icons.account_balance_wallet),
                           border: OutlineInputBorder(),
                         ),
                         keyboardType: const TextInputType.numberWithOptions(decimal: true),
@@ -341,6 +341,8 @@ class _AddEditSubscriptionScreenState extends State<AddEditSubscriptionScreen> {
   }
 
   Widget _buildIconSelector() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -375,8 +377,12 @@ class _AddEditSubscriptionScreenState extends State<AddEditSubscriptionScreen> {
                         width: 60,
                         decoration: BoxDecoration(
                           border: Border.all(
-                            color: isSelected ? Theme.of(context).primaryColor : Colors.grey.shade300,
-                            width: 2,
+                            color: isSelected 
+                                ? Color(0xFFFFA726) // Pomarańczowy dla wybranej
+                                : isDark 
+                                    ? Colors.grey.shade600
+                                    : Colors.grey.shade300,
+                            width: isSelected ? 2 : 1,
                           ),
                           borderRadius: BorderRadius.circular(8),
                         ),
@@ -386,14 +392,22 @@ class _AddEditSubscriptionScreenState extends State<AddEditSubscriptionScreen> {
                             Icon(
                               _getIconForPath(iconPath),
                               size: 24,
-                              color: isSelected ? Theme.of(context).primaryColor : Colors.grey,
+                              color: isSelected 
+                                  ? Color(0xFFFFA726) // Pomarańczowy dla wybranej
+                                  : isDark 
+                                      ? Colors.grey.shade300 
+                                      : Colors.grey,
                             ),
                             const SizedBox(height: 4),
                             Text(
                               iconName,
                               style: TextStyle(
                                 fontSize: 10,
-                                color: isSelected ? Theme.of(context).primaryColor : Colors.grey,
+                                color: isSelected 
+                                    ? Color(0xFFFFA726) // Pomarańczowy dla wybranej
+                                    : isDark 
+                                        ? Colors.grey.shade300 
+                                        : Colors.grey,
                               ),
                               textAlign: TextAlign.center,
                             ),

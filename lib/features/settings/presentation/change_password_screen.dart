@@ -51,21 +51,27 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
             children: [
               // Instrukcje
               Card(
-                color: Colors.blue.shade50,
+                color: Theme.of(context).brightness == Brightness.dark 
+                    ? Colors.grey.shade800
+                    : Colors.blue.shade50,
                 child: Padding(
                   padding: const EdgeInsets.all(16),
                   child: Row(
                     children: [
                       Icon(
                         Icons.info_outline,
-                        color: Colors.blue.shade700,
+                        color: Theme.of(context).brightness == Brightness.dark 
+                            ? Colors.grey.shade300
+                            : Colors.blue.shade700,
                       ),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(
                           AppLocalizations.of(context)!.passwordRequirements,
                           style: TextStyle(
-                            color: Colors.blue.shade700,
+                            color: Theme.of(context).brightness == Brightness.dark 
+                                ? Colors.grey.shade300
+                                : Colors.blue.shade700,
                             fontSize: 14,
                           ),
                         ),
@@ -227,7 +233,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   style: const TextStyle(fontSize: 16),
                 ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).primaryColor,
+                  backgroundColor: Color(0xFFFFA726), // Pomarańczowy kolor podstawowy
                   foregroundColor: Colors.white,
                 ),
               ),

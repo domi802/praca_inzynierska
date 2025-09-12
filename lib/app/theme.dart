@@ -151,12 +151,12 @@ class AppTheme {
         error: errorColor,
       ),
       
-      // AppBar
+      // AppBar - spójne tło z resztą aplikacji
       appBarTheme: const AppBarTheme(
         centerTitle: true,
         elevation: 0,
         scrolledUnderElevation: 1,
-        backgroundColor: darkBackgroundColor,
+        backgroundColor: darkSurfaceColor, // Takie samo jak karty i reszta
         foregroundColor: Colors.white,
         titleTextStyle: TextStyle(
           fontSize: 20,
@@ -215,10 +215,10 @@ class AppTheme {
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       ),
       
-      // FloatingActionButton
+      // FloatingActionButton - zawsze oryginalny kolor
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
         elevation: 4,
-        backgroundColor: darkPrimaryColor,
+        backgroundColor: Color(0xFFFFA726), // Konkretny oryginalny pomarańczowy
         foregroundColor: Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(16)),

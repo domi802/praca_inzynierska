@@ -72,15 +72,26 @@ class SettingsScreen extends StatelessWidget {
             // Avatar i podstawowe dane
             Row(
               children: [
-                CircleAvatar(
-                  radius: 30,
-                  backgroundColor: Theme.of(context).primaryColor,
-                  child: Text(
-                    authState.user.initials,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Theme.of(context).brightness == Brightness.dark
+                        ? Border.all(
+                            color: Colors.grey.shade600,
+                            width: 2,
+                          )
+                        : null,
+                  ),
+                  child: CircleAvatar(
+                    radius: 30,
+                    backgroundColor: Theme.of(context).primaryColor,
+                    child: Text(
+                      authState.user.initials,
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
@@ -264,6 +275,10 @@ class SettingsScreen extends StatelessWidget {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(),
+              style: TextButton.styleFrom(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                minimumSize: const Size(80, 36),
+              ),
               child: Text(localizations.cancel),
             ),
             ElevatedButton(
@@ -271,6 +286,10 @@ class SettingsScreen extends StatelessWidget {
                 Navigator.of(dialogContext).pop();
                 context.read<SettingsCubit>().changeLocale(Locale(selectedLanguage));
               },
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                minimumSize: const Size(100, 36),
+              ),
               child: Text(localizations.confirm),
             ),
           ],
@@ -331,6 +350,10 @@ class SettingsScreen extends StatelessWidget {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(),
+              style: TextButton.styleFrom(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                minimumSize: const Size(80, 36),
+              ),
               child: Text(localizations.cancel),
             ),
             ElevatedButton(
@@ -338,6 +361,10 @@ class SettingsScreen extends StatelessWidget {
                 Navigator.of(dialogContext).pop();
                 context.read<SettingsCubit>().changeThemeMode(selectedThemeMode);
               },
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                minimumSize: const Size(100, 36),
+              ),
               child: Text(localizations.confirm),
             ),
           ],
@@ -355,6 +382,10 @@ class SettingsScreen extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(dialogContext).pop(),
+            style: TextButton.styleFrom(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              minimumSize: const Size(80, 36),
+            ),
             child: Text(localizations.cancel),
           ),
           ElevatedButton(
@@ -366,6 +397,8 @@ class SettingsScreen extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.red,
               foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              minimumSize: const Size(100, 36),
             ),
             child: Text(localizations.logout),
           ),

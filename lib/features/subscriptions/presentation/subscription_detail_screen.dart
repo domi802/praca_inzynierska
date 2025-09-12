@@ -194,7 +194,7 @@ class _SubscriptionDetailScreenState extends State<SubscriptionDetailScreen> {
                         child: Icon(
                           _getIconForPath(subscription.iconPath),
                           size: 30,
-                          color: Theme.of(context).primaryColor,
+                          color: Color(0xFFFFA726), // Zawsze pomarańczowy kolor
                         ),
                       ),
                       const SizedBox(width: 16),
@@ -230,7 +230,7 @@ class _SubscriptionDetailScreenState extends State<SubscriptionDetailScreen> {
                       _buildInfoColumn(
                         AppLocalizations.of(context)!.cost,
                         '${subscription.cost.toStringAsFixed(2)} ${subscription.currency}',
-                        Icons.attach_money,
+                        Icons.account_balance_wallet,
                       ),
                       _buildInfoColumn(
                         AppLocalizations.of(context)!.period,
@@ -368,7 +368,7 @@ class _SubscriptionDetailScreenState extends State<SubscriptionDetailScreen> {
   Widget _buildInfoColumn(String label, String value, IconData icon) {
     return Column(
       children: [
-        Icon(icon, color: Theme.of(context).primaryColor),
+        Icon(icon, color: Color(0xFFFFA726)), // Zawsze pomarańczowy kolor
         const SizedBox(height: 8),
         Text(
           label,

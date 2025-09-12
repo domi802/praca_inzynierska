@@ -724,7 +724,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get creationDate => 'Data utworzenia';
 
   @override
-  String get markAsPaidButton => 'Oznacz jako opłacona';
+  String get markAsPaidButton => 'Opłacone';
 
   @override
   String get deleteButton => 'Usuń';

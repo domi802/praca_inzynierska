@@ -65,47 +65,38 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           children: [
             // Awatar użytkownika
             Center(
-              child: Stack(
-                children: [
-                  BlocBuilder<AuthBloc, AuthState>(
-                    builder: (context, state) {
-                      if (state is AuthAuthenticated) {
-                        return CircleAvatar(
-                          radius: 50,
-                          backgroundColor: Theme.of(context).primaryColor,
-                          child: Text(
-                            state.user.initials,
-                            style: const TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                        );
-                      }
-                      return const CircleAvatar(
+              child: Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Theme.of(context).brightness == Brightness.dark
+                      ? Border.all(
+                          color: Colors.grey.shade600,
+                          width: 2,
+                        )
+                      : null,
+                ),
+                child: BlocBuilder<AuthBloc, AuthState>(
+                  builder: (context, state) {
+                    if (state is AuthAuthenticated) {
+                      return CircleAvatar(
                         radius: 50,
-                        child: Icon(Icons.person, size: 50),
+                        backgroundColor: Theme.of(context).primaryColor,
+                        child: Text(
+                          state.user.initials,
+                          style: const TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
                       );
-                    },
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor,
-                        shape: BoxShape.circle,
-                      ),
-                      padding: const EdgeInsets.all(8),
-                      child: const Icon(
-                        Icons.camera_alt,
-                        color: Colors.white,
-                        size: 20,
-                      ),
-                    ),
-                  ),
-                ],
+                    }
+                    return const CircleAvatar(
+                      radius: 50,
+                      child: Icon(Icons.person, size: 50),
+                    );
+                  },
+                ),
               ),
             ),
             
@@ -218,7 +209,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   style: const TextStyle(fontSize: 16),
                 ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).primaryColor,
+                  backgroundColor: Color(0xFFFFA726), // Pomarańczowy kolor podstawowy
                   foregroundColor: Colors.white,
                 ),
               ),

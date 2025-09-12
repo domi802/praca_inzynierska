@@ -143,7 +143,7 @@ class _CalendarScreenState extends State<CalendarScreen> with TickerProviderStat
                     _buildSummaryItem(
                       AppLocalizations.of(context)!.totalCost,
                       '${_calculateTotalCost(todaySubscriptions).toStringAsFixed(2)} PLN',
-                      Icons.attach_money,
+                      Icons.account_balance_wallet,
                     ),
                   ],
                 ),
@@ -195,7 +195,7 @@ class _CalendarScreenState extends State<CalendarScreen> with TickerProviderStat
                     _buildSummaryItem(
                       AppLocalizations.of(context)!.totalCost,
                       '${_calculateTotalCost(weekSubscriptions).toStringAsFixed(2)} PLN',
-                      Icons.attach_money,
+                      Icons.account_balance_wallet,
                     ),
                   ],
                 ),
@@ -247,7 +247,7 @@ class _CalendarScreenState extends State<CalendarScreen> with TickerProviderStat
                     _buildSummaryItem(
                       AppLocalizations.of(context)!.totalCost,
                       '${_calculateTotalCost(monthSubscriptions).toStringAsFixed(2)} PLN',
-                      Icons.attach_money,
+                      Icons.account_balance_wallet,
                     ),
                   ],
                 ),
@@ -275,20 +275,30 @@ class _CalendarScreenState extends State<CalendarScreen> with TickerProviderStat
         Text(
           label,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            color: Colors.grey[600],
+            color: Theme.of(context).brightness == Brightness.dark 
+                ? Colors.grey[300] // Jasny tekst w dark mode
+                : Colors.grey[600], // Ciemny tekst w light mode
           ),
         ),
         const SizedBox(height: 8),
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, color: Theme.of(context).primaryColor, size: 20),
+            Icon(
+              icon, 
+              color: Theme.of(context).brightness == Brightness.dark 
+                  ? const Color(0xFFFFA726) // Jasny pomarańczowy w dark mode
+                  : Theme.of(context).primaryColor, // Normalny kolor w light mode
+              size: 20,
+            ),
             const SizedBox(width: 4),
             Text(
               value,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
-                color: Theme.of(context).primaryColor,
+                color: Theme.of(context).brightness == Brightness.dark 
+                    ? Colors.white // Białe wartości w dark mode
+                    : Theme.of(context).primaryColor, // Pomarańczowe w light mode
               ),
             ),
           ],
@@ -323,7 +333,12 @@ class _CalendarScreenState extends State<CalendarScreen> with TickerProviderStat
             ),
             child: Row(
               children: [
-                Icon(Icons.calculate, color: Color(0xFF1976D2)),
+                Icon(
+                  Icons.calculate, 
+                  color: Theme.of(context).brightness == Brightness.dark 
+                      ? const Color(0xFF42A5F5) // Jaśniejszy niebieski w dark mode
+                      : const Color(0xFF1976D2), // Oryginalny ciemny niebieski w light mode
+                ),
                 const SizedBox(width: 12),
                 Text(
                   AppLocalizations.of(context)!.totalCostWithCurrency(totalCost.toStringAsFixed(2)),
@@ -346,7 +361,9 @@ class _CalendarScreenState extends State<CalendarScreen> with TickerProviderStat
                       Icon(
                         icon,
                         size: 64,
-                        color: Colors.grey[400],
+                        color: Theme.of(context).brightness == Brightness.dark 
+                            ? Colors.grey[300] // Jaśniejszy szary w dark mode
+                            : Colors.grey[400], // Oryginalny szary w light mode
                       ),
                       const SizedBox(height: 16),
                       Text(
@@ -381,24 +398,31 @@ class _CalendarScreenState extends State<CalendarScreen> with TickerProviderStat
     IconData statusIcon;
     String statusText;
     
+    // Tryb nocny - ciemne tła z jasnymi literami
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    
     if (difference < 0) {
-      cardColor = Color(0xFFFFEBEE);
-      textColor = Color(0xFFD32F2F);
+      // Overdue - ciemne tło z jasnym czerwonym tekstem
+      cardColor = isDark ? const Color(0xFF2A2A2A) : const Color(0xFFFFEBEE);
+      textColor = isDark ? const Color(0xFFFF9999) : const Color(0xFFD32F2F);
       statusIcon = Icons.warning;
       statusText = AppLocalizations.of(context)!.paymentOverdue(-difference);
     } else if (difference == 0) {
-      cardColor = Color(0xFFFFF8E1);
-      textColor = Color(0xFFF57C00);
+      // Today - ciemne tło z jasnym pomarańczowym tekstem
+      cardColor = isDark ? const Color(0xFF2A2A2A) : const Color(0xFFFFF8E1);
+      textColor = isDark ? const Color(0xFFFFB74D) : const Color(0xFFF57C00);
       statusIcon = Icons.today;
       statusText = AppLocalizations.of(context)!.today;
     } else if (difference <= 3) {
-      cardColor = Color(0xFFFFF3E0);
-      textColor = Color(0xFFEF6C00);
+      // Soon - ciemne tło z jasnym pomarańczowym tekstem
+      cardColor = isDark ? const Color(0xFF2A2A2A) : const Color(0xFFFFF3E0);
+      textColor = isDark ? const Color(0xFFFFB74D) : const Color(0xFFEF6C00);
       statusIcon = Icons.schedule;
       statusText = AppLocalizations.of(context)!.daysLeft(difference);
     } else {
-      cardColor = Color(0xFFE8F5E8);
-      textColor = Color(0xFF4CAF50);
+      // Future - ciemne tło z jasnym zielonym tekstem
+      cardColor = isDark ? const Color(0xFF2A2A2A) : const Color(0xFFE8F5E8);
+      textColor = isDark ? const Color(0xFF81C784) : const Color(0xFF4CAF50);
       statusIcon = Icons.check_circle_outline;
       statusText = AppLocalizations.of(context)!.daysLeft(difference);
     }
@@ -419,12 +443,12 @@ class _CalendarScreenState extends State<CalendarScreen> with TickerProviderStat
                 width: 50,
                 height: 50,
                 decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor.withOpacity(0.1),
+                  color: const Color(0xFFFFA726).withOpacity(0.1), // Zawsze oryginalny kolor
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Icon(
                   _getIconForPath(subscription.iconPath),
-                  color: Theme.of(context).primaryColor,
+                  color: const Color(0xFFFFA726), // Zawsze oryginalny pomarańczowy kolor
                 ),
               ),
               const SizedBox(width: 16),
