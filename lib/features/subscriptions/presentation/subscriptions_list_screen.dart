@@ -80,7 +80,7 @@ class _SubscriptionsListScreenState extends State<SubscriptionsListScreen> {
                     content: Text(state.message),
                     backgroundColor: Colors.red,
                     action: SnackBarAction(
-                      label: 'Spróbuj ponownie',
+                      label: AppLocalizations.of(context)!.tryAgain,
                       onPressed: () {
                         context.read<SubscriptionsBloc>().add(SubscriptionsLoadRequested());
                       },
@@ -609,14 +609,14 @@ class _SubscriptionsListScreenState extends State<SubscriptionsListScreen> {
           ),
           const SizedBox(height: 16),
           Text(
-            'Brak subskrypcji',
+            AppLocalizations.of(context)!.noSubscriptions,
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
               color: Colors.grey[600],
             ),
           ),
           const SizedBox(height: 8),
           Text(
-            'Dodaj swoją pierwszą subskrypcję, aby zacząć zarządzać wydatkami',
+            AppLocalizations.of(context)!.addFirstSubscription,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               color: Colors.grey[500],
             ),
@@ -626,7 +626,7 @@ class _SubscriptionsListScreenState extends State<SubscriptionsListScreen> {
           ElevatedButton.icon(
             onPressed: () => context.go('/subscription/add'),
             icon: const Icon(Icons.add),
-            label: const Text('Dodaj subskrypcję'),
+            label: Text(AppLocalizations.of(context)!.addSubscription),
           ),
         ],
       ),

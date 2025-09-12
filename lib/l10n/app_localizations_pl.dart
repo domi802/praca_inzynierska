@@ -85,6 +85,13 @@ class AppLocalizationsPl extends AppLocalizations {
   String get noDataToDisplay => 'Brak danych do wyświetlenia';
 
   @override
+  String get appInitializationError => 'Błąd inicjalizacji aplikacji';
+
+  @override
+  String get checkInternetConnection =>
+      'Sprawdź połączenie internetowe i spróbuj ponownie';
+
+  @override
   String get paymentCalendar => 'Kalendarz płatności';
 
   @override
@@ -135,7 +142,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String welcomeUser(String userName) {
-    return 'Welcome $userName!';
+    return 'Witaj $userName!';
   }
 
   @override

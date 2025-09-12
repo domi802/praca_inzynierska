@@ -26,15 +26,15 @@ class App extends StatelessWidget {
             // Wyświetl splash screen podczas inicjalizacji
             if (authState is AuthInitial) {
               return MaterialApp(
-                title: 'Menedżer Subskrypcji',
+                onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
                 debugShowCheckedModeBanner: false,
                 theme: AppTheme.lightTheme,
                 darkTheme: AppTheme.darkTheme,
                 themeMode: settingsState.themeMode,
                 locale: settingsState.locale,
                 supportedLocales: const [
-                  Locale('pl', 'PL'),
-                  Locale('en', 'US'),
+                  Locale('pl'),
+                  Locale('en'),
                 ],
                 localizationsDelegates: const [
                   AppLocalizations.delegate,
@@ -52,7 +52,7 @@ class App extends StatelessWidget {
             );
 
             return MaterialApp.router(
-              title: 'Menedżer Subskrypcji',
+              onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
               debugShowCheckedModeBanner: false,
               theme: AppTheme.lightTheme,
               darkTheme: AppTheme.darkTheme,
@@ -62,8 +62,8 @@ class App extends StatelessWidget {
               // Lokalizacja
               locale: settingsState.locale,
               supportedLocales: const [
-                Locale('pl', 'PL'),
-                Locale('en', 'US'),
+                Locale('pl'),
+                Locale('en'),
               ],
               localizationsDelegates: const [
                 AppLocalizations.delegate,

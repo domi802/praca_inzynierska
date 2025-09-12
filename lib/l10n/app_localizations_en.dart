@@ -85,6 +85,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noDataToDisplay => 'No data to display';
 
   @override
+  String get appInitializationError => 'Application initialization error';
+
+  @override
+  String get checkInternetConnection =>
+      'Check your internet connection and try again';
+
+  @override
   String get paymentCalendar => 'Payment Calendar';
 
   @override

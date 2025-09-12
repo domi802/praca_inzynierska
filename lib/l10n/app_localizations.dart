@@ -248,6 +248,18 @@ abstract class AppLocalizations {
   /// **'No data to display'**
   String get noDataToDisplay;
 
+  /// No description provided for @appInitializationError.
+  ///
+  /// In en, this message translates to:
+  /// **'Application initialization error'**
+  String get appInitializationError;
+
+  /// No description provided for @checkInternetConnection.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your internet connection and try again'**
+  String get checkInternetConnection;
+
   /// No description provided for @paymentCalendar.
   ///
   /// In en, this message translates to:

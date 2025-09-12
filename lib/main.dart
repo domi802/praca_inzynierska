@@ -35,10 +35,10 @@ void main() async {
     
     // Uruchom aplikację w trybie offline/fallback
     runApp(MaterialApp(
-      locale: const Locale('pl', 'PL'),
+      locale: const Locale('pl'),
       supportedLocales: const [
-        Locale('pl', 'PL'),
-        Locale('en', 'US'),
+        Locale('pl'),
+        Locale('en'),
       ],
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,

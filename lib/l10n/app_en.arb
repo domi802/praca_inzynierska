@@ -32,6 +32,8 @@
   "error": "Error",
   "tryAgain": "Try Again", 
   "noDataToDisplay": "No data to display",
+  "appInitializationError": "Application initialization error",
+  "checkInternetConnection": "Check your internet connection and try again",
   
   "paymentCalendar": "Payment Calendar",
   "thisWeek": "This Week",
