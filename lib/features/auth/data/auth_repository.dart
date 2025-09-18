@@ -291,4 +291,27 @@ class AuthRepository {
       throw Exception('Nie udało się ponownie uwierzytelnić użytkownika');
     }
   }
+
+  /// Zmiana hasła użytkownika
+  Future<void> changePassword(String currentPassword, String newPassword) async {
+    try {
+      final currentUser = _firebaseAuth.currentUser;
+      if (currentUser == null) {
+        throw Exception('Brak zalogowanego użytkownika');
+      }
+      
+      // Najpierw ponownie uwierzytelnij użytkownika
+      await reauthenticateUser(currentPassword);
+      
+      // Zmień hasło
+      await currentUser.updatePassword(newPassword);
+      
+      LoggerService.info('Hasło zostało zmienione dla użytkownika: ${currentUser.uid}');
+    } on firebase_auth.FirebaseAuthException {
+      rethrow;
+    } catch (e) {
+      LoggerService.error('Błąd podczas zmiany hasła', e);
+      throw Exception('Nie udało się zmienić hasła');
+    }
+  }
 }

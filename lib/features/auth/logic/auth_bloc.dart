@@ -62,6 +62,19 @@ class AuthPasswordResetRequested extends AuthEvent {
   List<Object?> get props => [email];
 }
 
+class AuthPasswordChangeRequested extends AuthEvent {
+  final String currentPassword;
+  final String newPassword;
+  
+  const AuthPasswordChangeRequested({
+    required this.currentPassword,
+    required this.newPassword,
+  });
+  
+  @override
+  List<Object?> get props => [currentPassword, newPassword];
+}
+
 class AuthUserChanged extends AuthEvent {
   final firebase_auth.User? firebaseUser;
   
@@ -103,6 +116,15 @@ class AuthError extends AuthState {
   List<Object?> get props => [message];
 }
 
+class AuthPasswordChangeSuccess extends AuthState {
+  final User user;
+  
+  const AuthPasswordChangeSuccess(this.user);
+  
+  @override
+  List<Object?> get props => [user];
+}
+
 // BLoC
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepository _authRepository;
@@ -123,6 +145,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthGoogleSignInRequested>(_onAuthGoogleSignInRequested);
     on<AuthEmailVerificationRequested>(_onAuthEmailVerificationRequested);
     on<AuthPasswordResetRequested>(_onAuthPasswordResetRequested);
+    on<AuthPasswordChangeRequested>(_onAuthPasswordChangeRequested);
     on<AuthUserChanged>(_onAuthUserChanged);
   }
 
@@ -273,6 +296,43 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       // Możemy emitować sukces, ale nie zmieniamy stanu autoryzacji
     } catch (e) {
       LoggerService.error('Błąd wysyłania emaila resetującego hasło', e);
+      emit(AuthError(_getErrorMessage(e)));
+    }
+  }
+
+  Future<void> _onAuthPasswordChangeRequested(
+    AuthPasswordChangeRequested event,
+    Emitter<AuthState> emit,
+  ) async {
+    print('AuthBloc - Otrzymano AuthPasswordChangeRequested');
+    emit(AuthLoading());
+    
+    try {
+      print('AuthBloc - Wywołanie changePassword w repository');
+      await _authRepository.changePassword(
+        event.currentPassword,
+        event.newPassword,
+      );
+      
+      print('AuthBloc - Zmiana hasła udana, pobieranie danych użytkownika');
+      // Po udanej zmianie hasła, emituj specjalny stan sukcesu
+      final currentUser = _authRepository.currentUser;
+      if (currentUser != null) {
+        final user = await _authRepository.getUserData(currentUser.uid);
+        if (user != null) {
+          print('AuthBloc - Emitowanie AuthPasswordChangeSuccess');
+          emit(AuthPasswordChangeSuccess(user));
+          LoggerService.info('Hasło zostało zmienione dla użytkownika: ${user.email}');
+          
+          // Po krótkim czasie, przywróć normalny stan uwierzytelnienia
+          await Future.delayed(const Duration(milliseconds: 100));
+          print('AuthBloc - Emitowanie AuthAuthenticated');
+          emit(AuthAuthenticated(user));
+        }
+      }
+    } catch (e) {
+      print('AuthBloc - Błąd zmiany hasła: $e');
+      LoggerService.error('Błąd zmiany hasła', e);
       emit(AuthError(_getErrorMessage(e)));
     }
   }

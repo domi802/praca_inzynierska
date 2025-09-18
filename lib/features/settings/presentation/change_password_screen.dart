@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../core/widgets/loading_overlay.dart';
+import '../../auth/logic/auth_bloc.dart';
 
 /// Ekran zmiany hasła
 class ChangePasswordScreen extends StatefulWidget {
@@ -33,7 +35,43 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
-    return LoadingOverlay(
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
+        print('ChangePasswordScreen - Stan otrzymany: ${state.runtimeType}');
+        
+        if (state is AuthPasswordChangeSuccess) {
+          print('ChangePasswordScreen - Sukces zmiany hasła');
+          // Sukces - hasło zostało zmienione
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(localizations.passwordChanged),
+              backgroundColor: Colors.green,
+            ),
+          );
+          setState(() {
+            _isLoading = false;
+          });
+          // Nawigacja po krótkim opóźnieniu aby użytkownik zobaczył komunikat
+          Future.delayed(const Duration(milliseconds: 500), () {
+            if (mounted) {
+              context.go('/settings');
+            }
+          });
+        } else if (state is AuthError) {
+          print('ChangePasswordScreen - Błąd: ${state.message}');
+          // Błąd podczas zmiany hasła
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(localizations.errorChangingPassword(state.message)),
+              backgroundColor: Colors.red,
+            ),
+          );
+          setState(() {
+            _isLoading = false;
+          });
+        }
+      },
+      child: LoadingOverlay(
       isLoading: _isLoading,
       loadingText: localizations.loadingChangingPassword,
       child: Scaffold(
@@ -242,46 +280,25 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         ),
       ),
     ),
+    ),
     );
   }
 
   void _changePassword() async {
     if (_formKey.currentState!.validate()) {
+      print('ChangePasswordScreen - Rozpoczęcie zmiany hasła');
       setState(() {
         _isLoading = true;
       });
 
-      try {
-        // Symulacja zmiany hasła (dodaj prawdziwą implementację)
-        await Future.delayed(const Duration(seconds: 2));
-        
-        if (mounted) {
-          final localizations = AppLocalizations.of(context)!;
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(localizations.passwordChanged),
-              backgroundColor: Colors.green,
-            ),
-          );
-          context.go('/settings');
-        }
-      } catch (e) {
-        if (mounted) {
-          final localizations = AppLocalizations.of(context)!;
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(localizations.errorChangingPassword(e.toString())),
-              backgroundColor: Colors.red,
-            ),
-          );
-        }
-      } finally {
-        if (mounted) {
-          setState(() {
-            _isLoading = false;
-          });
-        }
-      }
+      // Użyj AuthBloc do zmiany hasła
+      final authBloc = context.read<AuthBloc>();
+      
+      print('ChangePasswordScreen - Wysyłanie event AuthPasswordChangeRequested');
+      authBloc.add(AuthPasswordChangeRequested(
+        currentPassword: _currentPasswordController.text,
+        newPassword: _newPasswordController.text,
+      ));
     }
   }
 }
