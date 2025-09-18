@@ -463,7 +463,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get passwordRequirements =>
-      'Nowe hasło musi mieć co najmniej 6 znaków i zawierać litery oraz cyfry.';
+      'Hasło musi mieć co najmniej 6 znaków i zawierać co najmniej jedną cyfrę, jedną dużą literę oraz jeden znak specjalny.';
 
   @override
   String get passwordsDoNotMatch => 'Hasła nie są identyczne';
@@ -994,4 +994,26 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get enterValidEmail => 'Wprowadź prawidłowy adres email';
+
+  @override
+  String get passwordRequiredMessage => 'Hasło jest wymagane';
+
+  @override
+  String get passwordMinLengthMessage => 'Hasło musi mieć co najmniej 6 znaków';
+
+  @override
+  String get passwordDigitRequiredMessage =>
+      'Hasło musi zawierać co najmniej jedną cyfrę';
+
+  @override
+  String get passwordUppercaseRequiredMessage =>
+      'Hasło musi zawierać co najmniej jedną dużą literę';
+
+  @override
+  String get passwordSpecialCharRequiredMessage =>
+      'Hasło musi zawierać co najmniej jeden znak specjalny';
+
+  @override
+  String get passwordAllRequirementsMustBeMet =>
+      'Wszystkie warunki muszą być spełnione';
 }

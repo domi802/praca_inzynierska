@@ -186,7 +186,7 @@
   "confirmNewPassword": "Potwierdź nowe hasło",
   "enterCurrentPassword": "Wprowadź obecne hasło",
   "enterNewPassword": "Wprowadź nowe hasło",
-  "passwordRequirements": "Nowe hasło musi mieć co najmniej 6 znaków i zawierać litery oraz cyfry.",
+  "passwordRequirements": "Hasło musi mieć co najmniej 6 znaków i zawierać co najmniej jedną cyfrę, jedną dużą literę oraz jeden znak specjalny.",
   "passwordsDoNotMatch": "Hasła nie są identyczne",
   
   "enableNotifications": "Włącz powiadomienia",
@@ -458,5 +458,13 @@
   "continueWithGoogle": "Kontynuuj z Google",
   "orSignInWith": "Lub zaloguj się przez",
   "orSignUpWith": "Lub zarejestruj się przez",
-  "enterValidEmail": "Wprowadź prawidłowy adres email"
+  "enterValidEmail": "Wprowadź prawidłowy adres email",
+  
+  "passwordRequiredMessage": "Hasło jest wymagane",
+  "passwordMinLengthMessage": "Hasło musi mieć co najmniej 6 znaków",
+  "passwordDigitRequiredMessage": "Hasło musi zawierać co najmniej jedną cyfrę",
+  "passwordUppercaseRequiredMessage": "Hasło musi zawierać co najmniej jedną dużą literę",
+  "passwordSpecialCharRequiredMessage": "Hasło musi zawierać co najmniej jeden znak specjalny",
+  
+  "passwordAllRequirementsMustBeMet": "Wszystkie warunki muszą być spełnione"
 }

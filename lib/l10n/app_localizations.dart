@@ -983,7 +983,7 @@ abstract class AppLocalizations {
   /// No description provided for @passwordRequirements.
   ///
   /// In en, this message translates to:
-  /// **'New password must be at least 6 characters and contain letters and numbers.'**
+  /// **'Password must be at least 6 characters and contain at least one digit, one uppercase letter, and one special character.'**
   String get passwordRequirements;
 
   /// No description provided for @passwordsDoNotMatch.
@@ -1975,6 +1975,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enter a valid email address'**
   String get enterValidEmail;
+
+  /// No description provided for @passwordRequiredMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Password is required'**
+  String get passwordRequiredMessage;
+
+  /// No description provided for @passwordMinLengthMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 6 characters'**
+  String get passwordMinLengthMessage;
+
+  /// No description provided for @passwordDigitRequiredMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must contain at least one digit'**
+  String get passwordDigitRequiredMessage;
+
+  /// No description provided for @passwordUppercaseRequiredMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must contain at least one uppercase letter'**
+  String get passwordUppercaseRequiredMessage;
+
+  /// No description provided for @passwordSpecialCharRequiredMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must contain at least one special character'**
+  String get passwordSpecialCharRequiredMessage;
+
+  /// No description provided for @passwordAllRequirementsMustBeMet.
+  ///
+  /// In en, this message translates to:
+  /// **'All password requirements must be met'**
+  String get passwordAllRequirementsMustBeMet;
 }
 
 class _AppLocalizationsDelegate

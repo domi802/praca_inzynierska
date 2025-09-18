@@ -197,7 +197,7 @@
   "confirmNewPassword": "Confirm New Password",
   "enterCurrentPassword": "Enter current password",
   "enterNewPassword": "Enter new password",
-  "passwordRequirements": "New password must be at least 6 characters and contain letters and numbers.",
+  "passwordRequirements": "Password must be at least 6 characters and contain at least one digit, one uppercase letter, and one special character.",
   "passwordsDoNotMatch": "Passwords do not match",
   
   "enableNotifications": "Enable Notifications",
@@ -476,5 +476,13 @@
   "continueWithGoogle": "Continue with Google",
   "orSignInWith": "Or sign in with",
   "orSignUpWith": "Or sign up with",
-  "enterValidEmail": "Enter a valid email address"
+  "enterValidEmail": "Enter a valid email address",
+  
+  "passwordRequiredMessage": "Password is required",
+  "passwordMinLengthMessage": "Password must be at least 6 characters",
+  "passwordDigitRequiredMessage": "Password must contain at least one digit",
+  "passwordUppercaseRequiredMessage": "Password must contain at least one uppercase letter",
+  "passwordSpecialCharRequiredMessage": "Password must contain at least one special character",
+  
+  "passwordAllRequirementsMustBeMet": "All password requirements must be met"
 }

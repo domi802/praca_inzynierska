@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../l10n/app_localizations.dart';
 import '../../../core/widgets/loading_overlay.dart';
+import '../../../core/utils/password_validator.dart';
 import '../../auth/logic/auth_bloc.dart';
 
 /// Ekran zmiany hasła
@@ -196,13 +197,12 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                         border: const OutlineInputBorder(),
                       ),
                       validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return AppLocalizations.of(context)!.enterNewPassword;
-                        }
-                        if (value.length < 6) {
-                          return AppLocalizations.of(context)!.passwordTooShort;
-                        }
-                        return null;
+                        final localizations = AppLocalizations.of(context)!;
+                        return PasswordValidator.validatePasswordGeneral(
+                          value,
+                          requiredMessage: localizations.passwordRequiredMessage,
+                          allRequirementsMustBeMetMessage: localizations.passwordAllRequirementsMustBeMet,
+                        );
                       },
                     ),
                   ],

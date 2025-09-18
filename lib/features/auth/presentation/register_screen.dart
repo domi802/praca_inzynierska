@@ -6,6 +6,7 @@ import '../logic/auth_bloc.dart';
 import '../../../core/widgets/custom_text_field.dart';
 import '../../../core/widgets/loading_overlay.dart';
 import '../../../core/services/logger_service.dart';
+import '../../../core/utils/password_validator.dart';
 import '../../../l10n/app_localizations.dart';
 
 /// Ekran rejestracji nowego użytkownika
@@ -25,9 +26,32 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _confirmPasswordController = TextEditingController();
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
+  
+  // Stan wskaźników wymagań hasła
+  bool _hasMinLength = false;
+  bool _hasDigit = false;
+  bool _hasUppercase = false;
+  bool _hasSpecialChar = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _passwordController.addListener(_checkPasswordRequirements);
+  }
+
+  void _checkPasswordRequirements() {
+    final password = _passwordController.text;
+    setState(() {
+      _hasMinLength = PasswordValidator.hasMinLength(password);
+      _hasDigit = PasswordValidator.hasDigit(password);
+      _hasUppercase = PasswordValidator.hasUppercase(password);
+      _hasSpecialChar = PasswordValidator.hasSpecialChar(password);
+    });
+  }
 
   @override
   void dispose() {
+    _passwordController.removeListener(_checkPasswordRequirements);
     _firstNameController.dispose();
     _lastNameController.dispose();
     _emailController.dispose();
@@ -162,14 +186,54 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             });
                           },
                           validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return AppLocalizations.of(context)!.providePassword;
-                            }
-                            if (value.length < 6) {
-                              return AppLocalizations.of(context)!.passwordMinLength;
-                            }
-                            return null;
+                            final localizations = AppLocalizations.of(context)!;
+                            return PasswordValidator.validatePasswordGeneral(
+                              value,
+                              requiredMessage: localizations.passwordRequiredMessage,
+                              allRequirementsMustBeMetMessage: localizations.passwordAllRequirementsMustBeMet,
+                            );
                           },
+                        ),
+                        const SizedBox(height: 8),
+                        
+                        // Wskaźnik wymagań hasła
+                        Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.3),
+                            ),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                AppLocalizations.of(context)!.passwordRequirements,
+                                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              _buildRequirementRow(
+                                AppLocalizations.of(context)!.passwordMinLengthMessage,
+                                _hasMinLength,
+                              ),
+                              _buildRequirementRow(
+                                AppLocalizations.of(context)!.passwordDigitRequiredMessage,
+                                _hasDigit,
+                              ),
+                              _buildRequirementRow(
+                                AppLocalizations.of(context)!.passwordUppercaseRequiredMessage,
+                                _hasUppercase,
+                              ),
+                              _buildRequirementRow(
+                                AppLocalizations.of(context)!.passwordSpecialCharRequiredMessage,
+                                _hasSpecialChar,
+                              ),
+                            ],
+                          ),
                         ),
                         const SizedBox(height: 16),
                         
@@ -271,6 +335,34 @@ class _RegisterScreenState extends State<RegisterScreen> {
             );
           },
         ),
+      ),
+    );
+  }
+
+  Widget _buildRequirementRow(String requirement, bool isMet) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 2),
+      child: Row(
+        children: [
+          Icon(
+            isMet ? Icons.check_circle : Icons.radio_button_unchecked,
+            size: 16,
+            color: isMet 
+                ? Colors.green 
+                : Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              requirement,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: isMet 
+                    ? Colors.green 
+                    : Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

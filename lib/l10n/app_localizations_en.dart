@@ -462,7 +462,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get passwordRequirements =>
-      'New password must be at least 6 characters and contain letters and numbers.';
+      'Password must be at least 6 characters and contain at least one digit, one uppercase letter, and one special character.';
 
   @override
   String get passwordsDoNotMatch => 'Passwords do not match';
@@ -992,4 +992,27 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get enterValidEmail => 'Enter a valid email address';
+
+  @override
+  String get passwordRequiredMessage => 'Password is required';
+
+  @override
+  String get passwordMinLengthMessage =>
+      'Password must be at least 6 characters';
+
+  @override
+  String get passwordDigitRequiredMessage =>
+      'Password must contain at least one digit';
+
+  @override
+  String get passwordUppercaseRequiredMessage =>
+      'Password must contain at least one uppercase letter';
+
+  @override
+  String get passwordSpecialCharRequiredMessage =>
+      'Password must contain at least one special character';
+
+  @override
+  String get passwordAllRequirementsMustBeMet =>
+      'All password requirements must be met';
 }
