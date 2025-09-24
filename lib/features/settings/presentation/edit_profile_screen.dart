@@ -60,6 +60,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         ),
       body: Form(
         key: _formKey,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [

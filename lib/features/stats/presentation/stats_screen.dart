@@ -106,10 +106,6 @@ class StatsScreen extends StatelessWidget {
                 
                 // Najbardziej kosztowne subskrypcje
                 _buildMostExpensive(context, state.subscriptions),
-                const SizedBox(height: 20),
-                
-                // Nadchodzące płatności
-                _buildUpcomingPayments(context, state.subscriptions),
               ],
             ),
           );
@@ -597,172 +593,6 @@ class StatsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildUpcomingPayments(BuildContext context, List<Subscription> subscriptions) {
-    final now = DateTime.now();
-    final upcoming = subscriptions.where((sub) {
-      final daysUntil = sub.nextPaymentAt.difference(now).inDays;
-      return daysUntil >= 0 && daysUntil <= 7;
-    }).toList()..sort((a, b) => a.nextPaymentAt.compareTo(b.nextPaymentAt));
-
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Icon(
-                  Icons.upcoming,
-                  color: Color(0xFF66BB6A),
-                  size: 24,
-                ),
-                const SizedBox(width: 8),
-                Flexible(
-                  child: Text(
-                    AppLocalizations.of(context)!.upcomingPayments,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            if (upcoming.isEmpty)
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Text(
-                    AppLocalizations.of(context)!.noPaymentsNext7Days,
-                    style: const TextStyle(
-                      color: Colors.grey,
-                      fontSize: 16,
-                    ),
-                  ),
-                ),
-              )
-            else
-              ...upcoming.map((subscription) => _buildUpcomingPaymentItem(context, subscription)),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildUpcomingPaymentItem(BuildContext context, Subscription subscription) {
-    final daysUntil = subscription.nextPaymentAt.difference(DateTime.now()).inDays;
-    
-    String timeText;
-    Color timeColor;
-    
-    if (daysUntil == 0) {
-      timeText = AppLocalizations.of(context)!.today;
-      timeColor = Color(0xFFE53935);
-    } else if (daysUntil == 1) {
-      timeText = AppLocalizations.of(context)!.tomorrow;
-      timeColor = Color(0xFFFFB300);
-    } else {
-      timeText = AppLocalizations.of(context)!.paymentInDays(daysUntil);
-      timeColor = Color(0xFF66BB6A);
-    }
-
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 4),
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Colors.grey.withOpacity(0.05),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          // Ikona
-          Container(
-            width: 36,
-            height: 36,
-            decoration: BoxDecoration(
-              color: Color(0xFF29B6F6).withOpacity(0.1),
-              borderRadius: BorderRadius.circular(6),
-            ),
-            child: Icon(
-              _getIconForPath(subscription.iconPath),
-              color: Color(0xFF29B6F6),
-              size: 20,
-            ),
-          ),
-          const SizedBox(width: 12),
-          // Tytuł i data
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  subscription.title,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                ),
-                Text(
-                  _formatDate(subscription.nextPaymentAt),
-                  style: TextStyle(
-                    color: Colors.grey[600],
-                    fontSize: 12,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 8),
-          // Koszt i status
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(
-                width: 100,
-                child: Text(
-                  '${subscription.cost.toStringAsFixed(2)} ${subscription.currency}',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.end,
-                  maxLines: 1,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                decoration: BoxDecoration(
-                  color: timeColor.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Text(
-                  timeText,
-                  style: TextStyle(
-                    color: timeColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 11,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
   IconData _getCategoryIcon(String category) {
     switch (category.toLowerCase()) {
       case 'rozrywka': return Icons.movie;
@@ -814,10 +644,6 @@ class StatsScreen extends StatelessWidget {
     if (path.contains('microsoft')) return Icons.computer;
     if (path.contains('adobe')) return Icons.design_services;
     return Icons.subscriptions;
-  }
-
-  String _formatDate(DateTime date) {
-    return '${date.day.toString().padLeft(2, '0')}.${date.month.toString().padLeft(2, '0')}.${date.year}';
   }
 
   /// Oblicza miesięczny koszt wszystkich subskrypcji

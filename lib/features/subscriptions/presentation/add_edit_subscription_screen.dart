@@ -204,6 +204,7 @@ class _AddEditSubscriptionScreenState extends State<AddEditSubscriptionScreen> {
         },
         child: Form(
           key: _formKey,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           child: ListView(
             padding: const EdgeInsets.all(16),
             children: [
