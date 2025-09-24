@@ -10,45 +10,46 @@ class SplashScreen extends StatelessWidget {
     final localizations = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Logo aplikacji
-            Icon(
-              Icons.subscriptions,
-              size: 80,
-              color: Colors.white,
-            ),
-            SizedBox(height: 24),
-            
-            // Nazwa aplikacji
-            Text(
-              localizations.appTitle,
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
+      body: Column(
+        children: [
+          const SizedBox(height: 100),
+          // Logo aplikacji
+          Center(
+            child: ColorFiltered(
+              colorFilter: const ColorFilter.mode(
+                Colors.white,
+                BlendMode.srcIn,
+              ),
+              child: Image.asset(
+                'assets/images/nameLogo.png',
+                height: 320,
+                fit: BoxFit.contain,
               ),
             ),
-            SizedBox(height: 48),
-            
-            // Wskaźnik ładowania
-            CircularProgressIndicator(
-              color: Colors.white,
-              strokeWidth: 3,
+          ),
+          const Spacer(),
+          
+          // Loader
+          Center(
+            child: Column(
+              children: [
+                CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                ),
+                SizedBox(height: 16),
+                
+                Text(
+                  localizations.loadingDefault,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.white70,
+                  ),
+                ),
+              ],
             ),
-            SizedBox(height: 16),
-            
-            Text(
-              localizations.loadingDefault,
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.white70,
-              ),
-            ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 100),
+        ],
       ),
     );
   }

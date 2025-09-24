@@ -9,7 +9,7 @@ class AppLocalizationsPl extends AppLocalizations {
   AppLocalizationsPl([String locale = 'pl']) : super(locale);
 
   @override
-  String get appTitle => 'Menedżer Subskrypcji';
+  String get appTitle => 'Substracto';
 
   @override
   String get login => 'Zaloguj się';

@@ -24,14 +24,13 @@ class App extends StatelessWidget {
             print('Is authenticated: ${authState is AuthAuthenticated}');
             
             // Wyświetl splash screen podczas inicjalizacji
-            if (authState is AuthInitial) {
+            if (authState is AuthLoading) {
               return MaterialApp(
                 onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
                 debugShowCheckedModeBanner: false,
                 theme: AppTheme.lightTheme,
                 darkTheme: AppTheme.darkTheme,
                 themeMode: settingsState.themeMode,
-                locale: settingsState.locale,
                 supportedLocales: const [
                   Locale('pl'),
                   Locale('en'),

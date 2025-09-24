@@ -68,22 +68,16 @@ class _LoginScreenState extends State<LoginScreen> {
                         key: _formKey,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                        // Logo lub nazwa aplikacji
-                        Icon(
-                          Icons.subscriptions,
-                          size: 80,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                        const SizedBox(height: 16),
-                        Text(
-                          localizations.appTitle,
-                          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
+                        // Logo aplikacji
+                        Center(
+                          child: Image.asset(
+                            'assets/images/nameLogo.png',
+                            height: 200,
+                            fit: BoxFit.contain,
                           ),
-                          textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 8),
                         Text(

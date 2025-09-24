@@ -1,11 +1,11 @@
 {
-    "name": "praca_inzynierska",
-    "short_name": "praca_inzynierska",
+    "name": "Substracto",
+    "short_name": "Substracto",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#FDFDFD",
     "theme_color": "#FFA726",
-    "description": "A new Flutter project.",
+    "description": "Substracto - Aplikacja do zarządzania subskrypcjami",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
