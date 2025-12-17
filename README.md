@@ -2,18 +2,6 @@
 
 Substracto to wieloplatformowa aplikacja (Android, iOS, macOS, Web, Windows, Linux) ułatwiająca zarządzanie płatnymi subskrypcjami. Projekt powstał w ramach pracy inżynierskiej i wykorzystuje ekosystem Firebase, wzorzec BLoC, oraz nowoczesne rozwiązania Flutter.
 
-## Spis treści
-- Funkcje
-- Wymagania
-- Instalacja
-- Konfiguracja Firebase
-- Uruchomienie
-- Lokalizacja (i18n)
-- Struktura projektu
-- Testy
-- Generowanie ikon aplikacji
-- Rozwiązywanie problemów
-
 ## Funkcje
 - Integracja z **Firebase**: `Auth`, `Cloud Firestore`, `Storage`, logowanie przez Google.
 - Zarządzanie stanem przez **BLoC** (`flutter_bloc`, `bloc`, `equatable`).
